@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>樂活健康系統 | 腸道微生態檢測</title>
+    <style>
+        :root {
+            --bg-color: #f2f2f7;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --card-solid: #ffffff;
+            --text-primary: #1c1c1e;
+            --text-secondary: #8e8e93;
+            --wa-green: #25D366;
+            --wa-dark-green: #075E54;
+            --wa-bubble: #e7ffdb;
+            --apple-blue: #007aff;
+            --apple-card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
+            --accent-radius: 20px;
+            --lohas-teal: #008080;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #000000;
+                --card-bg: rgba(28, 28, 30, 0.85);
+                --card-solid: #1c1c1e;
+                --text-primary: #ffffff;
+                --text-secondary: #8e8e93;
+                --wa-bubble: #005c4b;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px 12px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            padding-bottom: 40px;
+        }
+
+        /* Apple Header Style */
+        .app-header {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: var(--accent-radius);
+            padding: 20px 24px;
+            box-shadow: var(--apple-card-shadow);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: sticky;
+            top: 10px;
+            z-index: 100;
+        }
+
+        .app-header .brand {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .app-header .logo {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: -0.2px;
+            color: var(--lohas-teal);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-transform: uppercase;
+        }
+
+        .app-header h1 {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .app-header p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* Progress Bar */
+        .progress-bar-container {
+            height: 4px;
+            background: rgba(0,0,0,0.06);
+            border-radius: 2px;
+            margin-top: 14px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #25D366, #007aff);
+            transition: width 0.3s ease;
+        }
+
+        /* Question Card - Apple x WhatsApp Chat Bubble Style */
+        .question-card {
+            background: var(--card-solid);
+            border-radius: var(--accent-radius);
+            padding: 20px;
+            box-shadow: var(--apple-card-shadow);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .chat-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .chat-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .chat-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .options-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .option-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: var(--bg-color);
+            padding: 14px 16px;
+            border-radius: 14px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .option-item:hover {
+            opacity: 0.9;
+        }
+
+        .option-item input[type="radio"] {
+            display: none;
+        }
+
+        .custom-radio {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid var(--text-secondary);
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        .custom-radio::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: white;
+            transform: scale(0);
+            transition: transform 0.2s ease;
+        }
+
+        .option-label {
+            font-size: 14px;
+            font-weight: 500;
+            flex-grow: 1;
+        }
+
+        .option-score {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            padding: 2px 8px;
+            background: rgba(0,0,0,0.05);
+            border-radius: 10px;
+        }
+
+        /* Active Selected Option Style */
+        .option-item.selected {
+            background: var(--wa-bubble);
+            border-color: var(--wa-green);
+        }
+
+        .option-item.selected .custom-radio {
+            background: var(--wa-green);
+            border-color: var(--wa-green);
+        }
+
+        .option-item.selected .custom-radio::after {
+            transform: scale(1);
+        }
+
+        /* Results Card */
+        .result-card {
+            background: var(--card-solid);
+            border-radius: var(--accent-radius);
+            padding: 24px;
+            box-shadow: var(--apple-card-shadow);
+            text-align: center;
+            display: none;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-score-badge {
+            display: inline-block;
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--apple-blue);
+            margin: 10px 0;
+            letter-spacing: -1px;
+        }
+
+        .result-status {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .result-desc {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            text-align: left;
+            background: var(--bg-color);
+            padding: 16px;
+            border-radius: 14px;
+            margin-top: 14px;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Apple Style Header -->
+    <div class="app-header">
+        <div class="brand">
+            <span class="logo">🌿 Lohascare Gerontech</span>
+            <span style="font-size: 11px; color: var(--wa-green); font-weight: 600;">● Live Sync</span>
+        </div>
+        <h1>樂活健康系統 | 腸道微生態檢測</h1>
+        <p>Your Gut. Your Rules. (花 1 分鐘快速 Assessment)</p>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+    </div>
+
+    <!-- Questions Form -->
+    <form id="quizForm">
+        <!-- Q1 -->
+        <div class="question-card">
+            <div class="chat-header">
+                <div class="chat-avatar">Q1</div>
+                <div class="chat-title">排便情況</div>
+            </div>
+            <div class="options-group">
+                <label class="option-item">
+                    <input type="radio" name="q1" value="0" onclick="updateProgress()">
+                    <span class="custom-radio"></span>
+                    <span class="option-label">每日都順暢</span>
+                    <span class="option-score">0 pt</span>
+                </label>
+                <label class="option-item">
+                    <input type="radio" name="q1" value="2" onclick="updateProgress()">
+                    <span class="custom-radio"></span>
+                    <span class="option-label">2 至 3 日先一次</span>
+                    <span class="option-score">2 pts</span>
+                </label>
+                <label class="option-item">
+                    <input type="radio" name="q1" value="4" onclick="updateProgress()">
+                    <span class="custom-radio"></span>
+                    <span class="option-label">3 日以上先一次，或經常便秘</span>
+                    <span class="option-score">4 pts</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="question-card" style="margin-top: 16px;">
+            <div class="chat-header">
+                <div class="chat-avatar">Q2</div>
+                <div class="chat-title">肚脹情況</div>
+            </div>
+            <div class="options-group">
+                <label class="option-item">
+                    <input type="radio" name="q2" value="0" onclick="updateProgress()">
+                    <span class="custom-radio"></span>
+                    <span class="option-label">很少肚脹</span>
+                    <span class="option-score">0 pt</span>
+                </label>
+                <label class="option-item">
+                    <input type="radio" name="q2" value="2" onclick="updateProgress()">
+                    <span class="custom-radio"></span>
+                    <span class="option-label">每星期有 1 至 2 次</span>
+                    <span class="option-score">2 pts</span>
+                </label>
+                <label class="option-item">
+                    <input type="radio" name="q2" value="4" onclick="updateProgress()">
+                    <span class="custom-radio"></span>
+                    <span class="option-label">幾乎每日都有</span>
+                    <span class="option-score">4 pts</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="question-card" style="margin-top: 16px;">
+            <div class="chat-header">
+                <div class="chat-avatar">Q3</div>
+                <div class="chat-title">免疫力 (Immunity)</div>
+            </div>
+            <div class="options-group">
+                <label class="option-item">
+                    <input type="radio" name="q3" value="0" onclick="updateProgress()">
+                    <span class="custom-radio"></span>
+                    <span class="option-label">很少感冒</span>
+                    <span class="option-score">0 pt</span>
+                </label>
+                <label class="option-item">
+                    <input type="radio" name="q3" value="2" onclick="updateProgress()">
+                    <span class="custom-radio"></span>
+                    <span class="option-label">每年感冒 3 至 4 次</span>
+                    <span class="option-score">2 pts</span>
+                </label>
+                <label class="option-item">
+                    <input type="radio" name="q3" value="4" onclick="updateProgress()">
+                    <span class="custom-radio"></span>
+                    <span class="option-label">容易病、病後恢復慢</span>
+                    <span class="option-score">4 pts</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="question-card" style="margin-top: 16px;">
+            <div class="chat-header">
+                <div class="chat-avatar">Q4</div>
+                <div class="chat-title">敏感問題 (Allergy)</div>
+            </div>
+            <div class="options-group">
+                <label class="option-item">
+                    <input type="radio" name="q4" value="0" onclick="updateProgress()">
+                    <span class="custom-radio"></span>
+                    <span class="option-label">無鼻敏感、濕疹</span>
+                    <span class="option-score">0 pt</span>
+                </label>
+                <label class="option-item">
+                    <input type="radio" name="q4" value="2" onclick="updateProgress()">
+                    <span class="custom-radio"></span>
+                    <span class="option-label">偶爾發作</span>
+                    <span class="option-score">2 pts</span>
+                </label>
+                <label class="option-item">
+                    <input type="radio" name="q4" value="4" onclick="updateProgress()">
+                    <span class="custom-radio"></span>
+                    <span class="option-label">經常鼻敏感、濕疹或皮膚痕癢</span>
+                    <span class="option-score">4 pts</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="question-card" style="margin-top: 16px;">
+            <div class="chat-header">
+                <div class="chat-avatar">Q5</div>
+                <div class="chat-title">腸胃敏感 (Gut Sensitivity)</div>
+            </div>
+            <div class="options-group">
+                <label class="option-item">
+                    <input type="radio" name="q5" value="0" onclick="updateProgress()">
+                    <span class="custom-radio"></span>
+                    <span class="option-label">無特別問題</span>
+                    <span class="option-score">0 pt</span>
+                </label>
+                <label class="option-item">
+                    <input type="radio" name="q5" value="2" onclick="updateProgress()">
+                    <span class="custom-radio"></span>
+                    <span class="option-label">偶爾胃氣、肚痛</span>
+                    <span class="option-score">2 pts</span>
+                </label>
+                <label class="option-item">
+                    <input type="radio" name="q5" value="4" onclick="updateProgress()">
+                    <span class="custom-radio"></span>
+                    <span class="option-label">經常胃氣、腸胃不適</span>
+                    <span class="option-score">4 pts</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="question-card" style="margin-top: 16px;">
+            <div class="chat-header">
+                <div class="chat-avatar">Q6</div>
+                <div class="chat-title">服食抗生素 (Antibiotics History)</div>
+            </div>
+            <div class="options-group">
+                <label class="option-item">
+                    <input type="radio" name="q6" value="0" onclick="updateProgress()">
+                    <span class="custom-radio"></span>
+                    <span class="option-label">很少或沒有</span>
+                    <span class="option-score">0 pt</span>
+                </label>
+                <label class="option-item">
+                    <input type="radio" name="q6" value="2" onclick="updateProgress()">
+                    <span class="custom-radio"></span>
+                    <span class="option-label">最近半年服用過</span>
+                    <span class="option-score">2 pts</span>
+                </label>
+                <label class="option-item">
+                    <input type="radio" name="q6" value="4" onclick="updateProgress()">
+                    <span class="custom-radio"></span>
+                    <span class="option-label">最近 1 個月服用過</span>
+                    <span class="option-score">4 pts</span>
+                </label>
+            </div>
+        </div>
+    </form>
+
+    <!-- Dashboard Results View -->
+    <div class="result-card" id="resultCard">
+        <div style="font-size: 13px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase;">System Health Report</div>
+        <div class="result-score-badge" id="scoreBadge">0 pts</div>
+        <div class="result-status" id="statusTitle">完美狀態 (Optimal)</div>
+        <div class="result-desc" id="statusDesc">
+            System Status: All Green. 你嘅腸道微生態非常健康！好菌滿滿，免疫力在線。Keep going，繼續保持均衡飲食同運動。
+        </div>
+    </div>
+
+    <div class="footer-note">
+        <div>© 樂活健康系統 - Lohascare Gerontech System</div>
+        <div>🔒 End-to-End Encrypted | 數據僅供自我評估與樂活健康管理參考</div>
+    </div>
+</div>
+
+<script>
+    function updateProgress() {
+        const form = document.getElementById('quizForm');
+        const totalQuestions = 6;
+        let answered = 0;
+        let totalScore = 0;
+
+        // Visual check highlight
+        document.querySelectorAll('.option-item').forEach(item => {
+            const radio = item.querySelector('input[type="radio"]');
+            if (radio.checked) {
+                item.classList.add('selected');
+            } else {
+                item.classList.remove('selected');
+            }
+        });
+
+        for (let i = 1; i <= totalQuestions; i++) {
+            const selected = form.querySelector(`input[name="q${i}"]:checked`);
+            if (selected) {
+                answered++;
+                totalScore += parseInt(selected.value);
+            }
+        }
+
+        const progressPercent = (answered / totalQuestions) * 100;
+        document.getElementById('progressBar').style.width = progressPercent + '%';
+
+        if (answered === totalQuestions) {
+            showResults(totalScore);
+        }
+    }
+
+    function showResults(score) {
+        const resultCard = document.getElementById('resultCard');
+        const scoreBadge = document.getElementById('scoreBadge');
+        const statusTitle = document.getElementById('statusTitle');
+        const statusDesc = document.getElementById('statusDesc');
+
+        resultCard.style.display = 'block';
+        scoreBadge.innerText = score + ' pts';
+
+        if (score <= 4) {
+            scoreBadge.style.color = '#34C759'; // Apple Green
+            statusTitle.innerText = '🟢 0 – 4 pts：完美狀態 (Optimal)';
+            statusDesc.innerHTML = '<strong>System Status: All Green.</strong><br>你嘅腸道微生態非常健康！好菌滿滿，免疫力在線。Keep going，繼續保持均衡飲食同運動。';
+        } else if (score <= 12) {
+            scoreBadge.style.color = '#FF9500'; // Apple Orange
+            statusTitle.innerText = '🟡 5 – 12 pts：亞健康 (Warning)';
+            statusDesc.innerHTML = '<strong>System Update Required.</strong><br>腸道微生態開始失衡，身體俾緊 signal 你（可能偶爾有胃氣或小敏感）。建議 Reset 一下生活節奏，食多啲膳食纖維，或者補充益生菌。';
+        } else {
+            scoreBadge.style.color = '#FF3B30'; // Apple Red
+            statusTitle.innerText = '🔴 13 – 24 pts：需要救援 (Critical)';
+            statusDesc.innerHTML = '<strong>Red Flag.</strong><br>壞菌已經佔據主導，嚴重影響緊你嘅消化同免疫系統。建議及早 Delete 壞習慣（高糖、熬夜），並尋求醫生或樂活健康團隊幫手 Reboot 腸道健康！';
+        }
+
+        // Scroll smoothly to results
+        resultCard.scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
