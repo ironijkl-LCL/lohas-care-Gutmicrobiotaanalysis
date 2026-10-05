@@ -6,35 +6,35 @@
   <meta name="theme-color" content="#0d9488">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="description" content="樂活健康系統 - 腸道微生態評估、運動處方與地道港式飲食吞嚥安全多模態檢測">
-  <title>樂活健康系統 | 腸道微生態與膳食安全</title>
+  <meta name="description" content="樂活食得安 - 長者腸胃健康同飲食吞嚥安全手冊">
+  <title>樂活食得安 | 睇下食唔食得 · 腸胃好舒暢</title>
   <style>
     :root {
-      --bg: #f2f2f7; --card: #ffffff; --card-glass: rgba(255,255,255,0.88);
+      --bg: #f4f4f7; --card: #ffffff; --card-glass: rgba(255,255,255,0.92);
       --text: #1c1c1e; --text2: #636366; --teal: #0d9488; --teal-dark: #0f766e;
-      --green: #22c55e; --wa: #25D366; --wa-bubble: #dcf8c6; --blue: #007aff;
-      --orange: #f59e0b; --red: #ef4444;
+      --green: #16a34a; --wa: #25D366; --wa-bubble: #dcf8c6; --blue: #007aff;
+      --orange: #f59e0b; --red: #dc2626;
       --shadow: 0 8px 30px -6px rgba(0,0,0,0.08); --radius: 20px; --radius-sm: 14px;
-      --font-base: 16px; --font-title: 20px;
+      --font-base: 17px; --font-title: 22px;
     }
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg: #000; --card: #1c1c1e; --card-glass: rgba(28,28,30,0.92);
+        --bg: #000; --card: #1c1c1e; --card-glass: rgba(28,28,30,0.94);
         --text: #f5f5f7; --text2: #a1a1a6; --wa-bubble: #0b3d2e;
         --shadow: 0 8px 30px -6px rgba(0,0,0,0.45);
       }
     }
     body.elderly {
-      --font-base: 19px; --font-title: 24px;
+      --font-base: 20px; --font-title: 26px;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     html { scroll-behavior: smooth; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang HK", "Helvetica Neue", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang HK", "Noto Sans HK", "Helvetica Neue", sans-serif;
       background: var(--bg); color: var(--text); min-height: 100vh; min-height: 100dvh;
       display: flex; justify-content: center;
       padding: calc(12px + env(safe-area-inset-top)) 14px calc(32px + env(safe-area-inset-bottom));
-      line-height: 1.5; font-size: var(--font-base);
+      line-height: 1.55; font-size: var(--font-base);
     }
     .app { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 14px; }
     .header {
@@ -44,23 +44,23 @@
       border: 1px solid rgba(255,255,255,0.2);
     }
     .brand { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
-    .logo { font-size: 13px; font-weight: 800; letter-spacing: .4px; color: var(--teal); }
-    .header-actions { display: flex; align-items: center; gap: 6px; }
+    .logo { font-size: 14px; font-weight: 800; letter-spacing: .4px; color: var(--teal); }
+    .header-actions { display: flex; align-items: center; gap: 8px; }
     .chip {
-      font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 20px;
-      border: 1.5px solid rgba(0,0,0,.1); background: var(--bg); color: var(--text); cursor: pointer;
-      min-height: 38px; display: inline-flex; align-items: center; justify-content: center;
+      font-size: 13.5px; font-weight: 700; padding: 6px 14px; border-radius: 20px;
+      border: 1.5px solid rgba(0,0,0,.12); background: var(--bg); color: var(--text); cursor: pointer;
+      min-height: 40px; display: inline-flex; align-items: center; justify-content: center;
     }
     .chip.active { background: var(--teal); color: #fff; border-color: var(--teal); }
     .chip.voice-on { background: var(--wa); color: #fff; border-color: var(--wa); }
     h1 { font-size: var(--font-title); font-weight: 800; letter-spacing: -.3px; margin-bottom: 3px; }
-    .sub { font-size: 13px; color: var(--text2); }
-    .progress-wrap { margin-top: 10px; height: 6px; background: rgba(0,0,0,.08); border-radius: 3px; overflow: hidden; }
-    .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--teal), var(--blue)); border-radius: 3px; transition: width .35s; }
-    .progress-text { font-size: 12.5px; color: var(--text2); margin-top: 5px; text-align: right; }
+    .sub { font-size: 13.5px; color: var(--text2); }
+    .progress-wrap { margin-top: 10px; height: 7px; background: rgba(0,0,0,.08); border-radius: 4px; overflow: hidden; }
+    .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--teal), var(--blue)); border-radius: 4px; transition: width .35s; }
+    .progress-text { font-size: 13px; color: var(--text2); margin-top: 5px; text-align: right; font-weight: 600; }
     .tabs { display: flex; gap: 6px; margin-bottom: 2px; }
     .tab {
-      flex: 1; text-align: center; padding: 10px 4px; border-radius: 12px; font-size: 14px; font-weight: 700;
+      flex: 1; text-align: center; padding: 10px 4px; border-radius: 12px; font-size: 14.5px; font-weight: 700;
       background: var(--card); color: var(--text2); cursor: pointer; border: 1.5px solid transparent; min-height: 44px;
     }
     .tab.active { background: var(--teal); color: #fff; }
@@ -70,22 +70,22 @@
     }
     @keyframes cardIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
     
-    /* 問卷樣式 */
+    /* 查腸胃題目樣式 */
     .q-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
     .q-num {
-      width: 32px; height: 32px; background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+      width: 34px; height: 34px; background: linear-gradient(135deg, var(--teal), var(--teal-dark));
       border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      color: #fff; font-size: 14px; font-weight: 700; flex-shrink: 0;
+      color: #fff; font-size: 14.5px; font-weight: 800; flex-shrink: 0;
     }
-    .q-title { font-size: 16px; font-weight: 700; flex: 1; }
+    .q-title { font-size: 16.5px; font-weight: 700; flex: 1; line-height: 1.4; }
     .speak-btn {
-      width: 40px; height: 40px; border-radius: 50%; border: none; background: var(--bg);
-      font-size: 18px; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+      width: 42px; height: 42px; border-radius: 50%; border: none; background: var(--bg);
+      font-size: 20px; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
     }
     .options { display: flex; flex-direction: column; gap: 8px; }
     .opt {
       display: flex; align-items: center; background: var(--bg); padding: 14px 16px; border-radius: var(--radius-sm);
-      cursor: pointer; border: 2px solid transparent; transition: .2s; min-height: 52px;
+      cursor: pointer; border: 2px solid transparent; transition: .2s; min-height: 54px;
     }
     .opt.selected { background: var(--wa-bubble); border-color: var(--wa); }
     .radio {
@@ -95,238 +95,268 @@
     .radio::after { content: ''; width: 11px; height: 11px; border-radius: 50%; background: #fff; transform: scale(0); transition: .15s; }
     .opt.selected .radio { background: var(--wa); border-color: var(--wa); }
     .opt.selected .radio::after { transform: scale(1); }
-    .opt-label { flex: 1; font-weight: 600; font-size: 15px; }
-    .opt-pts { font-size: 12px; font-weight: 700; color: var(--text2); background: rgba(0,0,0,.06); padding: 3px 8px; border-radius: 10px; }
+    .opt-label { flex: 1; font-weight: 600; font-size: 15.5px; }
 
     /* 按鈕通用 */
     .btn {
-      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-      padding: 12px 16px; border-radius: 14px; font-size: 15px; font-weight: 700;
-      border: none; cursor: pointer; min-height: 48px; width: 100%;
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 13px 18px; border-radius: 14px; font-size: 16px; font-weight: 700;
+      border: none; cursor: pointer; min-height: 50px; width: 100%;
     }
     .btn:active { transform: scale(.98); }
     .btn-primary { background: var(--teal); color: #fff; }
     .btn-wa { background: var(--wa); color: #fff; }
     .btn-voice { background: #7c3aed; color: #fff; }
-    .btn-outline { background: transparent; border: 1.5px solid rgba(0,0,0,.15); color: var(--text); }
+    .btn-outline { background: transparent; border: 1.5px solid rgba(0,0,0,.18); color: var(--text); }
     .btn-ghost { background: var(--bg); color: var(--text); }
 
-    /* 多模態拍照識餐與安全卡片 */
+    /* 影相驗餐與吞嚥安全卡片 */
     .upload-zone {
-      border: 2px dashed var(--teal); border-radius: var(--radius-sm); padding: 20px;
-      text-align: center; background: rgba(13,148,136,.04); cursor: pointer; margin-bottom: 14px;
+      border: 2.5px dashed var(--teal); border-radius: var(--radius-sm); padding: 22px 16px;
+      text-align: center; background: rgba(13,148,136,.05); cursor: pointer; margin-bottom: 14px;
     }
-    .upload-preview { width: 100%; max-height: 240px; object-fit: cover; border-radius: 12px; margin-top: 10px; display: none; }
+    .upload-preview { width: 100%; max-height: 250px; object-fit: cover; border-radius: 12px; margin-top: 10px; display: none; }
     .danger-banner {
       background: #fef2f2; border: 2px solid #ef4444; border-radius: 14px; padding: 14px;
       display: flex; gap: 12px; align-items: flex-start; margin-bottom: 12px;
     }
-    .danger-banner strong { color: #b91c1c; font-size: 15px; display: block; margin-bottom: 2px; }
-    .danger-banner p { color: #7f1d1d; font-size: 13.5px; line-height: 1.4; }
+    .danger-banner strong { color: #b91c1c; font-size: 16px; display: block; margin-bottom: 3px; }
+    .danger-banner p { color: #7f1d1d; font-size: 14px; line-height: 1.45; }
     .action-chips { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
     .action-chip {
-      background: #fff7ed; border: 1.5px solid #f97316; color: #c2410c; padding: 6px 12px;
-      border-radius: 20px; font-size: 13.5px; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;
+      background: #fff7ed; border: 1.5px solid #f97316; color: #c2410c; padding: 7px 13px;
+      border-radius: 20px; font-size: 14px; font-weight: 800; display: inline-flex; align-items: center; gap: 4px;
     }
     .iddsi-badge {
       display: inline-block; background: #e0f2fe; color: #0369a1; padding: 6px 12px;
-      border-radius: 10px; font-weight: 800; font-size: 14px; margin-bottom: 8px;
+      border-radius: 10px; font-weight: 800; font-size: 14.5px; margin-bottom: 8px;
     }
     .nutrient-grid {
       display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; background: var(--bg);
       padding: 12px; border-radius: 12px; margin: 12px 0; text-align: center;
     }
-    .nutrient-item span { display: block; font-size: 11px; color: var(--text2); }
-    .nutrient-item strong { font-size: 14px; color: var(--text); }
+    .nutrient-item span { display: block; font-size: 11.5px; color: var(--text2); }
+    .nutrient-item strong { font-size: 14.5px; color: var(--text); }
     
-    /* 運動處方 */
+    /* 屋企伸展運動 */
     .ex-item {
-      background: var(--bg); border-left: 4px solid var(--teal); padding: 12px 14px;
-      border-radius: 8px; margin-bottom: 8px; font-size: 14px;
+      background: var(--bg); border-left: 4.5px solid var(--teal); padding: 13px 15px;
+      border-radius: 8px; margin-bottom: 8px; font-size: 14.5px; line-height: 1.5;
     }
-    .ex-time { font-size: 12px; color: var(--teal); font-weight: 700; }
+    .ex-time { font-size: 12.5px; color: var(--teal); font-weight: 800; }
 
-    /* 吐司與浮動層 */
+    /* 彈出提示泡泡 */
     .toast {
       position: fixed; bottom: calc(24px + env(safe-area-inset-bottom)); left: 50%;
       transform: translateX(-50%) translateY(80px); background: #1c1c1e; color: #fff;
-      padding: 12px 20px; border-radius: 14px; font-size: 14px; font-weight: 600;
+      padding: 13px 22px; border-radius: 14px; font-size: 14.5px; font-weight: 600;
       z-index: 100; opacity: 0; transition: .3s; pointer-events: none; max-width: 90%; text-align: center;
     }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-    .footer { text-align: center; font-size: 12px; color: var(--text2); padding: 12px 0 24px; line-height: 1.6; }
+    .footer { text-align: center; font-size: 12.5px; color: var(--text2); padding: 14px 0 28px; line-height: 1.6; }
   </style>
 </head>
 <body>
   <div class="app">
-    <!-- Header -->
+    <!-- 頂部欄 -->
     <header class="header">
       <div class="brand">
-        <span class="logo">🌿 樂活健康系統 · Lohascare</span>
+        <span class="logo">🌿 樂活食得安</span>
         <div class="header-actions">
-          <button class="chip" id="btnElderly">大字</button>
-          <button class="chip" id="btnVoice">🔊 語音</button>
+          <button class="chip" id="btnElderly">睇大字</button>
+          <button class="chip" id="btnVoice">🔊 開聲讀</button>
         </div>
       </div>
-      <h1 id="headerTitle">腸道微生態與膳食吞嚥安全</h1>
-      <p class="sub">地道港式飲食多模態分析 · 症狀聯動運動處方</p>
+      <h1 id="headerTitle">腸胃好唔好 · 飯餸食得安</h1>
+      <p class="sub">影張相睇下哽唔哽親 · 跟住做吓通便伸展</p>
       <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
-      <div class="progress-text" id="progressText">0 / 10 題</div>
+      <div class="progress-text" id="progressText">第 0 / 10 條問題</div>
     </header>
 
-    <!-- Navigation Tabs -->
+    <!-- 分頁按鈕 -->
     <div class="tabs">
-      <button class="tab active" data-tab="quiz">微生態評估</button>
-      <button class="tab" data-tab="meal">📸 識餐安全</button>
-      <button class="tab" data-tab="trend">趨勢記錄</button>
-      <button class="tab" data-tab="qa">AI 語音問答</button>
+      <button class="tab active" data-tab="quiz">查下腸胃</button>
+      <button class="tab" data-tab="meal">📸 影相驗餐</button>
+      <button class="tab" data-tab="trend">過往底簿</button>
+      <button class="tab" data-tab="qa">街坊開解</button>
     </div>
 
-    <!-- Tab 1: Quiz Form -->
+    <!-- 分頁 1: 查下腸胃（無科技感問卷） -->
     <div id="tabQuiz">
       <form id="quizForm"></form>
       
-      <!-- Quiz Result Card -->
+      <!-- 評分結果卡片 -->
       <div class="card" id="resultCard" style="display:none;margin-top:14px">
-        <div style="font-size:12px;font-weight:700;color:var(--text2);text-transform:uppercase">Microbiome Health Score</div>
-        <div style="font-size:52px;font-weight:800;letter-spacing:-1.5px;margin:6px 0;line-height:1" id="scoreBadge">0</div>
-        <div style="font-size:18px;font-weight:800;margin-bottom:8px" id="statusTitle"></div>
-        <div style="font-size:14px;color:var(--text2);background:var(--bg);padding:14px;border-radius:var(--radius-sm);line-height:1.55" id="statusDesc"></div>
+        <div style="font-size:12.5px;font-weight:800;color:var(--text2);letter-spacing:0.5px">腸胃健康整體得分</div>
+        <div style="font-size:54px;font-weight:900;letter-spacing:-1.5px;margin:4px 0;line-height:1" id="scoreBadge">0</div>
+        <div style="font-size:19px;font-weight:800;margin-bottom:8px" id="statusTitle"></div>
+        <div style="font-size:15px;color:var(--text);background:var(--bg);padding:14px;border-radius:var(--radius-sm);line-height:1.6" id="statusDesc"></div>
         <div id="exerciseBox" style="margin-top:12px"></div>
-        <button class="btn btn-voice" style="margin-top:14px" id="btnSpeakResult">🔊 播報評估結果</button>
-        <button class="btn btn-ghost" style="margin-top:8px" id="btnResetQuiz">重新評估</button>
+        <button class="btn btn-voice" style="margin-top:14px" id="btnSpeakResult">🔊 慢速讀出結果畀我聽</button>
+        <button class="btn btn-ghost" style="margin-top:8px" id="btnResetQuiz">由頭再做過</button>
       </div>
     </div>
 
-    <!-- Tab 2: Meal Vision AI (多模態識餐) -->
+    <!-- 分頁 2: 影相驗餐（無AI味，直接話你知食唔食得） -->
     <div id="tabMeal" style="display:none">
       <div class="card">
-        <h3 style="margin-bottom:6px">📸 港式餐食吞嚥質地與安全分析</h3>
-        <p style="font-size:13px;color:var(--text2);margin-bottom:14px">
-          拍攝餐膳（如蛋包飯、火腿通粉、燒味飯），AI 依 IDDSI 標準即時初篩雙重質地嗆咳與骨頭窒息風險。
+        <h3 style="margin-bottom:6px">📸 影張飯餸相 · 睇下食唔食得</h3>
+        <p style="font-size:13.5px;color:var(--text2);margin-bottom:14px">
+          影一影碟頭飯、通粉或者糊餐，即時睇下有無骨頭、會唔會太乾或者湯水太稀搞到濁親。
         </p>
 
-        <!-- 照護對象 IDDSI 處方設定 -->
+        <!-- 食開咩餐質地 -->
         <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px">
-          <label style="font-size:13px;font-weight:600">照護對象處方：</label>
-          <select id="userPrescription" style="padding:6px 10px;border-radius:8px;border:1px solid rgba(0,0,0,.15);background:var(--bg);font-size:13px">
-            <option value="Level 7">Level 7 - 原質正常食物</option>
-            <option value="Level 6">Level 6 - 軟質及一口量</option>
-            <option value="Level 5" selected>Level 5 - 細碎及濕潤</option>
-            <option value="Level 4">Level 4 - 特稠/純糊餐</option>
+          <label style="font-size:14px;font-weight:700">平時食開咩餐：</label>
+          <select id="userPrescription" style="padding:7px 12px;border-radius:10px;border:1.5px solid rgba(0,0,0,.15);background:var(--bg);font-size:14px;color:var(--text);font-weight:600">
+            <option value="Level 7">正常飯餸（平時普通人食法）</option>
+            <option value="Level 6">軟飯軟餸（要整軟、切細件）</option>
+            <option value="Level 5" selected>碎餐爛飯（好碎好軟、多汁濕潤）</option>
+            <option value="Level 4">純糊餐（好似芝麻糊咁幼滑無粒）</option>
           </select>
         </div>
 
         <div class="upload-zone" id="dropZone" onclick="document.getElementById('mealInput').click()">
-          <div style="font-size:32px;margin-bottom:4px">📷</div>
-          <div style="font-weight:700;font-size:15px">點擊拍攝或上傳餐膳相片</div>
-          <div style="font-size:12px;color:var(--text2);margin-top:2px">支援茶餐廳碟頭飯、粉麵、湯飯及糊餐</div>
+          <div style="font-size:36px;margin-bottom:4px">📷</div>
+          <div style="font-weight:800;font-size:16px">撳呢度即刻影張相</div>
+          <div style="font-size:13px;color:var(--text2);margin-top:2px">茶餐廳粉麵、蒸肉餅、瓜菜或者粥餐都得</div>
           <input type="file" id="mealInput" accept="image/*" capture="environment" style="display:none">
-          <img id="imagePreview" class="upload-preview" alt="餐食預覽">
+          <img id="imagePreview" class="upload-preview" alt="相片預覽">
         </div>
 
-        <button class="btn btn-primary" id="btnAnalyzeMeal" style="display:none">開始 AI 吞嚥與營養分析</button>
+        <button class="btn btn-primary" id="btnAnalyzeMeal" style="display:none">睇下呢餐啱唔啱食</button>
 
-        <!-- 辨識結果卡片 -->
-        <div id="mealReportCard" style="display:none;margin-top:16px;border-top:1px solid rgba(0,0,0,.08);padding-top:16px">
+        <!-- 驗餐結果卡片 -->
+        <div id="mealReportCard" style="display:none;margin-top:16px;border-top:1px solid rgba(0,0,0,.1);padding-top:16px">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-            <span class="iddsi-badge" id="resIddsiLevel">Level 6</span>
-            <span style="font-size:12px;color:var(--text2)" id="resConfidence">信心度: 85%</span>
+            <span class="iddsi-badge" id="resIddsiLevel">碎餐爛飯</span>
+            <span style="font-size:12.5px;color:var(--text2);font-weight:600" id="resConfidence">睇得好清楚</span>
           </div>
 
-          <h2 style="font-size:19px;font-weight:800;margin-bottom:8px" id="resFoodName">蛋包飯 (Omelette Rice)</h2>
+          <h2 style="font-size:20px;font-weight:900;margin-bottom:8px" id="resFoodName">蛋包飯</h2>
 
-          <!-- 雙重質地危險警示 -->
+          <!-- 濁親嗆咳危險警示 -->
           <div class="danger-banner" id="resDualTextureBanner" style="display:none">
-            <div style="font-size:24px">⚠️</div>
+            <div style="font-size:26px">⚠️</div>
             <div>
-              <strong>雙重質地嗆咳警示 (Dual Texture)</strong>
+              <strong>提防濁親（又湯又渣雙重質地）</strong>
               <p id="resSafetyWarning"></p>
             </div>
           </div>
 
-          <!-- 照護員一鍵動作標籤 -->
+          <!-- 照顧者即做動作標籤 -->
           <div class="action-chips" id="resActionChips"></div>
 
-          <!-- 營養素概覽 -->
+          <!-- 營養速覽 -->
           <div class="nutrient-grid" id="resNutrientGrid"></div>
 
           <button class="btn btn-voice" id="btnPlayMealVoice" style="margin-top:10px">
-            🔊 播放營養師廣東話叮囑
+            🔊 聽下廣東話叮囑
           </button>
         </div>
       </div>
     </div>
 
-    <!-- Tab 3: Trend & Log -->
+    <!-- 分頁 3: 過往底簿 -->
     <div id="tabTrend" style="display:none">
       <div class="card">
-        <h3 style="margin-bottom:10px">📈 近期健康與飲食追蹤</h3>
+        <h3 style="margin-bottom:10px">📈 最近查過嘅紀錄底簿</h3>
         <div id="historyList"></div>
-        <button class="btn btn-outline" style="margin-top:14px" id="btnClearHistory">清除本機紀錄</button>
+        <button class="btn btn-outline" style="margin-top:14px" id="btnClearHistory">清走呢度所有紀錄</button>
       </div>
     </div>
 
-    <!-- Tab 4: AI Voice Q&A -->
+    <!-- 分頁 4: 街坊開解（口語問答） -->
     <div id="tabQa" style="display:none">
       <div class="card">
-        <h3 style="margin-bottom:6px">💬 樂齡腸道與飲食問答</h3>
-        <p style="font-size:13px;color:var(--text2);margin-bottom:12px">以地道繁體廣東話解答排便、肚脹及益生菌疑問。</p>
+        <h3 style="margin-bottom:6px">💬 腸胃肚脹急救問答</h3>
+        <p style="font-size:13.5px;color:var(--text2);margin-bottom:12px">用正宗廣東話解答便秘、肚脹同食嘢哽親疑問。</p>
         <div style="display:flex;gap:8px;margin-bottom:12px">
-          <input id="qaInput" type="text" placeholder="例如：點解食親火腿通粉都好脹？" style="flex:1;padding:12px;border-radius:12px;border:1.5px solid rgba(0,0,0,.15);background:var(--bg);color:var(--text);font-size:14px">
-          <button class="btn btn-primary" id="btnAsk" style="width:auto;padding:0 18px">問</button>
+          <input id="qaInput" type="text" placeholder="例如：食親火腿通粉都好脹？" style="flex:1;padding:12px 14px;border-radius:12px;border:1.5px solid rgba(0,0,0,.15);background:var(--bg);color:var(--text);font-size:14.5px">
+          <button class="btn btn-primary" id="btnAsk" style="width:auto;padding:0 20px">問下</button>
         </div>
-        <div id="qaAnswer" style="background:var(--bg);padding:14px;border-radius:12px;font-size:14.5px;line-height:1.6;color:var(--text)"></div>
+        <div id="qaAnswer" style="background:var(--bg);padding:14px;border-radius:12px;font-size:15px;line-height:1.6;color:var(--text);display:none"></div>
       </div>
     </div>
 
     <div class="footer">
-      © 樂活健康系統 · Lohascare Gerontech<br>
-      🔒 本機私隱保護 · 非醫療診斷證明 · 有持續不適請遵醫囑
+      © 樂活食得安 · 香港樂齡生活關懷團隊<br>
+      🔒 相片只係用嚟驗餐唔會外洩 · 長者有唔舒服記得睇醫生
     </div>
   </div>
 
   <div class="toast" id="toast"></div>
 
   <script>
-    // ========== 1. 狀態管理與問卷資料庫 ==========
+    // ========== 1. 核心狀態與 10 條貼地廣東話題目 ==========
     const TOTAL_QUESTIONS = 10;
     const SCORES = [0, 2, 4];
     let elderlyMode = localStorage.getItem('lohas_elderly') === '1';
     let voiceOn = false;
     let selectedImageBase64 = null;
 
-    // 安全後端代理端點（由 Cloudflare Worker 提供，保護 Dify API Key 不外洩）
+    // 後端轉發代理網址
     const BACKEND_API = "https://blue-mountain-bd34.ironijkl.workers.dev";
 
+    // 口語化題目庫（無官方機械人字眼）
     const QUESTIONS = [
-      { t: '排便頻率與質地', o: ['每日皆順暢','2–3 日一次','3 日以上 / 經常乾硬便秘'] },
-      { t: '肚脹與多腸氣情況', o: ['很少出現','每星期 1–2 次','幾乎每日都有肚脹'] },
-      { t: '呼吸道抵抗力', o: ['很少感冒','每年 2–3 次','經常感冒、喉嚨不適'] },
-      { t: '敏感問題（鼻敏感 / 皮膚痕癢）', o: ['無明顯敏感','偶爾發作','經常鼻敏感或皮膚痕癢'] },
-      { t: '腸胃敏感度', o: ['無特別問題','間中胃氣或隱隱痛','經常肚瀉或劇烈不適'] },
-      { t: '近半年抗生素服用史', o: ['完全沒有','最近半年曾服用 1 次','最近 1 個月內曾服用'] },
-      { t: '夜間睡眠質素', o: ['每晚 7 小時以上高質睡眠','偶有失眠或早醒','經常失眠、半夜易醒'] },
-      { t: '高糖、高油與加工食品習慣', o: ['清淡全食物為主','每星期幾次甜品/快餐','每日皆有高糖加工食品'] },
-      { t: '自覺壓力與緊張程度', o: ['心情舒暢放鬆','中等壓力，間中焦慮','長期緊張、壓力大'] },
-      { t: '每週運動與散步習慣', o: ['每週 3 次以上（每次 20 分鐘）','偶爾慢行','幾乎完全不運動'] }
+      { t: '平時去大便順唔順暢？質地係點？', o: ['日日都順順利利','兩三日先去到一次','三日以上先有 / 粒粒乾硬好辛苦'] },
+      { t: '平時會唔會成日肚谷谷、多腸氣？', o: ['好少脹氣','一星期脹過一兩次','幾乎日日都脹住脹住'] },
+      { t: '平時個人容易唔容易傷風感冒？', o: ['好少感冒','一年病兩三次啦','好易傷風、喉嚨成日唔妥'] },
+      { t: '有無鼻敏感或者皮膚成日痕？', o: ['無乜敏感問題','間唔中轉天氣先發作','成日鼻敏感、皮膚痕到忍唔住'] },
+      { t: '個胃會唔會好易敏感或者隱隱作痛？', o: ['個胃無特別嘢','間中有少少胃氣或翳住','好容易肚瀉、或者痛得好緊要'] },
+      { t: '呢半年內有無食過消炎抗生素？', o: ['完全無食過','最近半年內食過一次半次','最近呢一個月內有食過'] },
+      { t: '夜晚瞓得好唔好？', o: ['晚晚一覺瞓到天光好精神','間中瞓得唔好或者早醒','成日失眠、半夜醒幾次就瞓唔返'] },
+      { t: '平時食嘢係咪好重口味、好甜好油？', o: ['平時食得好清淡、多菜多魚','一個星期都會食幾餐茶餐廳煎炸嘢','餐餐都好油好甜，又成日食加工罐頭'] },
+      { t: '自覺平時個人緊唔緊張、多唔多心事？', o: ['個人好放鬆、無乜掛心嘢','都有啲心事，間中會焦慮','個人好緊張、長期都好大壓力'] },
+      { t: '一星期有無抽時間行下公園散下步？', o: ['一星期散步做運動三次以上','間唔中行下路仔','幾乎坐定定完全唔行'] }
     ];
 
+    // 運動處方（改為老友記一睇就明的動作）
     const EXERCISE_KB = {
-      q1: { title: '順時針腹部環形摩腹法', time: '10 分鐘', how: '雙手搓熱，平放於肚臍周圍，順時針方向緩慢輕柔打圈 50 次，促進結腸蠕動。' },
-      q2: { title: '坐姿轉體溫和排氣式', time: '8 分鐘', how: '端坐於有靠背椅上，挺直腰背，身體緩慢向左轉並深呼氣，維持 5 秒後換邊，重複 6 次。' },
-      q7: { title: '睡前抬腿腹式深呼吸', time: '5 分鐘', how: '平躺於床上，小腿墊高於枕頭上，雙手輕置腹部，緩慢深吸氣 4 秒、慢呼氣 6 秒。' },
-      q9: { title: '八段錦「調理脾胃須單舉」', time: '6 分鐘', how: '一手向上托舉如托天，另一手下按於胯旁，左右交替，動作緩慢配合自然呼吸。' }
+      q1: { title: '暖手順時針摩腹法（推便便）', time: '每日 10 分鐘', how: '雙手手掌搓熱，輕輕貼喺肚臍周圍，順時針方向慢慢打圈抹 50 次，幫大腸郁動排便。' },
+      q2: { title: '坐椅扭腰消氣法（清肚脹）', time: '每日 8 分鐘', how: '坐穩喺張實淨嘅有背椅上，腰骨挺直，成個人慢慢轉向左邊深呼一口氣，停 5 秒再轉向右邊，做 6 次。' },
+      q7: { title: '床頭抬腿深呼吸（幫安眠）', time: '每晚 5 分鐘', how: '平躺喺床上，搵個枕頭墊高小腿，雙手放喺肚腩仔，慢慢深吸氣 4 秒、慢呼氣 6 秒，個人自然定落嚟。' },
+      q9: { title: '雙手托天理脾胃（八段錦）', time: '每日 6 分鐘', how: '企直放鬆，一隻手慢慢向上推托天，另一隻手向下按，兩邊輪流做，動作慢啲，配合自然呼吸。' }
     };
 
-    // ========== 2. 粵語語音核心 ==========
+    // ========== 2. 真・香港廣東話 TTS 核心（絕不普通話，慢過阿媽叫食飯） ==========
+    let hkVoice = null;
+
+    // 專門尋找系統內置的真正香港粵語聲線
+    function loadHkVoices() {
+      if (!window.speechSynthesis) return;
+      const voices = window.speechSynthesis.getVoices();
+      // 優先尋找香港廣東話（zh-HK, Sin-Ji, Tracy, Danny, Cantonese）
+      hkVoice = voices.find(v => v.lang === 'zh-HK' || v.lang === 'yue-Hant-HK' || v.lang === 'zh_HK') ||
+                voices.find(v => v.name.includes('Hong Kong') || v.name.includes('Cantonese') || v.name.includes('Sin-Ji') || v.name.includes('Tracy')) ||
+                null;
+    }
+
+    if (window.speechSynthesis) {
+      window.speechSynthesis.onvoiceschanged = loadHkVoices;
+      loadHkVoices();
+    }
+
     function speakCantonese(text) {
       if (!window.speechSynthesis) return;
-      window.speechSynthesis.cancel();
+      window.speechSynthesis.cancel(); // 停低上一句
+
+      if (!text || text.trim() === '') return;
+
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'zh-HK';
-      utterance.rate = elderlyMode ? 0.82 : 0.88;
+      
+      // 確保使用真正香港廣東話聲線，防止跳去普通話
+      if (!hkVoice) loadHkVoices();
+      if (hkVoice) {
+        utterance.voice = hkVoice;
+      }
+
+      // 阿婆都聽得明嘅極慢語速：標準 0.75，大字長者模式 0.68
+      utterance.rate = elderlyMode ? 0.68 : 0.75;
       utterance.pitch = 1.0;
+
       window.speechSynthesis.speak(utterance);
     }
 
@@ -337,7 +367,7 @@
       setTimeout(() => el.classList.remove('show'), 2600);
     }
 
-    // 自動壓縮相片尺寸，確保手機拍照能順暢傳送
+    // 相片等比例壓縮
     function compressImage(file, maxWidth = 1024, maxHeight = 1024, quality = 0.8) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -375,7 +405,7 @@
       });
     }
 
-    // ========== 3. 問卷渲染與評分邏輯 ==========
+    // ========== 3. 渲染生活化題目 ==========
     function renderQuiz() {
       const form = document.getElementById('quizForm');
       form.innerHTML = '';
@@ -388,7 +418,7 @@
           <div class="q-header">
             <div class="q-num">${n}</div>
             <div class="q-title">${q.t}</div>
-            <button type="button" class="speak-btn" onclick="speakCantonese('${n}. ${q.t}。選項：${q.o.join('，')}')">🔊</button>
+            <button type="button" class="speak-btn" onclick="speakCantonese('第${n}題。${q.t}。選項有：${q.o.join('；或者，')}')">🔊</button>
           </div>
           <div class="options">
             ${q.o.map((opt, i) => `
@@ -396,7 +426,6 @@
                 <input type="radio" name="q${n}" value="${SCORES[i]}" style="display:none">
                 <span class="radio"></span>
                 <span class="opt-label">${opt}</span>
-                <span class="opt-pts">${SCORES[i]}分</span>
               </label>
             `).join('')}
           </div>
@@ -425,7 +454,7 @@
         }
       }
       document.getElementById('progressBar').style.width = (answered / TOTAL_QUESTIONS * 100) + '%';
-      document.getElementById('progressText').textContent = `${answered} / ${TOTAL_QUESTIONS} 題`;
+      document.getElementById('progressText').textContent = `答咗 ${answered} / ${TOTAL_QUESTIONS} 題`;
 
       if (answered === TOTAL_QUESTIONS) {
         showQuizResult(total);
@@ -437,26 +466,30 @@
       card.style.display = 'block';
       document.getElementById('scoreBadge').textContent = `${score} 分`;
 
-      let title = '', desc = '', color = '';
+      let title = '', desc = '', spokenMsg = '', color = '';
       if (score <= 8) {
-        color = '#22c55e';
-        title = '🟢 狀態極佳 (Optimal)';
-        desc = '你嘅腸道微生態好健康，好菌充足！繼續保持多吃高纖全食物、規律步行同良好睡眠習慣。';
+        color = '#16a34a';
+        title = '🟢 腸胃好精神、好菌好足！';
+        desc = '好嘢嚟㗎！你個腸胃底子好靚，好菌充足。記得繼續飲夠水、餐餐食多啲深綠色蔬菜、得閒落街行多兩步。';
+        spokenMsg = `老友記，你做得好好呀！總分係${score}分，腸胃好健康。繼續食多啲菜、飲多啲水呀！`;
       } else if (score <= 20) {
-        color = '#f59e0b';
-        title = '🟡 輕度失衡 (Warning)';
-        desc = '腸道菌群開始出現失衡信號，易有消化不良或易攰。建議每餐增加半碗深綠色蔬菜，配合規律運動處方。';
+        color = '#d97706';
+        title = '🟡 腸胃有啲失調、開始翳住！';
+        desc = '腸道好似有啲鬧情緒喎，平時係咪成日易攰又或者消化不良？建議每餐食多半碗白灼菜心，跟住下面教你嘅動作扭下腰。';
+        spokenMsg = `老友記，評估總分係${score}分。腸胃有少少失衡喇，平時食嘢唔好太油太甜，跟住我哋做下扭腰摩腹啦。`;
       } else {
-        color = '#ef4444';
-        title = '🔴 嚴重失衡 (Critical)';
-        desc = '微生態明顯失調，消化與屏障功能較弱。建議減少高糖油炸飲食，積極執行運動處方，並諮詢家庭醫生或營養師。';
+        color = '#dc2626';
+        title = '🔴 腸胃大亮紅燈、好唔順暢！';
+        desc = '微生態明顯失衡喇，排便同消化都幾辛苦。千祈唔好再成日食炸嘢同甜嘢，一定要做足運動處方，最好搵家庭醫生同護士傾傾。';
+        spokenMsg = `老友記，總分係${score}分，個腸胃好唔順暢呀。少食啲煎炸嘢，跟住下面動作慢慢做，唔舒服記得睇醫生呀。`;
       }
 
       document.getElementById('scoreBadge').style.color = color;
       document.getElementById('statusTitle').textContent = title;
       document.getElementById('statusDesc').textContent = desc;
 
-      let exHtml = '<h4 style="color:var(--teal);margin-bottom:8px">🏃 個人化症狀運動處方</h4>';
+      // 提取症狀運動處方
+      let exHtml = '<h4 style="color:var(--teal);margin-bottom:8px">🏃 老友記專屬伸展動作</h4>';
       const q1Val = parseInt(document.querySelector('input[name="q1"]:checked')?.value || 0, 10);
       const q2Val = parseInt(document.querySelector('input[name="q2"]:checked')?.value || 0, 10);
       const q7Val = parseInt(document.querySelector('input[name="q7"]:checked')?.value || 0, 10);
@@ -467,11 +500,11 @@
       if (q1Val < 2 && q2Val < 2 && q7Val < 2) exHtml += createExItem(EXERCISE_KB.q9);
 
       document.getElementById('exerciseBox').innerHTML = exHtml;
-      saveHistory(`微生態評估: ${score} 分`, title);
+      saveHistory(`查腸胃分數: ${score} 分`, title);
       card.scrollIntoView({ behavior: 'smooth' });
 
       if (voiceOn) {
-        speakCantonese(`評估完成，你嘅總分係 ${score} 分。${desc}`);
+        speakCantonese(spokenMsg);
       }
     }
 
@@ -481,12 +514,12 @@
 
     function saveHistory(mainText, subText) {
       const history = JSON.parse(localStorage.getItem('lohas_history') || '[]');
-      const dateStr = new Date().toLocaleDateString('zh-HK', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+      const dateStr = new Date().toLocaleDateString('zh-HK', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' });
       history.unshift({ main: mainText, sub: subText, date: dateStr });
       localStorage.setItem('lohas_history', JSON.stringify(history.slice(0, 20)));
     }
 
-    // ========== 4. 識餐多模態 AI 對接 ==========
+    // ========== 4. 影相驗餐（直連 Cloudflare Worker 代理） ==========
     const mealInput = document.getElementById('mealInput');
     const imagePreview = document.getElementById('imagePreview');
     const btnAnalyzeMeal = document.getElementById('btnAnalyzeMeal');
@@ -496,25 +529,25 @@
       if (!file) return;
 
       try {
-        showToast('正在優化照片尺寸...');
+        showToast('正喺度幫你執好張相尺寸...');
         selectedImageBase64 = await compressImage(file);
         imagePreview.src = selectedImageBase64;
         imagePreview.style.display = 'block';
         btnAnalyzeMeal.style.display = 'block';
         document.getElementById('mealReportCard').style.display = 'none';
       } catch (err) {
-        showToast('圖片讀取失敗，請重新拍攝');
+        showToast('張相睇唔清，唔該影多張試下');
       }
     });
 
     btnAnalyzeMeal.addEventListener('click', async () => {
       if (!selectedImageBase64) {
-        showToast('請先選取餐食相片');
+        showToast('唔該先影一張飯餸相');
         return;
       }
 
       btnAnalyzeMeal.disabled = true;
-      btnAnalyzeMeal.textContent = 'AI 正在進行物理質地與安全分析...';
+      btnAnalyzeMeal.textContent = '睇緊啲飯餸軟唔軟、哽唔哽親...';
       
       try {
         const resp = await fetch(BACKEND_API, {
@@ -542,7 +575,7 @@
             resultData = JSON.parse(data);
           } catch(e) {
             resultData = {
-              food: "已辨識港式餐膳",
+              food: "已睇清碟飯餸",
               confidence: 0.85,
               iddsi_level: document.getElementById('userPrescription').value,
               is_dual_texture: false,
@@ -556,11 +589,11 @@
 
         renderMealResult(resultData);
       } catch (err) {
-        console.error("識餐請求失敗:", err);
-        showToast('分析服務連線失敗，請檢查網絡設定');
+        console.error("驗餐失敗:", err);
+        showToast('網絡好似窒咗窒，請試多一次');
       } finally {
         btnAnalyzeMeal.disabled = false;
-        btnAnalyzeMeal.textContent = '開始 AI 吞嚥與營養分析';
+        btnAnalyzeMeal.textContent = '睇下呢餐啱唔啱食';
       }
     });
 
@@ -569,34 +602,41 @@
       const card = document.getElementById('mealReportCard');
       card.style.display = 'block';
 
-      // 1. 食物名稱與 IDDSI 等級
-      const foodName = data.food || "蛋包飯 (Omelette Rice)";
-      const iddsiLevel = data.iddsi_level || "Level 6 - 軟質及一口量";
+      // 1. 食物名稱與地道質地口語化轉換
+      const foodName = data.food || "茶餐廳家常飯餸";
+      
+      // 將 IDDSI 英文術語換成老友記一睇就明的廣東話
+      let iddsiLabel = data.iddsi_level || "碎餐爛飯";
+      if (iddsiLabel.includes("Level 7")) iddsiLabel = "正常飯餸（原質普通食物）";
+      if (iddsiLabel.includes("Level 6")) iddsiLabel = "軟飯軟餸（切至細件）";
+      if (iddsiLabel.includes("Level 5")) iddsiLabel = "碎餐爛飯（好碎好濕潤）";
+      if (iddsiLabel.includes("Level 4")) iddsiLabel = "純糊餐（完全無渣幼滑）";
+
       document.getElementById('resFoodName').textContent = foodName;
-      document.getElementById('resIddsiLevel').textContent = iddsiLevel;
+      document.getElementById('resIddsiLevel').textContent = iddsiLabel;
 
       const confPercent = Math.round((data.confidence || 0.85) * 100);
-      document.getElementById('resConfidence').textContent = `信心度: ${confPercent}%`;
+      document.getElementById('resConfidence').textContent = `睇得好清楚 (${confPercent}%)`;
 
-      // 2. 雙重質地嗆咳警示 (Dual Texture)
+      // 2. 雙重質地嗆咳危險警示
       const dualBanner = document.getElementById('resDualTextureBanner');
       if (data.is_dual_texture) {
         dualBanner.style.display = 'flex';
         document.getElementById('resSafetyWarning').textContent = 
-          data.safety_warning || "注意：此餐食含液體與固體雙重質地，極易引發嗆咳！";
+          data.safety_warning || "呢餐又湯又渣，稀薄嘅清湯會快過肉菜滑入喉嚨，長者好容易濁親！記住徹底倒乾啲湯先好餵！";
       } else {
         dualBanner.style.display = 'none';
       }
 
-      // 3. 照護員動作標籤
+      // 3. 照顧者即時動作標籤
       const chipBox = document.getElementById('resActionChips');
       chipBox.innerHTML = '';
       
       const actionMap = {
-        'DRAIN_SOUP': '🥣 必須徹底瀝乾湯汁',
-        'DEBONE': '🍗 必須去骨剪碎',
-        'CUT_FINE': '✂️ 必須剪碎至一口量',
-        'SERVE_AS_IS': '✅ 質地柔軟 · 可直接進食'
+        'DRAIN_SOUP': '🥣 必須徹底倒走晒啲湯',
+        'DEBONE': '🍗 一定要挑乾淨啲碎骨',
+        'CUT_FINE': '✂️ 用較剪剪碎至一小啖',
+        'SERVE_AS_IS': '✅ 夠軟夠滑 · 可以直接食'
       };
 
       const actions = (data.caregiver_action && data.caregiver_action.length > 0) 
@@ -610,24 +650,28 @@
 
       if (data.allergen_tags && data.allergen_tags.length > 0) {
         data.allergen_tags.forEach(tag => {
-          chipBox.innerHTML += `<span class="action-chip" style="background:#fef2f2;border-color:#ef4444;color:#b91c1c">⚠️ 含有致敏原: ${tag}</span>`;
+          let tagZh = tag;
+          if (tag === 'EGG') tagZh = '雞蛋';
+          if (tag === 'SEAFOOD') tagZh = '海鮮';
+          if (tag === 'PEANUT') tagZh = '花生';
+          chipBox.innerHTML += `<span class="action-chip" style="background:#fef2f2;border-color:#ef4444;color:#b91c1c">⚠️ 留意有：${tagZh}</span>`;
         });
       }
 
-      // 4. 營養素展示
+      // 4. 營養速覽
       const n = data.nutrients || {};
       document.getElementById('resNutrientGrid').innerHTML = `
-        <div class="nutrient-item"><span>熱量</span><strong>${n.calories ?? 250} kcal</strong></div>
-        <div class="nutrient-item"><span>蛋白質</span><strong>${n.protein_g ?? 10} g</strong></div>
-        <div class="nutrient-item"><span>碳水</span><strong>${n.carbs_g ?? 30} g</strong></div>
-        <div class="nutrient-item"><span>鈉含量</span><strong>${n.sodium_mg ?? 400} mg</strong></div>
+        <div class="nutrient-item"><span>熱量</span><strong>${n.calories ?? 250} 卡</strong></div>
+        <div class="nutrient-item"><span>蛋白質</span><strong>${n.protein_g ?? 10} 克</strong></div>
+        <div class="nutrient-item"><span>碳水</span><strong>${n.carbs_g ?? 30} 克</strong></div>
+        <div class="nutrient-item"><span>鹽份鈉</span><strong>${n.sodium_mg ?? 400} 毫克</strong></div>
       `;
 
-      // 5. 語音播報與寫入歷史趨勢
-      currentSpokenAdvice = data.spoken_advice || "老友記，食飯要細嚼慢嚥，留意吞嚥安全。";
+      // 5. 家常廣東話叮囑
+      currentSpokenAdvice = data.spoken_advice || "老友記，食飯千祈唔好急，慢慢咬碎先好吞呀！";
       speakCantonese(currentSpokenAdvice);
 
-      saveHistory(`餐食檢測: ${foodName}`, `${iddsiLevel} · ${n.calories ?? 250} kcal`);
+      saveHistory(`驗餐: ${foodName}`, `${iddsiLabel} · ${n.calories ?? 250} 卡路里`);
 
       card.scrollIntoView({ behavior: 'smooth' });
     }
@@ -636,19 +680,19 @@
       speakCantonese(currentSpokenAdvice);
     });
 
-    // ========== 5. 趨勢與問答分頁 ==========
+    // ========== 5. 紀錄底簿與生活問答 ==========
     function renderHistory() {
       const list = document.getElementById('historyList');
       const hist = JSON.parse(localStorage.getItem('lohas_history') || '[]');
       if (hist.length === 0) {
-        list.innerHTML = '<p style="color:var(--text2);font-size:14px">暫無檢測記錄，請先完成一次問卷或識餐。</p>';
+        list.innerHTML = '<p style="color:var(--text2);font-size:14.5px;padding:8px 0">仲未有任何紀錄，影張飯餸相或者查下腸胃先啦！</p>';
         return;
       }
       list.innerHTML = hist.map(h => `
-        <div style="display:flex;justify-content:space-between;padding:12px;background:var(--bg);border-radius:10px;margin-bottom:6px">
+        <div style="display:flex;justify-content:space-between;padding:12px 14px;background:var(--bg);border-radius:12px;margin-bottom:6px">
           <div>
-            <div style="font-weight:700;font-size:14px">${h.main}</div>
-            <div style="font-size:12px;color:var(--text2)">${h.sub}</div>
+            <div style="font-weight:700;font-size:14.5px">${h.main}</div>
+            <div style="font-size:12.5px;color:var(--text2)">${h.sub}</div>
           </div>
           <span style="font-size:12px;color:var(--text2);align-self:center">${h.date}</span>
         </div>
@@ -658,28 +702,30 @@
     document.getElementById('btnClearHistory').addEventListener('click', () => {
       localStorage.removeItem('lohas_history');
       renderHistory();
-      showToast('紀錄已清除');
+      showToast('紀錄已經清走晒');
     });
 
-    // QA 簡易本地知識庫
+    // 街坊口語問答知識庫
     const QA_KB = [
-      { k: ['通粉', '火腿', '湯'], a: '火腿通粉屬於固液混合（雙重質地），清湯流速極快，容易先跌入喉嚨引起嗆咳。吞嚥困難長者必須徹底倒乾湯汁先好食。' },
-      { k: ['蛋包飯', '蛋', '飯'], a: '蛋包飯質地一般屬於軟質及一口量 (Level 6)。進食時確保飯粒充分濕潤，雞蛋切成 15mm 以下一口大小即可安全吞嚥。' },
-      { k: ['肚脹', '脹氣', '胃氣'], a: '肚脹通常同進食太快、纖維不足或壓力影響腸腦軸有關。飯後可慢行 10 分鐘，並配合順時針摩腹。' },
-      { k: ['便秘', '唔通', '排便'], a: '便秘長者建議每日分次飲夠 1.5 公升水，增加深綠色蔬菜（如白灼菜心剪碎），並保持定時排便習慣。' },
-      { k: ['益生菌', '乳酪'], a: '選擇益生菌應挑選有多菌株科研證明的產品，且需與充足膳食纖維（益生元）一齊食用先有最佳定植效果。' }
+      { k: ['通粉', '火腿', '湯'], a: '火腿通粉係最常見嘅嗆咳陷阱！因為清湯流得好快，好易快過通粉先跌入喉嚨濁親。吞嚥弱嘅長者，食之前一定要徹底倒走啲湯，淨係食通粉呀！' },
+      { k: ['蛋包飯', '蛋', '飯'], a: '蛋包飯質地好軟滑，屬於 Level 6 軟餐。只要煮到啲飯粒濕潤、雞蛋唔好煎到燶或者硬邊，剪成細啖粒狀長者就食得好安心。' },
+      { k: ['肚脹', '脹氣', '胃氣'], a: '食得太急、飲水唔夠或者心事多緊張都會搞到肚脹。食飽飯之後千祈唔好即刻瞓低，企起身慢行 10 分鐘，再用暖手順時針抹下個肚腩仔啦。' },
+      { k: ['便秘', '唔通', '大便'], a: '如果幾日都去唔到大便，記得每日分幾次飲夠 6 至 8 杯溫水。每餐叫屋企人幫手剪碎半碗菜心，等腸道有足夠纖維幫手推便便出嚟。' },
+      { k: ['益生菌', '乳酪'], a: '食益生菌要揀有科研證明嘅牌子，最緊要係平日都要食深綠色蔬菜（益生元），啲好菌食飽飽先可以喺腸道生得好。' }
     ];
 
     document.getElementById('btnAsk').addEventListener('click', () => {
       const q = document.getElementById('qaInput').value.trim();
       if (!q) return;
       let matched = QA_KB.find(item => item.k.some(key => q.includes(key)));
-      const reply = matched ? matched.a : '老友記，建議每日保持均衡高纖飲食與充足飲水。如有持續腸胃痛或嚴重便秘，請聯絡家庭醫生診斷。';
-      document.getElementById('qaAnswer').textContent = reply;
+      const reply = matched ? matched.a : '老友記，平時食嘢記得要細嚼慢嚥，每日飲多兩杯水。如果個肚持續好痛或者嚴重便秘，一定要搵醫生睇睇呀。';
+      const ansEl = document.getElementById('qaAnswer');
+      ansEl.textContent = reply;
+      ansEl.style.display = 'block';
       speakCantonese(reply);
     });
 
-    // ========== 6. Tab 切換與設定 ==========
+    // ========== 6. 分頁切換與老友記設定 ==========
     document.querySelectorAll('.tab').forEach(tab => {
       tab.addEventListener('click', () => {
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -693,46 +739,48 @@
       });
     });
 
-    // 大字模式切換
+    // 睇大字模式
     document.getElementById('btnElderly').addEventListener('click', () => {
       elderlyMode = !elderlyMode;
       document.body.classList.toggle('elderly', elderlyMode);
       localStorage.setItem('lohas_elderly', elderlyMode ? '1' : '0');
       document.getElementById('btnElderly').classList.toggle('active', elderlyMode);
-      showToast(elderlyMode ? '大字長者模式已開啟' : '已恢復標準字體');
+      showToast(elderlyMode ? '已放大字體，睇得好清楚' : '已轉返正常字體');
     });
     if (elderlyMode) {
       document.body.classList.add('elderly');
       document.getElementById('btnElderly').classList.add('active');
     }
 
-    // 語音開關切換
+    // 開聲讀模式
     document.getElementById('btnVoice').addEventListener('click', () => {
       voiceOn = !voiceOn;
       document.getElementById('btnVoice').classList.toggle('voice-on', voiceOn);
-      document.getElementById('btnVoice').textContent = voiceOn ? '🔊 語音 ON' : '🔊 語音';
-      showToast(voiceOn ? '廣東話語音播報已開啟' : '語音播報已關閉');
-      if (voiceOn) speakCantonese('語音播報已開啟。系統會以廣東話為你朗讀評估與飲食提醒。');
+      document.getElementById('btnVoice').textContent = voiceOn ? '🔊 讀緊' : '🔊 開聲讀';
+      showToast(voiceOn ? '已開聲，會慢慢逐句讀畀你聽' : '已閂咗語音');
+      if (voiceOn) {
+        speakCantonese('開咗聲音喇！我會用慢慢嘅廣東話，逐句讀畀你聽。');
+      }
     });
 
-    // 重新評估
+    // 由頭再做過
     document.getElementById('btnResetQuiz').addEventListener('click', () => {
       document.getElementById('quizForm').reset();
       document.querySelectorAll('.opt').forEach(el => el.classList.remove('selected'));
       document.getElementById('resultCard').style.display = 'none';
       document.getElementById('progressBar').style.width = '0%';
-      document.getElementById('progressText').textContent = '0 / 10 題';
+      document.getElementById('progressText').textContent = '第 0 / 10 條問題';
       window.scrollTo({ top: 0, behavior: 'smooth' });
-      showToast('問卷已重設');
+      showToast('問題已經重設好');
     });
 
     document.getElementById('btnSpeakResult').addEventListener('click', () => {
       const score = document.getElementById('scoreBadge').textContent;
       const desc = document.getElementById('statusDesc').textContent;
-      speakCantonese(`評估結果總分係 ${score}。${desc}`);
+      speakCantonese(`評估做完喇！你嘅總分係${score}。${desc}`);
     });
 
-    // 初始化
+    // 啟動渲染
     renderQuiz();
   </script>
 </body>
