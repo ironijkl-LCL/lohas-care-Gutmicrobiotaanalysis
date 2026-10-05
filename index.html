@@ -1,554 +1,825 @@
 <!DOCTYPE html>
 <html lang="zh-HK">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>樂活健康系統 | 腸道微生態檢測</title>
-    <style>
-        :root {
-            --bg-color: #f2f2f7;
-            --card-bg: rgba(255, 255, 255, 0.85);
-            --card-solid: #ffffff;
-            --text-primary: #1c1c1e;
-            --text-secondary: #8e8e93;
-            --wa-green: #25D366;
-            --wa-dark-green: #075E54;
-            --wa-bubble: #e7ffdb;
-            --apple-blue: #007aff;
-            --apple-card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
-            --accent-radius: 20px;
-            --lohas-teal: #008080;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#008080">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="樂活健康系統 - 1分鐘腸道微生態快速自我評估">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23008080'/%3E%3Ctext x='50' y='65' font-size='50' text-anchor='middle' fill='white'%3E🌿%3C/text%3E%3C/svg%3E">
+  <title>樂活健康系統 | 腸道微生態檢測</title>
+  <style>
+    :root {
+      --bg: #f2f2f7;
+      --card: #ffffff;
+      --card-glass: rgba(255,255,255,0.82);
+      --text: #1c1c1e;
+      --text2: #8e8e93;
+      --teal: #0d9488;
+      --teal-dark: #0f766e;
+      --green: #22c55e;
+      --wa-green: #25D366;
+      --wa-bubble: #dcf8c6;
+      --blue: #007aff;
+      --orange: #f59e0b;
+      --red: #ef4444;
+      --shadow: 0 8px 30px -6px rgba(0,0,0,0.08), 0 4px 12px -4px rgba(0,0,0,0.04);
+      --radius: 20px;
+      --radius-sm: 14px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #000000;
+        --card: #1c1c1e;
+        --card-glass: rgba(28,28,30,0.88);
+        --text: #f5f5f7;
+        --text2: #98989d;
+        --wa-bubble: #0b3d2e;
+        --shadow: 0 8px 30px -6px rgba(0,0,0,0.4);
+      }
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "PingFang HK", "Helvetica Neue", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      justify-content: center;
+      padding: 12px 12px 40px;
+      line-height: 1.45;
+    }
+    .app {
+      width: 100%;
+      max-width: 440px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
 
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg-color: #000000;
-                --card-bg: rgba(28, 28, 30, 0.85);
-                --card-solid: #1c1c1e;
-                --text-primary: #ffffff;
-                --text-secondary: #8e8e93;
-                --wa-bubble: #005c4b;
-            }
-        }
+    /* Header */
+    .header {
+      position: sticky;
+      top: 8px;
+      z-index: 50;
+      background: var(--card-glass);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border-radius: var(--radius);
+      padding: 18px 20px 16px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .logo {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      color: var(--teal);
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .live {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--wa-green);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .live::before {
+      content: '';
+      width: 7px; height: 7px;
+      background: var(--wa-green);
+      border-radius: 50%;
+      animation: pulse 1.8s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
+    }
+    h1 {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.4px;
+      margin-bottom: 2px;
+    }
+    .subtitle {
+      font-size: 12.5px;
+      color: var(--text2);
+    }
+    .progress-wrap {
+      margin-top: 12px;
+      height: 5px;
+      background: rgba(0,0,0,0.06);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--teal), var(--blue));
+      border-radius: 3px;
+      transition: width 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+    .progress-text {
+      font-size: 11px;
+      color: var(--text2);
+      margin-top: 6px;
+      text-align: right;
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+    /* Cards */
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+      animation: cardIn 0.35s ease both;
+    }
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .q-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .q-num {
+      width: 30px; height: 30px;
+      background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .q-title {
+      font-size: 15.5px;
+      font-weight: 600;
+    }
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+    .opt {
+      display: flex;
+      align-items: center;
+      background: var(--bg);
+      padding: 13px 14px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+      user-select: none;
+    }
+    .opt:active { transform: scale(0.985); }
+    .opt input { display: none; }
+    .radio {
+      width: 20px; height: 20px;
+      border: 2px solid var(--text2);
+      border-radius: 50%;
+      margin-right: 12px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .radio::after {
+      content: '';
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: white;
+      transform: scale(0);
+      transition: transform 0.18s;
+    }
+    .opt-label { flex: 1; font-size: 14px; font-weight: 500; }
+    .opt-pts {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text2);
+      background: rgba(0,0,0,0.05);
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+    .opt.selected {
+      background: var(--wa-bubble);
+      border-color: var(--wa-green);
+    }
+    .opt.selected .radio {
+      background: var(--wa-green);
+      border-color: var(--wa-green);
+    }
+    .opt.selected .radio::after { transform: scale(1); }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            display: flex;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 20px 12px;
-        }
+    /* Result */
+    .result {
+      display: none;
+      text-align: center;
+      padding: 22px 18px;
+      animation: resultIn 0.45s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+    @keyframes resultIn {
+      from { opacity: 0; transform: scale(0.92) translateY(20px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .result-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text2);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .score-big {
+      font-size: 48px;
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      margin: 6px 0 4px;
+      line-height: 1;
+    }
+    .status {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .desc {
+      font-size: 13.5px;
+      color: var(--text2);
+      text-align: left;
+      background: var(--bg);
+      padding: 14px;
+      border-radius: var(--radius-sm);
+      line-height: 1.55;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+      justify-content: center;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 12px 18px;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary {
+      background: var(--teal);
+      color: white;
+    }
+    .btn-primary:hover { background: var(--teal-dark); }
+    .btn-wa {
+      background: var(--wa-green);
+      color: white;
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid rgba(0,0,0,0.12);
+      color: var(--text);
+    }
+    .btn-ghost {
+      background: var(--bg);
+      color: var(--text2);
+    }
 
-        .container {
-            width: 100%;
-            max-width: 480px;
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-            padding-bottom: 40px;
-        }
+    /* History */
+    .history {
+      display: none;
+    }
+    .history h3 {
+      font-size: 15px;
+      margin-bottom: 10px;
+    }
+    .hist-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      background: var(--bg);
+      border-radius: 12px;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+    .hist-score { font-weight: 700; }
 
-        /* Apple Header Style */
-        .app-header {
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: var(--accent-radius);
-            padding: 20px 24px;
-            box-shadow: var(--apple-card-shadow);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            position: sticky;
-            top: 10px;
-            z-index: 100;
-        }
+    /* Footer */
+    .footer {
+      text-align: center;
+      font-size: 11px;
+      color: var(--text2);
+      padding: 8px 0 20px;
+      line-height: 1.5;
+    }
 
-        .app-header .brand {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 8px;
-        }
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--text);
+      color: var(--bg);
+      padding: 12px 20px;
+      border-radius: 14px;
+      font-size: 13.5px;
+      font-weight: 500;
+      z-index: 100;
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
 
-        .app-header .logo {
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: -0.2px;
-            color: var(--lohas-teal);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            text-transform: uppercase;
-        }
-
-        .app-header h1 {
-            font-size: 22px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-
-        .app-header p {
-            font-size: 13px;
-            color: var(--text-secondary);
-            margin-top: 4px;
-        }
-
-        /* Progress Bar */
-        .progress-bar-container {
-            height: 4px;
-            background: rgba(0,0,0,0.06);
-            border-radius: 2px;
-            margin-top: 14px;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, #25D366, #007aff);
-            transition: width 0.3s ease;
-        }
-
-        /* Question Card - Apple x WhatsApp Chat Bubble Style */
-        .question-card {
-            background: var(--card-solid);
-            border-radius: var(--accent-radius);
-            padding: 20px;
-            box-shadow: var(--apple-card-shadow);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .chat-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 12px;
-        }
-
-        .chat-avatar {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, #25D366, #128C7E);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        .chat-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .options-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 12px;
-        }
-
-        .option-item {
-            position: relative;
-            display: flex;
-            align-items: center;
-            background: var(--bg-color);
-            padding: 14px 16px;
-            border-radius: 14px;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .option-item:hover {
-            opacity: 0.9;
-        }
-
-        .option-item input[type="radio"] {
-            display: none;
-        }
-
-        .custom-radio {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            border: 2px solid var(--text-secondary);
-            margin-right: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            transition: all 0.2s ease;
-        }
-
-        .custom-radio::after {
-            content: '';
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: white;
-            transform: scale(0);
-            transition: transform 0.2s ease;
-        }
-
-        .option-label {
-            font-size: 14px;
-            font-weight: 500;
-            flex-grow: 1;
-        }
-
-        .option-score {
-            font-size: 12px;
-            color: var(--text-secondary);
-            font-weight: 600;
-            padding: 2px 8px;
-            background: rgba(0,0,0,0.05);
-            border-radius: 10px;
-        }
-
-        /* Active Selected Option Style */
-        .option-item.selected {
-            background: var(--wa-bubble);
-            border-color: var(--wa-green);
-        }
-
-        .option-item.selected .custom-radio {
-            background: var(--wa-green);
-            border-color: var(--wa-green);
-        }
-
-        .option-item.selected .custom-radio::after {
-            transform: scale(1);
-        }
-
-        /* Results Card */
-        .result-card {
-            background: var(--card-solid);
-            border-radius: var(--accent-radius);
-            padding: 24px;
-            box-shadow: var(--apple-card-shadow);
-            text-align: center;
-            display: none;
-            animation: fadeIn 0.4s ease forwards;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .result-score-badge {
-            display: inline-block;
-            font-size: 42px;
-            font-weight: 800;
-            color: var(--apple-blue);
-            margin: 10px 0;
-            letter-spacing: -1px;
-        }
-
-        .result-status {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .result-desc {
-            font-size: 14px;
-            line-height: 1.6;
-            color: var(--text-secondary);
-            text-align: left;
-            background: var(--bg-color);
-            padding: 16px;
-            border-radius: 14px;
-            margin-top: 14px;
-        }
-
-        .footer-note {
-            text-align: center;
-            font-size: 11px;
-            color: var(--text-secondary);
-            margin-top: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-        }
-    </style>
+    /* Hidden canvas for share image */
+    #shareCanvas { display: none; }
+  </style>
 </head>
 <body>
+  <div class="app" id="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="brand">
+        <span class="logo">🌿 Lohascare Gerontech</span>
+        <span class="live">Live Sync</span>
+      </div>
+      <h1>樂活健康系統 · 腸道微生態檢測</h1>
+      <p class="subtitle">Your Gut. Your Rules. · 約 1 分鐘快速 Assessment</p>
+      <div class="progress-wrap">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+      <div class="progress-text" id="progressText">0 / 10 題</div>
+    </header>
 
-<div class="container">
-    <!-- Apple Style Header -->
-    <div class="app-header">
-        <div class="brand">
-            <span class="logo">🌿 Lohascare Gerontech</span>
-            <span style="font-size: 11px; color: var(--wa-green); font-weight: 600;">● Live Sync</span>
-        </div>
-        <h1>樂活健康系統 | 腸道微生態檢測</h1>
-        <p>Your Gut. Your Rules. (花 1 分鐘快速 Assessment)</p>
-        <div class="progress-bar-container">
-            <div class="progress-bar" id="progressBar"></div>
-        </div>
-    </div>
-
-    <!-- Questions Form -->
+    <!-- Questions -->
     <form id="quizForm">
-        <!-- Q1 -->
-        <div class="question-card">
-            <div class="chat-header">
-                <div class="chat-avatar">Q1</div>
-                <div class="chat-title">排便情況</div>
-            </div>
-            <div class="options-group">
-                <label class="option-item">
-                    <input type="radio" name="q1" value="0" onclick="updateProgress()">
-                    <span class="custom-radio"></span>
-                    <span class="option-label">每日都順暢</span>
-                    <span class="option-score">0 pt</span>
-                </label>
-                <label class="option-item">
-                    <input type="radio" name="q1" value="2" onclick="updateProgress()">
-                    <span class="custom-radio"></span>
-                    <span class="option-label">2 至 3 日先一次</span>
-                    <span class="option-score">2 pts</span>
-                </label>
-                <label class="option-item">
-                    <input type="radio" name="q1" value="4" onclick="updateProgress()">
-                    <span class="custom-radio"></span>
-                    <span class="option-label">3 日以上先一次，或經常便秘</span>
-                    <span class="option-score">4 pts</span>
-                </label>
-            </div>
+      <!-- Q1 -->
+      <div class="card" data-q="1">
+        <div class="q-header">
+          <div class="q-num">1</div>
+          <div class="q-title">排便情況</div>
         </div>
+        <div class="options">
+          <label class="opt"><input type="radio" name="q1" value="0"><span class="radio"></span><span class="opt-label">每日都順暢</span><span class="opt-pts">0</span></label>
+          <label class="opt"><input type="radio" name="q1" value="2"><span class="radio"></span><span class="opt-label">2–3 日一次</span><span class="opt-pts">2</span></label>
+          <label class="opt"><input type="radio" name="q1" value="4"><span class="radio"></span><span class="opt-label">3 日以上 / 經常便秘</span><span class="opt-pts">4</span></label>
+        </div>
+      </div>
 
-        <!-- Q2 -->
-        <div class="question-card" style="margin-top: 16px;">
-            <div class="chat-header">
-                <div class="chat-avatar">Q2</div>
-                <div class="chat-title">肚脹情況</div>
-            </div>
-            <div class="options-group">
-                <label class="option-item">
-                    <input type="radio" name="q2" value="0" onclick="updateProgress()">
-                    <span class="custom-radio"></span>
-                    <span class="option-label">很少肚脹</span>
-                    <span class="option-score">0 pt</span>
-                </label>
-                <label class="option-item">
-                    <input type="radio" name="q2" value="2" onclick="updateProgress()">
-                    <span class="custom-radio"></span>
-                    <span class="option-label">每星期有 1 至 2 次</span>
-                    <span class="option-score">2 pts</span>
-                </label>
-                <label class="option-item">
-                    <input type="radio" name="q2" value="4" onclick="updateProgress()">
-                    <span class="custom-radio"></span>
-                    <span class="option-label">幾乎每日都有</span>
-                    <span class="option-score">4 pts</span>
-                </label>
-            </div>
+      <!-- Q2 -->
+      <div class="card" data-q="2">
+        <div class="q-header">
+          <div class="q-num">2</div>
+          <div class="q-title">肚脹 / 腸氣</div>
         </div>
+        <div class="options">
+          <label class="opt"><input type="radio" name="q2" value="0"><span class="radio"></span><span class="opt-label">很少出現</span><span class="opt-pts">0</span></label>
+          <label class="opt"><input type="radio" name="q2" value="2"><span class="radio"></span><span class="opt-label">每星期 1–2 次</span><span class="opt-pts">2</span></label>
+          <label class="opt"><input type="radio" name="q2" value="4"><span class="radio"></span><span class="opt-label">幾乎每日都有</span><span class="opt-pts">4</span></label>
+        </div>
+      </div>
 
-        <!-- Q3 -->
-        <div class="question-card" style="margin-top: 16px;">
-            <div class="chat-header">
-                <div class="chat-avatar">Q3</div>
-                <div class="chat-title">免疫力 (Immunity)</div>
-            </div>
-            <div class="options-group">
-                <label class="option-item">
-                    <input type="radio" name="q3" value="0" onclick="updateProgress()">
-                    <span class="custom-radio"></span>
-                    <span class="option-label">很少感冒</span>
-                    <span class="option-score">0 pt</span>
-                </label>
-                <label class="option-item">
-                    <input type="radio" name="q3" value="2" onclick="updateProgress()">
-                    <span class="custom-radio"></span>
-                    <span class="option-label">每年感冒 3 至 4 次</span>
-                    <span class="option-score">2 pts</span>
-                </label>
-                <label class="option-item">
-                    <input type="radio" name="q3" value="4" onclick="updateProgress()">
-                    <span class="custom-radio"></span>
-                    <span class="option-label">容易病、病後恢復慢</span>
-                    <span class="option-score">4 pts</span>
-                </label>
-            </div>
+      <!-- Q3 -->
+      <div class="card" data-q="3">
+        <div class="q-header">
+          <div class="q-num">3</div>
+          <div class="q-title">免疫力</div>
         </div>
+        <div class="options">
+          <label class="opt"><input type="radio" name="q3" value="0"><span class="radio"></span><span class="opt-label">很少感冒</span><span class="opt-pts">0</span></label>
+          <label class="opt"><input type="radio" name="q3" value="2"><span class="radio"></span><span class="opt-label">每年 3–4 次</span><span class="opt-pts">2</span></label>
+          <label class="opt"><input type="radio" name="q3" value="4"><span class="radio"></span><span class="opt-label">容易病、恢復慢</span><span class="opt-pts">4</span></label>
+        </div>
+      </div>
 
-        <!-- Q4 -->
-        <div class="question-card" style="margin-top: 16px;">
-            <div class="chat-header">
-                <div class="chat-avatar">Q4</div>
-                <div class="chat-title">敏感問題 (Allergy)</div>
-            </div>
-            <div class="options-group">
-                <label class="option-item">
-                    <input type="radio" name="q4" value="0" onclick="updateProgress()">
-                    <span class="custom-radio"></span>
-                    <span class="option-label">無鼻敏感、濕疹</span>
-                    <span class="option-score">0 pt</span>
-                </label>
-                <label class="option-item">
-                    <input type="radio" name="q4" value="2" onclick="updateProgress()">
-                    <span class="custom-radio"></span>
-                    <span class="option-label">偶爾發作</span>
-                    <span class="option-score">2 pts</span>
-                </label>
-                <label class="option-item">
-                    <input type="radio" name="q4" value="4" onclick="updateProgress()">
-                    <span class="custom-radio"></span>
-                    <span class="option-label">經常鼻敏感、濕疹或皮膚痕癢</span>
-                    <span class="option-score">4 pts</span>
-                </label>
-            </div>
+      <!-- Q4 -->
+      <div class="card" data-q="4">
+        <div class="q-header">
+          <div class="q-num">4</div>
+          <div class="q-title">敏感問題（鼻敏感 / 濕疹）</div>
         </div>
+        <div class="options">
+          <label class="opt"><input type="radio" name="q4" value="0"><span class="radio"></span><span class="opt-label">無明顯敏感</span><span class="opt-pts">0</span></label>
+          <label class="opt"><input type="radio" name="q4" value="2"><span class="radio"></span><span class="opt-label">偶爾發作</span><span class="opt-pts">2</span></label>
+          <label class="opt"><input type="radio" name="q4" value="4"><span class="radio"></span><span class="opt-label">經常鼻敏感 / 皮膚痕癢</span><span class="opt-pts">4</span></label>
+        </div>
+      </div>
 
-        <!-- Q5 -->
-        <div class="question-card" style="margin-top: 16px;">
-            <div class="chat-header">
-                <div class="chat-avatar">Q5</div>
-                <div class="chat-title">腸胃敏感 (Gut Sensitivity)</div>
-            </div>
-            <div class="options-group">
-                <label class="option-item">
-                    <input type="radio" name="q5" value="0" onclick="updateProgress()">
-                    <span class="custom-radio"></span>
-                    <span class="option-label">無特別問題</span>
-                    <span class="option-score">0 pt</span>
-                </label>
-                <label class="option-item">
-                    <input type="radio" name="q5" value="2" onclick="updateProgress()">
-                    <span class="custom-radio"></span>
-                    <span class="option-label">偶爾胃氣、肚痛</span>
-                    <span class="option-score">2 pts</span>
-                </label>
-                <label class="option-item">
-                    <input type="radio" name="q5" value="4" onclick="updateProgress()">
-                    <span class="custom-radio"></span>
-                    <span class="option-label">經常胃氣、腸胃不適</span>
-                    <span class="option-score">4 pts</span>
-                </label>
-            </div>
+      <!-- Q5 -->
+      <div class="card" data-q="5">
+        <div class="q-header">
+          <div class="q-num">5</div>
+          <div class="q-title">腸胃敏感</div>
         </div>
+        <div class="options">
+          <label class="opt"><input type="radio" name="q5" value="0"><span class="radio"></span><span class="opt-label">無特別問題</span><span class="opt-pts">0</span></label>
+          <label class="opt"><input type="radio" name="q5" value="2"><span class="radio"></span><span class="opt-label">偶爾胃氣 / 肚痛</span><span class="opt-pts">2</span></label>
+          <label class="opt"><input type="radio" name="q5" value="4"><span class="radio"></span><span class="opt-label">經常腸胃不適</span><span class="opt-pts">4</span></label>
+        </div>
+      </div>
 
-        <!-- Q6 -->
-        <div class="question-card" style="margin-top: 16px;">
-            <div class="chat-header">
-                <div class="chat-avatar">Q6</div>
-                <div class="chat-title">服食抗生素 (Antibiotics History)</div>
-            </div>
-            <div class="options-group">
-                <label class="option-item">
-                    <input type="radio" name="q6" value="0" onclick="updateProgress()">
-                    <span class="custom-radio"></span>
-                    <span class="option-label">很少或沒有</span>
-                    <span class="option-score">0 pt</span>
-                </label>
-                <label class="option-item">
-                    <input type="radio" name="q6" value="2" onclick="updateProgress()">
-                    <span class="custom-radio"></span>
-                    <span class="option-label">最近半年服用過</span>
-                    <span class="option-score">2 pts</span>
-                </label>
-                <label class="option-item">
-                    <input type="radio" name="q6" value="4" onclick="updateProgress()">
-                    <span class="custom-radio"></span>
-                    <span class="option-label">最近 1 個月服用過</span>
-                    <span class="option-score">4 pts</span>
-                </label>
-            </div>
+      <!-- Q6 -->
+      <div class="card" data-q="6">
+        <div class="q-header">
+          <div class="q-num">6</div>
+          <div class="q-title">抗生素使用記錄</div>
         </div>
+        <div class="options">
+          <label class="opt"><input type="radio" name="q6" value="0"><span class="radio"></span><span class="opt-label">很少或沒有</span><span class="opt-pts">0</span></label>
+          <label class="opt"><input type="radio" name="q6" value="2"><span class="radio"></span><span class="opt-label">最近半年有服用</span><span class="opt-pts">2</span></label>
+          <label class="opt"><input type="radio" name="q6" value="4"><span class="radio"></span><span class="opt-label">最近 1 個月有服用</span><span class="opt-pts">4</span></label>
+        </div>
+      </div>
+
+      <!-- Q7 NEW -->
+      <div class="card" data-q="7">
+        <div class="q-header">
+          <div class="q-num">7</div>
+          <div class="q-title">睡眠質素</div>
+        </div>
+        <div class="options">
+          <label class="opt"><input type="radio" name="q7" value="0"><span class="radio"></span><span class="opt-label">每晚 7 小時以上，質素好</span><span class="opt-pts">0</span></label>
+          <label class="opt"><input type="radio" name="q7" value="2"><span class="radio"></span><span class="opt-label">偶有失眠 / 不足 6 小時</span><span class="opt-pts">2</span></label>
+          <label class="opt"><input type="radio" name="q7" value="4"><span class="radio"></span><span class="opt-label">經常失眠或睡眠差</span><span class="opt-pts">4</span></label>
+        </div>
+      </div>
+
+      <!-- Q8 NEW -->
+      <div class="card" data-q="8">
+        <div class="q-header">
+          <div class="q-num">8</div>
+          <div class="q-title">飲食習慣（高糖 / 加工食品）</div>
+        </div>
+        <div class="options">
+          <label class="opt"><input type="radio" name="q8" value="0"><span class="radio"></span><span class="opt-label">以全食物為主，少加工</span><span class="opt-pts">0</span></label>
+          <label class="opt"><input type="radio" name="q8" value="2"><span class="radio"></span><span class="opt-label">每星期食幾次甜食 / 快餐</span><span class="opt-pts">2</span></label>
+          <label class="opt"><input type="radio" name="q8" value="4"><span class="radio"></span><span class="opt-label">每日都有高糖或加工食品</span><span class="opt-pts">4</span></label>
+        </div>
+      </div>
+
+      <!-- Q9 NEW -->
+      <div class="card" data-q="9">
+        <div class="q-header">
+          <div class="q-num">9</div>
+          <div class="q-title">壓力水平</div>
+        </div>
+        <div class="options">
+          <label class="opt"><input type="radio" name="q9" value="0"><span class="radio"></span><span class="opt-label">壓力管理得宜</span><span class="opt-pts">0</span></label>
+          <label class="opt"><input type="radio" name="q9" value="2"><span class="radio"></span><span class="opt-label">中等壓力，偶爾焦慮</span><span class="opt-pts">2</span></label>
+          <label class="opt"><input type="radio" name="q9" value="4"><span class="radio"></span><span class="opt-label">長期高壓力 / 焦慮</span><span class="opt-pts">4</span></label>
+        </div>
+      </div>
+
+      <!-- Q10 NEW -->
+      <div class="card" data-q="10">
+        <div class="q-header">
+          <div class="q-num">10</div>
+          <div class="q-title">運動習慣</div>
+        </div>
+        <div class="options">
+          <label class="opt"><input type="radio" name="q10" value="0"><span class="radio"></span><span class="opt-label">每星期 3 次或以上中等運動</span><span class="opt-pts">0</span></label>
+          <label class="opt"><input type="radio" name="q10" value="2"><span class="radio"></span><span class="opt-label">偶爾運動</span><span class="opt-pts">2</span></label>
+          <label class="opt"><input type="radio" name="q10" value="4"><span class="radio"></span><span class="opt-label">幾乎沒有運動</span><span class="opt-pts">4</span></label>
+        </div>
+      </div>
     </form>
 
-    <!-- Dashboard Results View -->
-    <div class="result-card" id="resultCard">
-        <div style="font-size: 13px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase;">System Health Report</div>
-        <div class="result-score-badge" id="scoreBadge">0 pts</div>
-        <div class="result-status" id="statusTitle">完美狀態 (Optimal)</div>
-        <div class="result-desc" id="statusDesc">
-            System Status: All Green. 你嘅腸道微生態非常健康！好菌滿滿，免疫力在線。Keep going，繼續保持均衡飲食同運動。
-        </div>
+    <!-- Result Card -->
+    <div class="card result" id="resultCard">
+      <div class="result-label">System Health Report</div>
+      <div class="score-big" id="scoreBadge">0</div>
+      <div class="status" id="statusTitle">完美狀態</div>
+      <div class="desc" id="statusDesc"></div>
+      <div class="actions">
+        <button class="btn btn-wa" id="btnShareWA">WhatsApp 分享</button>
+        <button class="btn btn-primary" id="btnShareImg">生成圖片</button>
+        <button class="btn btn-outline" id="btnReset">重新測試</button>
+        <button class="btn btn-ghost" id="btnHistory">歷史記錄</button>
+      </div>
     </div>
 
-    <div class="footer-note">
-        <div>© 樂活健康系統 - Lohascare Gerontech System</div>
-        <div>🔒 End-to-End Encrypted | 數據僅供自我評估與樂活健康管理參考</div>
+    <!-- History -->
+    <div class="card history" id="historyCard">
+      <h3>📊 過往評估記錄</h3>
+      <div id="historyList"></div>
+      <button class="btn btn-outline" style="width:100%;margin-top:12px" id="btnClearHistory">清除所有記錄</button>
+      <button class="btn btn-ghost" style="width:100%;margin-top:8px" id="btnBackFromHistory">返回結果</button>
     </div>
-</div>
 
-<script>
-    function updateProgress() {
-        const form = document.getElementById('quizForm');
-        const totalQuestions = 6;
-        let answered = 0;
-        let totalScore = 0;
+    <div class="footer">
+      © 樂活健康系統 · Lohascare Gerontech<br>
+      🔒 數據只存於你裝置本地 · 僅供自我評估參考<br>
+      <span id="pwaStatus" style="opacity:0.7"></span>
+    </div>
+  </div>
 
-        // Visual check highlight
-        document.querySelectorAll('.option-item').forEach(item => {
-            const radio = item.querySelector('input[type="radio"]');
-            if (radio.checked) {
-                item.classList.add('selected');
-            } else {
-                item.classList.remove('selected');
-            }
+  <div class="toast" id="toast"></div>
+  <canvas id="shareCanvas" width="720" height="900"></canvas>
+
+  <script>
+    const TOTAL_Q = 10;
+    const STORAGE_KEY = 'lohas_gut_history_v1';
+    const ANSWER_KEY = 'lohas_gut_answers_v1';
+
+    // Register Service Worker for PWA / offline
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(() => {
+            document.getElementById('pwaStatus').textContent = '✅ 可離線使用 (PWA)';
+          })
+          .catch(() => {
+            document.getElementById('pwaStatus').textContent = '離線快取未啟用';
+          });
+      });
+    }
+
+    // Restore previous answers if any
+    function restoreAnswers() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(ANSWER_KEY) || '{}');
+        Object.keys(saved).forEach(name => {
+          const radio = document.querySelector(`input[name="${name}"][value="${saved[name]}"]`);
+          if (radio) {
+            radio.checked = true;
+            radio.closest('.opt').classList.add('selected');
+          }
         });
-
-        for (let i = 1; i <= totalQuestions; i++) {
-            const selected = form.querySelector(`input[name="q${i}"]:checked`);
-            if (selected) {
-                answered++;
-                totalScore += parseInt(selected.value);
-            }
-        }
-
-        const progressPercent = (answered / totalQuestions) * 100;
-        document.getElementById('progressBar').style.width = progressPercent + '%';
-
-        if (answered === totalQuestions) {
-            showResults(totalScore);
-        }
+        updateProgress(false);
+      } catch (e) {}
     }
 
-    function showResults(score) {
-        const resultCard = document.getElementById('resultCard');
-        const scoreBadge = document.getElementById('scoreBadge');
-        const statusTitle = document.getElementById('statusTitle');
-        const statusDesc = document.getElementById('statusDesc');
-
-        resultCard.style.display = 'block';
-        scoreBadge.innerText = score + ' pts';
-
-        if (score <= 4) {
-            scoreBadge.style.color = '#34C759'; // Apple Green
-            statusTitle.innerText = '🟢 0 – 4 pts：完美狀態 (Optimal)';
-            statusDesc.innerHTML = '<strong>System Status: All Green.</strong><br>你嘅腸道微生態非常健康！好菌滿滿，免疫力在線。Keep going，繼續保持均衡飲食同運動。';
-        } else if (score <= 12) {
-            scoreBadge.style.color = '#FF9500'; // Apple Orange
-            statusTitle.innerText = '🟡 5 – 12 pts：亞健康 (Warning)';
-            statusDesc.innerHTML = '<strong>System Update Required.</strong><br>腸道微生態開始失衡，身體俾緊 signal 你（可能偶爾有胃氣或小敏感）。建議 Reset 一下生活節奏，食多啲膳食纖維，或者補充益生菌。';
-        } else {
-            scoreBadge.style.color = '#FF3B30'; // Apple Red
-            statusTitle.innerText = '🔴 13 – 24 pts：需要救援 (Critical)';
-            statusDesc.innerHTML = '<strong>Red Flag.</strong><br>壞菌已經佔據主導，嚴重影響緊你嘅消化同免疫系統。建議及早 Delete 壞習慣（高糖、熬夜），並尋求醫生或樂活健康團隊幫手 Reboot 腸道健康！';
-        }
-
-        // Scroll smoothly to results
-        resultCard.scrollIntoView({ behavior: 'smooth' });
+    function saveAnswers() {
+      const form = document.getElementById('quizForm');
+      const data = {};
+      for (let i = 1; i <= TOTAL_Q; i++) {
+        const sel = form.querySelector(`input[name="q${i}"]:checked`);
+        if (sel) data[`q${i}`] = sel.value;
+      }
+      localStorage.setItem(ANSWER_KEY, JSON.stringify(data));
     }
-</script>
 
+    function updateProgress(scroll = true) {
+      const form = document.getElementById('quizForm');
+      let answered = 0, totalScore = 0;
+
+      document.querySelectorAll('.opt').forEach(item => {
+        const radio = item.querySelector('input');
+        if (radio.checked) item.classList.add('selected');
+        else item.classList.remove('selected');
+      });
+
+      for (let i = 1; i <= TOTAL_Q; i++) {
+        const sel = form.querySelector(`input[name="q${i}"]:checked`);
+        if (sel) {
+          answered++;
+          totalScore += parseInt(sel.value, 10);
+        }
+      }
+
+      const pct = (answered / TOTAL_Q) * 100;
+      document.getElementById('progressBar').style.width = pct + '%';
+      document.getElementById('progressText').textContent = `${answered} / ${TOTAL_Q} 題`;
+
+      saveAnswers();
+
+      if (answered === TOTAL_Q) {
+        showResults(totalScore, scroll);
+      }
+    }
+
+    function showResults(score, scroll = true) {
+      const card = document.getElementById('resultCard');
+      const badge = document.getElementById('scoreBadge');
+      const title = document.getElementById('statusTitle');
+      const desc = document.getElementById('statusDesc');
+
+      card.style.display = 'block';
+      document.getElementById('historyCard').style.display = 'none';
+
+      badge.textContent = score + ' pts';
+
+      let status, color, html;
+      if (score <= 8) {
+        color = '#22c55e';
+        status = '🟢 0–8 pts · 完美狀態 (Optimal)';
+        html = `<strong>System Status: All Green.</strong><br>
+          你嘅腸道微生態非常健康！好菌滿滿，免疫力在線。<br>
+          繼續保持均衡飲食、充足睡眠同適量運動。`;
+      } else if (score <= 20) {
+        color = '#f59e0b';
+        status = '🟡 9–20 pts · 亞健康 (Warning)';
+        html = `<strong>System Update Required.</strong><br>
+          腸道微生態開始失衡，身體俾緊 signal（可能有胃氣、敏感或睡眠問題）。<br>
+          建議：增加膳食纖維、減少加工食品、考慮補充優質益生菌，並改善作息。`;
+      } else {
+        color = '#ef4444';
+        status = '🔴 21–40 pts · 需要救援 (Critical)';
+        html = `<strong>Red Flag.</strong><br>
+          壞菌已佔主導，嚴重影響消化與免疫系統。<br>
+          建議及早調整（高糖、熬夜、缺乏運動），並尋求醫生或樂活健康團隊協助 Reboot 腸道健康。`;
+      }
+
+      badge.style.color = color;
+      title.textContent = status;
+      desc.innerHTML = html;
+
+      // Save to history
+      saveToHistory(score, status);
+
+      if (scroll) {
+        setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'center' }), 120);
+      }
+    }
+
+    function saveToHistory(score, statusText) {
+      let hist = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      hist.unshift({
+        score,
+        status: statusText,
+        date: new Date().toLocaleString('zh-HK', { year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit' })
+      });
+      if (hist.length > 20) hist = hist.slice(0, 20);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(hist));
+    }
+
+    function showHistory() {
+      const hist = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      const list = document.getElementById('historyList');
+      if (hist.length === 0) {
+        list.innerHTML = '<p style="color:var(--text2);font-size:13px">暫無記錄</p>';
+      } else {
+        list.innerHTML = hist.map(h => `
+          <div class="hist-item">
+            <span>${h.date}</span>
+            <span class="hist-score" style="color:${h.score<=8?'#22c55e':h.score<=20?'#f59e0b':'#ef4444'}">${h.score} pts</span>
+          </div>
+        `).join('');
+      }
+      document.getElementById('resultCard').style.display = 'none';
+      document.getElementById('historyCard').style.display = 'block';
+      document.getElementById('historyCard').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function resetQuiz() {
+      document.getElementById('quizForm').reset();
+      document.querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
+      document.getElementById('resultCard').style.display = 'none';
+      document.getElementById('historyCard').style.display = 'none';
+      document.getElementById('progressBar').style.width = '0%';
+      document.getElementById('progressText').textContent = `0 / ${TOTAL_Q} 題`;
+      localStorage.removeItem(ANSWER_KEY);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      toast('已重新開始');
+    }
+
+    function toast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2200);
+    }
+
+    // WhatsApp share
+    document.getElementById('btnShareWA').addEventListener('click', () => {
+      const score = document.getElementById('scoreBadge').textContent;
+      const status = document.getElementById('statusTitle').textContent;
+      const text = encodeURIComponent(
+        `🌿 樂活健康系統 · 腸道微生態檢測結果\n\n分數：${score}\n狀態：${status}\n\nYour Gut. Your Rules.\n（僅供自我評估參考）`
+      );
+      window.open(`https://wa.me/?text=${text}`, '_blank');
+    });
+
+    // Generate share image
+    document.getElementById('btnShareImg').addEventListener('click', () => {
+      const canvas = document.getElementById('shareCanvas');
+      const ctx = canvas.getContext('2d');
+      const score = document.getElementById('scoreBadge').textContent;
+      const status = document.getElementById('statusTitle').textContent;
+      const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+      // Background
+      ctx.fillStyle = isDark ? '#1c1c1e' : '#f8fafc';
+      ctx.fillRect(0, 0, 720, 900);
+
+      // Card
+      ctx.fillStyle = isDark ? '#2c2c2e' : '#ffffff';
+      roundRect(ctx, 40, 60, 640, 780, 28);
+      ctx.fill();
+
+      // Logo
+      ctx.font = 'bold 22px -apple-system, sans-serif';
+      ctx.fillStyle = '#0d9488';
+      ctx.textAlign = 'center';
+      ctx.fillText('🌿 LOHASCARE GERONTECH', 360, 120);
+
+      // Title
+      ctx.font = 'bold 28px -apple-system, sans-serif';
+      ctx.fillStyle = isDark ? '#f5f5f7' : '#1c1c1e';
+      ctx.fillText('腸道微生態檢測報告', 360, 170);
+
+      // Score
+      ctx.font = '800 72px -apple-system, sans-serif';
+      const scoreNum = parseInt(score);
+      ctx.fillStyle = scoreNum <= 8 ? '#22c55e' : scoreNum <= 20 ? '#f59e0b' : '#ef4444';
+      ctx.fillText(score, 360, 300);
+
+      // Status
+      ctx.font = 'bold 24px -apple-system, sans-serif';
+      ctx.fillStyle = isDark ? '#f5f5f7' : '#1c1c1e';
+      // wrap text
+      const words = status.split(' ');
+      let line = '';
+      let y = 360;
+      words.forEach(w => {
+        const test = line + w + ' ';
+        if (ctx.measureText(test).width > 560) {
+          ctx.fillText(line, 360, y);
+          line = w + ' ';
+          y += 32;
+        } else line = test;
+      });
+      ctx.fillText(line, 360, y);
+
+      // Footer
+      ctx.font = '16px -apple-system, sans-serif';
+      ctx.fillStyle = '#8e8e93';
+      ctx.fillText('Your Gut. Your Rules.', 360, 720);
+      ctx.fillText('僅供自我評估 · 數據存於本機', 360, 750);
+      ctx.fillText(new Date().toLocaleDateString('zh-HK'), 360, 780);
+
+      // Download
+      canvas.toBlob(blob => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `lohas-gut-report-${Date.now()}.png`;
+        a.click();
+        URL.revokeObjectURL(url);
+        toast('圖片已下載');
+      }, 'image/png');
+    });
+
+    function roundRect(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x + w, y, x + w, y + h, r);
+      ctx.arcTo(x + w, y + h, x, y + h, r);
+      ctx.arcTo(x, y + h, x, y, r);
+      ctx.arcTo(x, y, x + w, y, r);
+      ctx.closePath();
+    }
+
+    // Event listeners
+    document.querySelectorAll('input[type="radio"]').forEach(r => {
+      r.addEventListener('change', () => updateProgress());
+    });
+
+    document.getElementById('btnReset').addEventListener('click', resetQuiz);
+    document.getElementById('btnHistory').addEventListener('click', showHistory);
+    document.getElementById('btnBackFromHistory').addEventListener('click', () => {
+      document.getElementById('historyCard').style.display = 'none';
+      document.getElementById('resultCard').style.display = 'block';
+    });
+    document.getElementById('btnClearHistory').addEventListener('click', () => {
+      localStorage.removeItem(STORAGE_KEY);
+      showHistory();
+      toast('記錄已清除');
+    });
+
+    // Init
+    restoreAnswers();
+  </script>
 </body>
 </html>
