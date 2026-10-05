@@ -184,8 +184,10 @@
 
     <div class="tabs" id="mainTabs">
       <button class="tab active" data-tab="quiz">評估</button>
-      <button class="tab" data-tab="log">每日日誌</button>
-      <button class="tab" data-tab="family">家庭守護</button>
+      <button class="tab" data-tab="log">日誌</button>
+      <button class="tab" data-tab="trend">趨勢</button>
+      <button class="tab" data-tab="qa">問答</button>
+      <button class="tab" data-tab="family">家庭</button>
     </div>
 
     <!-- Quiz Form -->
@@ -235,7 +237,37 @@
         <div class="log-card" data-val="severe"><div class="log-emoji">😖</div><div class="log-label">明顯</div></div>
       </div>
       <button class="btn btn-primary" style="width:100%;margin-top:16px" id="btnSaveLog">儲存今日記錄</button>
+      <div style="margin-top:18px;border-top:1px solid rgba(0,0,0,.06);padding-top:14px">
+        <div style="font-weight:600;margin-bottom:8px">📸 拍照識餐（簡易纖維估算）</div>
+        <p style="font-size:12px;color:var(--text2);margin-bottom:8px">影低當日一餐，系統用顏色分析估算綠色蔬菜比例（僅供參考）</p>
+        <input type="file" id="mealPhoto" accept="image/*" capture="environment" style="font-size:13px;width:100%">
+        <canvas id="mealCanvas" style="display:none;max-width:100%;margin-top:10px;border-radius:12px"></canvas>
+        <div id="mealResult" style="margin-top:10px;font-size:13px;color:var(--text2)"></div>
+      </div>
       <div id="logWeekSummary" style="margin-top:16px;font-size:13px;color:var(--text2)"></div>
+    </div>
+
+    <!-- Trend -->
+    <div class="card" id="trendCard" style="display:none">
+      <h3 style="margin-bottom:10px">📈 腸道菌群趨勢分析</h3>
+      <div id="trafficLight" style="text-align:center;margin:12px 0;font-size:28px"></div>
+      <div id="trafficLabel" style="text-align:center;font-size:14px;font-weight:600;margin-bottom:12px"></div>
+      <canvas id="trendCanvas" width="400" height="180" style="width:100%;max-width:400px;background:var(--bg);border-radius:12px"></canvas>
+      <div id="trendHint" style="font-size:12px;color:var(--text2);margin-top:10px;text-align:center">過去最多 8 次評估分數趨勢</div>
+      <div id="weeklyReport" style="margin-top:16px;font-size:13px"></div>
+    </div>
+
+    <!-- Q&A -->
+    <div class="card" id="qaCard" style="display:none">
+      <h3 style="margin-bottom:10px">💬 腸道專科問答（粵語）</h3>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:12px">根據你嘅評估結果提供個人化回答。可語音提問。</p>
+      <div style="display:flex;gap:8px;margin-bottom:12px">
+        <input id="qaInput" type="text" placeholder="例如：點解我成日肚脹？" style="flex:1;padding:12px;border-radius:12px;border:1.5px solid rgba(0,0,0,.1);font-size:14px;background:var(--bg);color:var(--text);font-family:inherit">
+        <button class="btn btn-primary" id="btnAsk" style="padding:12px 16px">問</button>
+        <button class="btn btn-voice" id="btnAskVoice" style="padding:12px 14px">🎤</button>
+      </div>
+      <div id="qaQuick" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px"></div>
+      <div id="qaAnswer" style="background:var(--bg);padding:14px;border-radius:14px;font-size:14px;line-height:1.55;min-height:60px;color:var(--text2)"></div>
     </div>
 
     <!-- Family -->
@@ -698,8 +730,12 @@
         document.getElementById('resultCard').style.display = 'none';
         document.getElementById('historyCard').style.display = 'none';
         document.getElementById('logCard').style.display = name === 'log' ? 'block' : 'none';
+        document.getElementById('trendCard').style.display = name === 'trend' ? 'block' : 'none';
+        document.getElementById('qaCard').style.display = name === 'qa' ? 'block' : 'none';
         document.getElementById('familyCard').style.display = name === 'family' ? 'block' : 'none';
         if (name === 'log') renderLogSummary();
+        if (name === 'trend') drawTrendChart();
+        if (name === 'qa') initQA();
       });
     });
 
@@ -861,6 +897,204 @@
       toast(elderlyMode ? (lang==='zh'?'大字模式已開啟':'Large text on') : (lang==='zh'?'已關閉':'Off'));
     });
     document.getElementById('btnElderly').classList.toggle('active', elderlyMode);
+
+    // ========== Trend Chart + Traffic Light ==========
+    function drawTrendChart() {
+      const hist = JSON.parse(localStorage.getItem(STORAGE.hist) || '[]').slice(0, 8).reverse();
+      const canvas = document.getElementById('trendCanvas');
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width, h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim() || '#f2f2f7';
+      ctx.fillRect(0, 0, w, h);
+
+      if (hist.length < 1) {
+        ctx.fillStyle = '#8e8e93';
+        ctx.font = '14px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(lang === 'zh' ? '完成評估後顯示趨勢' : 'Complete assessments to see trend', w/2, h/2);
+        document.getElementById('trafficLight').textContent = '⚪';
+        document.getElementById('trafficLabel').textContent = lang === 'zh' ? '暫無數據' : 'No data';
+        document.getElementById('weeklyReport').innerHTML = '';
+        return;
+      }
+
+      const scores = hist.map(x => x.score);
+      const maxS = 40, minS = 0;
+      const pad = 30;
+      const chartW = w - pad * 2;
+      const chartH = h - pad * 2;
+
+      // grid
+      ctx.strokeStyle = 'rgba(0,0,0,0.06)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= 4; i++) {
+        const y = pad + (chartH / 4) * i;
+        ctx.beginPath(); ctx.moveTo(pad, y); ctx.lineTo(w - pad, y); ctx.stroke();
+      }
+
+      // thresholds
+      const y8 = pad + chartH * (1 - 8/40);
+      const y20 = pad + chartH * (1 - 20/40);
+      ctx.strokeStyle = 'rgba(34,197,94,0.3)'; ctx.beginPath(); ctx.moveTo(pad, y8); ctx.lineTo(w-pad, y8); ctx.stroke();
+      ctx.strokeStyle = 'rgba(245,158,11,0.3)'; ctx.beginPath(); ctx.moveTo(pad, y20); ctx.lineTo(w-pad, y20); ctx.stroke();
+
+      // line
+      ctx.strokeStyle = '#0d9488';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      scores.forEach((s, i) => {
+        const x = pad + (chartW / Math.max(scores.length - 1, 1)) * i;
+        const y = pad + chartH * (1 - s / 40);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+
+      // points
+      scores.forEach((s, i) => {
+        const x = pad + (chartW / Math.max(scores.length - 1, 1)) * i;
+        const y = pad + chartH * (1 - s / 40);
+        ctx.beginPath();
+        ctx.arc(x, y, 5, 0, Math.PI * 2);
+        ctx.fillStyle = s <= 8 ? '#22c55e' : s <= 20 ? '#f59e0b' : '#ef4444';
+        ctx.fill();
+      });
+
+      // traffic light
+      const latest = scores[scores.length - 1];
+      const prev = scores.length > 1 ? scores[scores.length - 2] : latest;
+      let light = '🟢', label = lang === 'zh' ? '穩定 / 良好' : 'Stable / Good';
+      if (latest > 20) { light = '🔴'; label = lang === 'zh' ? '需要關注（Critical）' : 'Needs attention'; }
+      else if (latest > 8) { light = '🟡'; label = lang === 'zh' ? '亞健康，留意改善' : 'Warning – improve lifestyle'; }
+      if (scores.length >= 2) {
+        if (latest < prev - 2) label += lang === 'zh' ? ' · 趨勢改善' : ' · Improving';
+        else if (latest > prev + 2) label += lang === 'zh' ? ' · 趨勢惡化' : ' · Worsening';
+      }
+      document.getElementById('trafficLight').textContent = light;
+      document.getElementById('trafficLabel').textContent = label;
+
+      // weekly report from daily logs
+      const logs = JSON.parse(localStorage.getItem(STORAGE.log) || '{}');
+      const days = Object.keys(logs).sort().slice(-7);
+      let report = `<strong>${lang==='zh'?'週報信號燈':'Weekly traffic lights'}</strong><br>`;
+      if (days.length === 0) {
+        report += lang === 'zh' ? '請先在「日誌」記錄每日排便與肚脹' : 'Record daily logs first';
+      } else {
+        const bowelGood = days.filter(d => logs[d].bowel === 'good').length;
+        const bloatNone = days.filter(d => logs[d].bloat === 'none' || logs[d].bloat === 'mild').length;
+        const bowelLight = bowelGood >= 5 ? '🟢' : bowelGood >= 3 ? '🟡' : '🔴';
+        const bloatLight = bloatNone >= 5 ? '🟢' : bloatNone >= 3 ? '🟡' : '🔴';
+        const scoreLight = latest <= 8 ? '🟢' : latest <= 20 ? '🟡' : '🔴';
+        report += `${lang==='zh'?'排便': 'Bowel'}: ${bowelLight} &nbsp; ${lang==='zh'?'肚脹':'Bloat'}: ${bloatLight} &nbsp; ${lang==='zh'?'評估':'Score'}: ${scoreLight}`;
+      }
+      document.getElementById('weeklyReport').innerHTML = report;
+    }
+
+    // ========== AI Gut Q&A (curated knowledge base) ==========
+    const QA_KB = [
+      { keys: ['肚脹','脹氣','gas','bloat','腸氣'], 
+        ans_zh: '肚脹常見原因包括：進食太快、產氣食物（豆類、汽水）、便秘、壓力大影響腸腦軸。建議：細嚼慢嚥、飯後散步、減少碳酸飲料、練習腹式呼吸。如果問卷顯示你經常肚脹，優先做「貓牛式 + 深呼吸」運動處方。',
+        ans_en: 'Bloating is often caused by eating too fast, gas-producing foods, constipation or stress. Tips: chew slowly, walk after meals, reduce fizzy drinks, practice diaphragmatic breathing. If your quiz shows frequent bloating, prioritise the Cat-Cow exercise.' },
+      { keys: ['便秘','排便','大便','constip','bowel'],
+        ans_zh: '便秘與腸道蠕動減慢、纖維不足、水分少、缺乏運動有關。建議每日增加蔬菜水果、多飲水、飯後散步 + 腹部順時針按摩。你如果問卷 Q1 分數較高，請跟從結果頁嘅運動處方。',
+        ans_en: 'Constipation links to slow motility, low fibre, low water and inactivity. Increase vegetables/fruit, drink more water, walk after meals and do clockwise belly massage. Follow the exercise prescription if your Q1 score is high.' },
+      { keys: ['益生菌','益生元','probiotic','菌'],
+        ans_zh: '益生菌可幫助補充好菌，但效果因人而異。常見有用菌株包括 Lactobacillus、Bifidobacterium。選擇有科研支持、多菌株、活菌數清楚嘅產品。同時要食益生元（膳食纖維）先有效。抗生素後更應考慮補充。',
+        ans_en: 'Probiotics can help but results vary. Look for Lactobacillus and Bifidobacterium strains with clear CFU counts and research backing. Pair with prebiotic fibre. Especially useful after antibiotics.' },
+      { keys: ['敏感','濕疹','鼻敏感','allergy','過敏'],
+        ans_zh: '腸道同免疫系統密切相關（腸腦皮膚軸）。腸漏或菌群失衡可能加重敏感。建議減少加工食品、增加發酵食品、管理壓力同睡眠。持續嚴重敏感請睇醫生。',
+        ans_en: 'Gut and immune system are closely linked. Dysbiosis may worsen allergies. Reduce processed food, add fermented foods, manage stress and sleep. See a doctor for persistent symptoms.' },
+      { keys: ['睡眠','失眠','瞓','sleep'],
+        ans_zh: '睡眠差會透過腸腦軸影響腸道菌群。建議固定作息、睡前避免藍光同咖啡因、做腿部抬高 + 腹式呼吸。問卷如果顯示睡眠問題，結果頁已有對應運動處方。',
+        ans_en: 'Poor sleep affects the gut via the gut-brain axis. Fix schedule, avoid blue light/caffeine before bed, try legs-up + abdominal breathing. Your result page has a matching exercise if sleep score is high.' },
+      { keys: ['壓力','焦慮','stress','anxiety'],
+        ans_zh: '長期壓力會改變腸道蠕動同菌群組成。八段錦「調理脾胃須單舉」、深呼吸、短時間冥想都有幫助。結果頁如果有高壓力分數，已自動推薦相關運動。',
+        ans_en: 'Chronic stress changes motility and microbiota. Baduanjin, deep breathing and short meditation help. Matching exercises appear on your result page when stress score is elevated.' },
+      { keys: ['纖維','蔬菜','飲食','fiber','diet','食'],
+        ans_zh: '膳食纖維係好菌嘅食物。目標每日 25–30g，來自蔬菜、水果、全穀、豆類。可用「日誌」入面嘅拍照功能粗略估算一餐綠色比例。慢慢增加，同時多飲水，避免突然大量纖維引起脹氣。',
+        ans_en: 'Fibre feeds beneficial bacteria. Aim 25–30g/day from veg, fruit, whole grains, legumes. Use the photo tool in Daily Log for a rough green estimate. Increase gradually with more water.' },
+      { keys: ['抗生素','antibiotics'],
+        ans_zh: '抗生素會大幅減少腸道菌群多樣性。服藥期間同之後數星期，建議補充益生菌、多食發酵食品同高纖維飲食，幫助恢復。問卷有問抗生素記錄，分數會反映呢個風險。',
+        ans_en: 'Antibiotics reduce microbial diversity. During and after a course, consider probiotics, fermented foods and high-fibre diet to help recovery. Your quiz captures recent antibiotic use in the score.' }
+    ];
+
+    function initQA() {
+      const quick = document.getElementById('qaQuick');
+      const examples = lang === 'zh' 
+        ? ['點解成日肚脹？','便秘點算？','邊隻益生菌好？','壓力同腸道有關嗎？']
+        : ['Why am I bloated?','Help with constipation','Which probiotic?','Stress and gut?'];
+      quick.innerHTML = examples.map(e => `<button class="chip" style="margin:0" onclick="document.getElementById('qaInput').value='${e}';askQA()">${e}</button>`).join('');
+      document.getElementById('qaAnswer').innerHTML = lang === 'zh' 
+        ? '輸入問題或撳快速問題，系統會根據你嘅評估結果俾個人化建議。' 
+        : 'Type a question or tap a quick question. Answers are personalised from your assessment.';
+    }
+
+    function askQA() {
+      const q = (document.getElementById('qaInput').value || '').toLowerCase().trim();
+      if (!q) return;
+      let matched = null;
+      for (const item of QA_KB) {
+        if (item.keys.some(k => q.includes(k.toLowerCase()))) { matched = item; break; }
+      }
+      let ans = matched 
+        ? (lang === 'zh' ? matched.ans_zh : matched.ans_en)
+        : (lang === 'zh' 
+          ? '暫時未有完全對應嘅答案。建議先完成評估，查看結果頁嘅個人化建議同運動處方。常見問題包括肚脹、便秘、益生菌、睡眠、壓力同纖維。'
+          : 'No exact match yet. Complete the assessment for personalised tips. Common topics: bloating, constipation, probiotics, sleep, stress, fibre.');
+      
+      // Personalise with latest score
+      const hist = JSON.parse(localStorage.getItem(STORAGE.hist) || '[]');
+      if (hist[0]) {
+        const s = hist[0].score;
+        if (s > 20) ans += lang === 'zh' ? '\n\n（根據你最近評估屬 Critical，建議優先諮詢醫生。）' : '\n\n(Your latest score is Critical — consider seeing a doctor.)';
+        else if (s > 8) ans += lang === 'zh' ? '\n\n（你最近評估屬亞健康，可先從運動處方同飲食入手。）' : '\n\n(Your latest score is in the Warning range — start with exercise prescription and diet.)';
+      }
+      document.getElementById('qaAnswer').innerHTML = ans.replace(/\n/g, '<br>');
+      if (voiceOn) speak(ans.replace(/\n/g, '。'));
+    }
+
+    document.getElementById('btnAsk').addEventListener('click', askQA);
+    document.getElementById('btnAskVoice').addEventListener('click', () => {
+      startListening(transcript => {
+        document.getElementById('qaInput').value = transcript;
+        askQA();
+      });
+    });
+    document.getElementById('qaInput').addEventListener('keydown', e => { if (e.key === 'Enter') askQA(); });
+
+    // ========== Photo meal analysis (simple green ratio) ==========
+    document.getElementById('mealPhoto').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+      img.onload = () => {
+        const canvas = document.getElementById('mealCanvas');
+        canvas.style.display = 'block';
+        const maxW = 320;
+        const scale = Math.min(1, maxW / img.width);
+        canvas.width = img.width * scale;
+        canvas.height = img.height * scale;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+        let green = 0, total = 0;
+        for (let i = 0; i < data.length; i += 4) {
+          const r = data[i], g = data[i+1], b = data[i+2];
+          total++;
+          // rough green vegetable detection
+          if (g > r + 15 && g > b + 10 && g > 60) green++;
+        }
+        const ratio = Math.round((green / total) * 100);
+        let msg, light;
+        if (ratio >= 25) { light = '🟢'; msg = lang === 'zh' ? `綠色比例約 ${ratio}% · 纖維估算較高，不錯！` : `Green ~${ratio}% · Fibre estimate looks good`; }
+        else if (ratio >= 12) { light = '🟡'; msg = lang === 'zh' ? `綠色比例約 ${ratio}% · 可以再加多啲蔬菜` : `Green ~${ratio}% · Try adding more vegetables`; }
+        else { light = '🔴'; msg = lang === 'zh' ? `綠色比例約 ${ratio}% · 建議下一餐增加蔬菜` : `Green ~${ratio}% · Add more veg next meal`; }
+        document.getElementById('mealResult').innerHTML = `${light} ${msg}<br><span style="font-size:11px;opacity:.7">${lang==='zh'?'（簡易顏色分析，僅供參考，非精準營養計算）':'Simple colour analysis for reference only'}</span>`;
+        URL.revokeObjectURL(url);
+      };
+      img.src = url;
+    });
 
     // Load QR lib
     (function(){ const s=document.createElement('script'); s.src='https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js'; document.head.appendChild(s); })();
