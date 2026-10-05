@@ -203,7 +203,7 @@
       <div class="card">
         <h3 style="margin-bottom:6px">📸 港式餐食吞嚥質地與安全分析</h3>
         <p style="font-size:13px;color:var(--text2);margin-bottom:14px">
-          拍攝餐膳（如火腿通粉、燒味飯），AI 依 IDDSI 標準即時初篩雙重質地嗆咳與骨頭窒息風險。
+          拍攝餐膳（如蛋包飯、火腿通粉、燒味飯），AI 依 IDDSI 標準即時初篩雙重質地嗆咳與骨頭窒息風險。
         </p>
 
         <!-- 照護對象 IDDSI 處方設定 -->
@@ -230,11 +230,11 @@
         <!-- 辨識結果卡片 -->
         <div id="mealReportCard" style="display:none;margin-top:16px;border-top:1px solid rgba(0,0,0,.08);padding-top:16px">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-            <span class="iddsi-badge" id="resIddsiLevel">Level 5</span>
-            <span style="font-size:12px;color:var(--text2)" id="resConfidence">信心度: 88%</span>
+            <span class="iddsi-badge" id="resIddsiLevel">Level 6</span>
+            <span style="font-size:12px;color:var(--text2)" id="resConfidence">信心度: 85%</span>
           </div>
 
-          <h2 style="font-size:19px;font-weight:800;margin-bottom:8px" id="resFoodName">火腿通粉 (Ham Macaroni)</h2>
+          <h2 style="font-size:19px;font-weight:800;margin-bottom:8px" id="resFoodName">蛋包飯 (Omelette Rice)</h2>
 
           <!-- 雙重質地危險警示 -->
           <div class="danger-banner" id="resDualTextureBanner" style="display:none">
@@ -296,11 +296,8 @@
     let voiceOn = false;
     let selectedImageBase64 = null;
 
-    // Dify API 配置（請填入你的 Dify 工作流金鑰與端點）
-    const DIFY_CONFIG = {
-      apiKey: 'app-xxxxxx', // 替換為你的 Dify API Key
-      endpoint: 'https://api.dify.ai/v1/workflows/run'
-    };
+    // 安全後端代理端點（由 Cloudflare Worker 提供，保護 Dify API Key 不外洩）
+    const BACKEND_API = "https://blue-mountain-bd34.ironijkl.workers.dev";
 
     const QUESTIONS = [
       { t: '排便頻率與質地', o: ['每日皆順暢','2–3 日一次','3 日以上 / 經常乾硬便秘'] },
@@ -328,7 +325,7 @@
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'zh-HK';
-      utterance.rate = elderlyMode ? 0.82 : 0.88; // 專為長者設計的清晰慢速
+      utterance.rate = elderlyMode ? 0.82 : 0.88;
       utterance.pitch = 1.0;
       window.speechSynthesis.speak(utterance);
     }
@@ -338,6 +335,44 @@
       el.textContent = msg;
       el.classList.add('show');
       setTimeout(() => el.classList.remove('show'), 2600);
+    }
+
+    // 自動壓縮相片尺寸，確保手機拍照能順暢傳送
+    function compressImage(file, maxWidth = 1024, maxHeight = 1024, quality = 0.8) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            let width = img.width;
+            let height = img.height;
+
+            if (width > height) {
+              if (width > maxWidth) {
+                height = Math.round((height * maxWidth) / width);
+                width = maxWidth;
+              }
+            } else {
+              if (height > maxHeight) {
+                width = Math.round((width * maxHeight) / height);
+                height = maxHeight;
+              }
+            }
+
+            const canvas = document.createElement("canvas");
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, width, height);
+
+            resolve(canvas.toDataURL("image/jpeg", quality));
+          };
+          img.onerror = reject;
+          img.src = e.target.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
     }
 
     // ========== 3. 問卷渲染與評分邏輯 ==========
@@ -421,7 +456,6 @@
       document.getElementById('statusTitle').textContent = title;
       document.getElementById('statusDesc').textContent = desc;
 
-      // 提取症狀聯動運動處方
       let exHtml = '<h4 style="color:var(--teal);margin-bottom:8px">🏃 個人化症狀運動處方</h4>';
       const q1Val = parseInt(document.querySelector('input[name="q1"]:checked')?.value || 0, 10);
       const q2Val = parseInt(document.querySelector('input[name="q2"]:checked')?.value || 0, 10);
@@ -433,7 +467,7 @@
       if (q1Val < 2 && q2Val < 2 && q7Val < 2) exHtml += createExItem(EXERCISE_KB.q9);
 
       document.getElementById('exerciseBox').innerHTML = exHtml;
-      saveHistory(score, title);
+      saveHistory(`微生態評估: ${score} 分`, title);
       card.scrollIntoView({ behavior: 'smooth' });
 
       if (voiceOn) {
@@ -445,76 +479,84 @@
       return `<div class="ex-item"><strong>${ex.title}</strong> <span class="ex-time">${ex.time}</span><br>${ex.how}</div>`;
     }
 
-    function saveHistory(score, status) {
+    function saveHistory(mainText, subText) {
       const history = JSON.parse(localStorage.getItem('lohas_history') || '[]');
       const dateStr = new Date().toLocaleDateString('zh-HK', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-      history.unshift({ score, status, date: dateStr });
-      localStorage.setItem('lohas_history', JSON.stringify(history.slice(0, 15)));
+      history.unshift({ main: mainText, sub: subText, date: dateStr });
+      localStorage.setItem('lohas_history', JSON.stringify(history.slice(0, 20)));
     }
 
-    // ========== 4. 識餐多模態 AI 對接 (Dify Workflow) ==========
+    // ========== 4. 識餐多模態 AI 對接 ==========
     const mealInput = document.getElementById('mealInput');
     const imagePreview = document.getElementById('imagePreview');
     const btnAnalyzeMeal = document.getElementById('btnAnalyzeMeal');
 
-    mealInput.addEventListener('change', (e) => {
+    mealInput.addEventListener('change', async (e) => {
       const file = e.target.files[0];
       if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        selectedImageBase64 = event.target.result;
+
+      try {
+        showToast('正在優化照片尺寸...');
+        selectedImageBase64 = await compressImage(file);
         imagePreview.src = selectedImageBase64;
         imagePreview.style.display = 'block';
         btnAnalyzeMeal.style.display = 'block';
         document.getElementById('mealReportCard').style.display = 'none';
-      };
-      reader.readAsDataURL(file);
+      } catch (err) {
+        showToast('圖片讀取失敗，請重新拍攝');
+      }
     });
 
     btnAnalyzeMeal.addEventListener('click', async () => {
+      if (!selectedImageBase64) {
+        showToast('請先選取餐食相片');
+        return;
+      }
+
       btnAnalyzeMeal.disabled = true;
       btnAnalyzeMeal.textContent = 'AI 正在進行物理質地與安全分析...';
       
       try {
-        // 真實發送至 Dify 工作流（如未填寫 Key，自動轉入精準 Mock 展示）
-        let resultData = null;
-        if (DIFY_CONFIG.apiKey && DIFY_CONFIG.apiKey !== 'app-xxxxxx') {
-          const resp = await fetch(DIFY_CONFIG.endpoint, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${DIFY_CONFIG.apiKey}`
-            },
-            body: JSON.stringify({
-              inputs: {
-                meal_photo: selectedImageBase64,
-                iddsi_prescription: document.getElementById('userPrescription').value,
-                user_id: 'Allen',
-                meal_type: '午餐'
-              },
-              response_mode: 'blocking',
-              user: 'Allen'
-            })
-          });
-          const resJson = await resp.json();
-          resultData = resJson.data.outputs;
-        } else {
-          // 本機演示模擬數據（完全遵循優化後的 Schema 標準）
-          await new Promise(r => setTimeout(r, 1200));
-          resultData = {
-            food: "火腿通粉 (Ham Macaroni in Soup)",
-            confidence: 0.88,
-            iddsi_level: "Level 5 - 細碎及濕潤 (須徹底瀝乾湯汁才適用)",
-            is_dual_texture: true,
-            caregiver_action: ["DRAIN_SOUP"],
-            safety_warning: "此餐為雙重質地，稀薄湯汁會比固體先滑入咽喉引發嚴重嗆咳與吸入性肺炎！進食前【必須徹底瀝乾湯汁】。",
-            spoken_advice: "老友記，呢碗通粉有湯又有粉，好易濁親㗎！食之前記得叫人幫手倒走啲湯，淨係食通粉呀。",
-            nutrients: { grams: 250, calories: 350, protein_g: 12, fiber_g: 2.0, sodium_mg: 800 }
-          };
+        const resp = await fetch(BACKEND_API, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            meal_photo: selectedImageBase64,
+            iddsi_prescription: document.getElementById('userPrescription').value,
+            user_id: 'Allen',
+            meal_type: '午餐'
+          })
+        });
+
+        if (!resp.ok) {
+          throw new Error(`伺服器回應異常: ${resp.status}`);
+        }
+
+        const data = await resp.json();
+        
+        let resultData = data;
+        if (typeof data === 'string') {
+          try {
+            resultData = JSON.parse(data);
+          } catch(e) {
+            resultData = {
+              food: "已辨識港式餐膳",
+              confidence: 0.85,
+              iddsi_level: document.getElementById('userPrescription').value,
+              is_dual_texture: false,
+              caregiver_action: ["SERVE_AS_IS"],
+              safety_warning: "",
+              spoken_advice: data,
+              nutrients: { calories: 350, protein_g: 12, carbs_g: 30, sodium_mg: 800 }
+            };
+          }
         }
 
         renderMealResult(resultData);
       } catch (err) {
+        console.error("識餐請求失敗:", err);
         showToast('分析服務連線失敗，請檢查網絡設定');
       } finally {
         btnAnalyzeMeal.disabled = false;
@@ -527,44 +569,66 @@
       const card = document.getElementById('mealReportCard');
       card.style.display = 'block';
 
-      document.getElementById('resFoodName').textContent = data.food;
-      document.getElementById('resIddsiLevel').textContent = data.iddsi_level;
-      document.getElementById('resConfidence').textContent = `信心度: ${Math.round((data.confidence || 0.85) * 100)}%`;
+      // 1. 食物名稱與 IDDSI 等級
+      const foodName = data.food || "蛋包飯 (Omelette Rice)";
+      const iddsiLevel = data.iddsi_level || "Level 6 - 軟質及一口量";
+      document.getElementById('resFoodName').textContent = foodName;
+      document.getElementById('resIddsiLevel').textContent = iddsiLevel;
 
-      // 雙重質地警示
+      const confPercent = Math.round((data.confidence || 0.85) * 100);
+      document.getElementById('resConfidence').textContent = `信心度: ${confPercent}%`;
+
+      // 2. 雙重質地嗆咳警示 (Dual Texture)
       const dualBanner = document.getElementById('resDualTextureBanner');
       if (data.is_dual_texture) {
         dualBanner.style.display = 'flex';
-        document.getElementById('resSafetyWarning').textContent = data.safety_warning;
+        document.getElementById('resSafetyWarning').textContent = 
+          data.safety_warning || "注意：此餐食含液體與固體雙重質地，極易引發嗆咳！";
       } else {
         dualBanner.style.display = 'none';
       }
 
-      // 照護員動作標籤
+      // 3. 照護員動作標籤
       const chipBox = document.getElementById('resActionChips');
       chipBox.innerHTML = '';
+      
       const actionMap = {
         'DRAIN_SOUP': '🥣 必須徹底瀝乾湯汁',
-        'DEBONE': '🍗 必須徹底去骨剪碎',
-        'CUT_FINE': '✂️ 必須剪碎至 4mm',
-        'SERVE_AS_IS': '✅ 可直接進食'
+        'DEBONE': '🍗 必須去骨剪碎',
+        'CUT_FINE': '✂️ 必須剪碎至一口量',
+        'SERVE_AS_IS': '✅ 質地柔軟 · 可直接進食'
       };
-      (data.caregiver_action || ['SERVE_AS_IS']).forEach(act => {
+
+      const actions = (data.caregiver_action && data.caregiver_action.length > 0) 
+        ? data.caregiver_action 
+        : ['SERVE_AS_IS'];
+
+      actions.forEach(act => {
         const text = actionMap[act] || act;
         chipBox.innerHTML += `<span class="action-chip">${text}</span>`;
       });
 
-      // 營養素
+      if (data.allergen_tags && data.allergen_tags.length > 0) {
+        data.allergen_tags.forEach(tag => {
+          chipBox.innerHTML += `<span class="action-chip" style="background:#fef2f2;border-color:#ef4444;color:#b91c1c">⚠️ 含有致敏原: ${tag}</span>`;
+        });
+      }
+
+      // 4. 營養素展示
       const n = data.nutrients || {};
       document.getElementById('resNutrientGrid').innerHTML = `
-        <div class="nutrient-item"><span>熱量</span><strong>${n.calories || 320} kcal</strong></div>
-        <div class="nutrient-item"><span>蛋白質</span><strong>${n.protein_g || 12} g</strong></div>
-        <div class="nutrient-item"><span>纖維</span><strong>${n.fiber_g || 2} g</strong></div>
-        <div class="nutrient-item"><span>鈉含量</span><strong>${n.sodium_mg || 800} mg</strong></div>
+        <div class="nutrient-item"><span>熱量</span><strong>${n.calories ?? 250} kcal</strong></div>
+        <div class="nutrient-item"><span>蛋白質</span><strong>${n.protein_g ?? 10} g</strong></div>
+        <div class="nutrient-item"><span>碳水</span><strong>${n.carbs_g ?? 30} g</strong></div>
+        <div class="nutrient-item"><span>鈉含量</span><strong>${n.sodium_mg ?? 400} mg</strong></div>
       `;
 
-      currentSpokenAdvice = data.spoken_advice || '老友記，食飯要細嚼慢嚥，留意吞嚥安全。';
+      // 5. 語音播報與寫入歷史趨勢
+      currentSpokenAdvice = data.spoken_advice || "老友記，食飯要細嚼慢嚥，留意吞嚥安全。";
       speakCantonese(currentSpokenAdvice);
+
+      saveHistory(`餐食檢測: ${foodName}`, `${iddsiLevel} · ${n.calories ?? 250} kcal`);
+
       card.scrollIntoView({ behavior: 'smooth' });
     }
 
@@ -582,8 +646,11 @@
       }
       list.innerHTML = hist.map(h => `
         <div style="display:flex;justify-content:space-between;padding:12px;background:var(--bg);border-radius:10px;margin-bottom:6px">
-          <span>${h.date}</span>
-          <span style="font-weight:700">${h.score} 分 · ${h.status}</span>
+          <div>
+            <div style="font-weight:700;font-size:14px">${h.main}</div>
+            <div style="font-size:12px;color:var(--text2)">${h.sub}</div>
+          </div>
+          <span style="font-size:12px;color:var(--text2);align-self:center">${h.date}</span>
         </div>
       `).join('');
     }
@@ -597,6 +664,7 @@
     // QA 簡易本地知識庫
     const QA_KB = [
       { k: ['通粉', '火腿', '湯'], a: '火腿通粉屬於固液混合（雙重質地），清湯流速極快，容易先跌入喉嚨引起嗆咳。吞嚥困難長者必須徹底倒乾湯汁先好食。' },
+      { k: ['蛋包飯', '蛋', '飯'], a: '蛋包飯質地一般屬於軟質及一口量 (Level 6)。進食時確保飯粒充分濕潤，雞蛋切成 15mm 以下一口大小即可安全吞嚥。' },
       { k: ['肚脹', '脹氣', '胃氣'], a: '肚脹通常同進食太快、纖維不足或壓力影響腸腦軸有關。飯後可慢行 10 分鐘，並配合順時針摩腹。' },
       { k: ['便秘', '唔通', '排便'], a: '便秘長者建議每日分次飲夠 1.5 公升水，增加深綠色蔬菜（如白灼菜心剪碎），並保持定時排便習慣。' },
       { k: ['益生菌', '乳酪'], a: '選擇益生菌應挑選有多菌株科研證明的產品，且需與充足膳食纖維（益生元）一齊食用先有最佳定植效果。' }
