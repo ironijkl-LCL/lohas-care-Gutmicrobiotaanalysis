@@ -6,14 +6,12 @@
   <meta name="theme-color" content="#0d9488">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="description" content="樂活健康系統 - 腸道微生態自我評估與個人化運動處方（僅供參考，非醫療診斷）">
-  <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230d9488'/%3E%3Ctext x='50' y='65' font-size='50' text-anchor='middle' fill='white'%3E🌿%3C/text%3E%3C/svg%3E">
-  <title>樂活健康系統 | 腸道微生態檢測</title>
+  <meta name="description" content="樂活健康系統 - 腸道微生態評估、運動處方與地道港式飲食吞嚥安全多模態檢測">
+  <title>樂活健康系統 | 腸道微生態與膳食安全</title>
   <style>
     :root {
-      --bg: #f2f2f7; --card: #ffffff; --card-glass: rgba(255,255,255,0.85);
-      --text: #1c1c1e; --text2: #8e8e93; --teal: #0d9488; --teal-dark: #0f766e;
+      --bg: #f2f2f7; --card: #ffffff; --card-glass: rgba(255,255,255,0.88);
+      --text: #1c1c1e; --text2: #636366; --teal: #0d9488; --teal-dark: #0f766e;
       --green: #22c55e; --wa: #25D366; --wa-bubble: #dcf8c6; --blue: #007aff;
       --orange: #f59e0b; --red: #ef4444;
       --shadow: 0 8px 30px -6px rgba(0,0,0,0.08); --radius: 20px; --radius-sm: 14px;
@@ -21,1094 +19,653 @@
     }
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg: #000; --card: #1c1c1e; --card-glass: rgba(28,28,30,0.9);
-        --text: #f5f5f7; --text2: #98989d; --wa-bubble: #0b3d2e;
+        --bg: #000; --card: #1c1c1e; --card-glass: rgba(28,28,30,0.92);
+        --text: #f5f5f7; --text2: #a1a1a6; --wa-bubble: #0b3d2e;
         --shadow: 0 8px 30px -6px rgba(0,0,0,0.45);
       }
     }
     body.elderly {
-      --font-base: 18px; --font-title: 22px;
+      --font-base: 19px; --font-title: 24px;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     html { scroll-behavior: smooth; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang HK", "Helvetica Neue", sans-serif;
       background: var(--bg); color: var(--text); min-height: 100vh; min-height: 100dvh;
-      display: flex; justify-content: center; padding: 12px 12px 48px; line-height: 1.5;
-      font-size: var(--font-base);
+      display: flex; justify-content: center;
+      padding: calc(12px + env(safe-area-inset-top)) 14px calc(32px + env(safe-area-inset-bottom));
+      line-height: 1.5; font-size: var(--font-base);
     }
-    .app { width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 14px; }
+    .app { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 14px; }
     .header {
       position: sticky; top: 6px; z-index: 50; background: var(--card-glass);
       backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%);
       border-radius: var(--radius); padding: 14px 16px; box-shadow: var(--shadow);
-      border: 1px solid rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.2);
     }
-    .brand { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
-    .logo { font-size: 11px; font-weight: 700; letter-spacing: .3px; color: var(--teal); text-transform: uppercase; }
-    .header-actions { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .brand { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+    .logo { font-size: 13px; font-weight: 800; letter-spacing: .4px; color: var(--teal); }
+    .header-actions { display: flex; align-items: center; gap: 6px; }
     .chip {
-      font-size: 11px; font-weight: 600; padding: 5px 10px; border-radius: 20px;
-      border: 1.5px solid rgba(0,0,0,.1); background: var(--bg); color: var(--text2); cursor: pointer;
-      font-family: inherit;
+      font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 20px;
+      border: 1.5px solid rgba(0,0,0,.1); background: var(--bg); color: var(--text); cursor: pointer;
+      min-height: 38px; display: inline-flex; align-items: center; justify-content: center;
     }
     .chip.active { background: var(--teal); color: #fff; border-color: var(--teal); }
     .chip.voice-on { background: var(--wa); color: #fff; border-color: var(--wa); }
-    h1 { font-size: var(--font-title); font-weight: 700; letter-spacing: -.3px; margin-bottom: 2px; }
-    .sub { font-size: 12.5px; color: var(--text2); }
-    .progress-wrap { margin-top: 10px; height: 6px; background: rgba(0,0,0,.06); border-radius: 3px; overflow: hidden; }
+    h1 { font-size: var(--font-title); font-weight: 800; letter-spacing: -.3px; margin-bottom: 3px; }
+    .sub { font-size: 13px; color: var(--text2); }
+    .progress-wrap { margin-top: 10px; height: 6px; background: rgba(0,0,0,.08); border-radius: 3px; overflow: hidden; }
     .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--teal), var(--blue)); border-radius: 3px; transition: width .35s; }
-    .progress-text { font-size: 12px; color: var(--text2); margin-top: 5px; text-align: right; }
-    .card {
-      background: var(--card); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow);
-      animation: cardIn .3s ease both;
+    .progress-text { font-size: 12.5px; color: var(--text2); margin-top: 5px; text-align: right; }
+    .tabs { display: flex; gap: 6px; margin-bottom: 2px; }
+    .tab {
+      flex: 1; text-align: center; padding: 10px 4px; border-radius: 12px; font-size: 14px; font-weight: 700;
+      background: var(--card); color: var(--text2); cursor: pointer; border: 1.5px solid transparent; min-height: 44px;
     }
-    @keyframes cardIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+    .tab.active { background: var(--teal); color: #fff; }
+    .card {
+      background: var(--card); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow);
+      animation: cardIn .25s ease both;
+    }
+    @keyframes cardIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    
+    /* 問卷樣式 */
     .q-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
     .q-num {
       width: 32px; height: 32px; background: linear-gradient(135deg, var(--teal), var(--teal-dark));
       border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      color: #fff; font-size: 13px; font-weight: 700; flex-shrink: 0;
+      color: #fff; font-size: 14px; font-weight: 700; flex-shrink: 0;
     }
-    .q-title { font-size: 16px; font-weight: 600; flex: 1; }
+    .q-title { font-size: 16px; font-weight: 700; flex: 1; }
     .speak-btn {
-      width: 36px; height: 36px; border-radius: 50%; border: none; background: var(--bg);
-      font-size: 16px; cursor: pointer; flex-shrink: 0;
+      width: 40px; height: 40px; border-radius: 50%; border: none; background: var(--bg);
+      font-size: 18px; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
     }
     .options { display: flex; flex-direction: column; gap: 8px; }
     .opt {
-      display: flex; align-items: center; background: var(--bg); padding: 14px; border-radius: var(--radius-sm);
-      cursor: pointer; border: 2px solid transparent; transition: .2s; user-select: none; min-height: 52px;
+      display: flex; align-items: center; background: var(--bg); padding: 14px 16px; border-radius: var(--radius-sm);
+      cursor: pointer; border: 2px solid transparent; transition: .2s; min-height: 52px;
     }
-    .opt:active { transform: scale(.985); }
-    .opt input { display: none; }
+    .opt.selected { background: var(--wa-bubble); border-color: var(--wa); }
     .radio {
       width: 22px; height: 22px; border: 2px solid var(--text2); border-radius: 50%; margin-right: 12px;
-      flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: .2s;
+      flex-shrink: 0; display: flex; align-items: center; justify-content: center;
     }
     .radio::after { content: ''; width: 11px; height: 11px; border-radius: 50%; background: #fff; transform: scale(0); transition: .15s; }
-    .opt-label { flex: 1; font-size: 15px; font-weight: 500; }
-    .opt-pts { font-size: 12px; font-weight: 600; color: var(--text2); background: rgba(0,0,0,.05); padding: 2px 8px; border-radius: 10px; }
-    .opt.selected { background: var(--wa-bubble); border-color: var(--wa); }
     .opt.selected .radio { background: var(--wa); border-color: var(--wa); }
     .opt.selected .radio::after { transform: scale(1); }
-    .result { display: none; text-align: center; }
-    .result-label { font-size: 12px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: .4px; }
-    .score-big { font-size: 48px; font-weight: 800; letter-spacing: -1.5px; margin: 4px 0; line-height: 1; }
-    .status { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
-    .desc, .sugg, .ex-box, .disclaimer {
-      font-size: 14px; color: var(--text2); text-align: left; background: var(--bg);
-      padding: 14px; border-radius: var(--radius-sm); line-height: 1.55; margin-top: 10px;
-    }
-    .sugg h4, .ex-box h4 { font-size: 14px; font-weight: 700; color: var(--teal); margin-bottom: 8px; }
-    .sugg ul, .ex-box ul { padding-left: 18px; }
-    .sugg li, .ex-box li { margin-bottom: 5px; }
-    .ex-item {
-      background: var(--card); border-left: 4px solid var(--teal); padding: 10px 12px;
-      border-radius: 8px; margin-bottom: 8px; font-size: 14px;
-    }
-    .ex-item strong { color: var(--text); }
-    .ex-time { font-size: 12px; color: var(--teal); font-weight: 600; }
-    .disclaimer { border: 1px solid var(--orange); background: rgba(245,158,11,.08); font-size: 12.5px; color: var(--text); }
-    .qr-box { margin-top: 12px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
-    .qr-box canvas { border-radius: 10px; background: #fff; padding: 6px; }
-    .qr-label { font-size: 11px; color: var(--text2); }
-    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; justify-content: center; }
+    .opt-label { flex: 1; font-weight: 600; font-size: 15px; }
+    .opt-pts { font-size: 12px; font-weight: 700; color: var(--text2); background: rgba(0,0,0,.06); padding: 3px 8px; border-radius: 10px; }
+
+    /* 按鈕通用 */
     .btn {
-      display: inline-flex; align-items: center; justify-content: center; gap: 5px;
-      padding: 12px 14px; border-radius: 14px; font-size: 14px; font-weight: 600;
-      border: none; cursor: pointer; font-family: inherit; min-height: 46px;
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 12px 16px; border-radius: 14px; font-size: 15px; font-weight: 700;
+      border: none; cursor: pointer; min-height: 48px; width: 100%;
     }
-    .btn:active { transform: scale(.97); }
+    .btn:active { transform: scale(.98); }
     .btn-primary { background: var(--teal); color: #fff; }
     .btn-wa { background: var(--wa); color: #fff; }
-    .btn-outline { background: transparent; border: 1.5px solid rgba(0,0,0,.12); color: var(--text); }
-    .btn-ghost { background: var(--bg); color: var(--text2); }
     .btn-voice { background: #7c3aed; color: #fff; }
-    .tabs { display: flex; gap: 6px; margin-bottom: 4px; }
-    .tab {
-      flex: 1; text-align: center; padding: 10px; border-radius: 12px; font-size: 13px; font-weight: 600;
-      background: var(--bg); color: var(--text2); cursor: pointer; border: none; font-family: inherit;
+    .btn-outline { background: transparent; border: 1.5px solid rgba(0,0,0,.15); color: var(--text); }
+    .btn-ghost { background: var(--bg); color: var(--text); }
+
+    /* 多模態拍照識餐與安全卡片 */
+    .upload-zone {
+      border: 2px dashed var(--teal); border-radius: var(--radius-sm); padding: 20px;
+      text-align: center; background: rgba(13,148,136,.04); cursor: pointer; margin-bottom: 14px;
     }
-    .tab.active { background: var(--teal); color: #fff; }
-    .log-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-    .log-card {
-      background: var(--bg); border-radius: 14px; padding: 14px; text-align: center; cursor: pointer;
-      border: 2px solid transparent; transition: .2s;
+    .upload-preview { width: 100%; max-height: 240px; object-fit: cover; border-radius: 12px; margin-top: 10px; display: none; }
+    .danger-banner {
+      background: #fef2f2; border: 2px solid #ef4444; border-radius: 14px; padding: 14px;
+      display: flex; gap: 12px; align-items: flex-start; margin-bottom: 12px;
     }
-    .log-card.sel { border-color: var(--teal); background: var(--wa-bubble); }
-    .log-emoji { font-size: 28px; margin-bottom: 4px; }
-    .log-label { font-size: 13px; font-weight: 600; }
-    .hist-item {
-      display: flex; justify-content: space-between; align-items: center; padding: 10px 12px;
-      background: var(--bg); border-radius: 12px; margin-bottom: 6px; font-size: 13px;
+    .danger-banner strong { color: #b91c1c; font-size: 15px; display: block; margin-bottom: 2px; }
+    .danger-banner p { color: #7f1d1d; font-size: 13.5px; line-height: 1.4; }
+    .action-chips { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
+    .action-chip {
+      background: #fff7ed; border: 1.5px solid #f97316; color: #c2410c; padding: 6px 12px;
+      border-radius: 20px; font-size: 13.5px; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;
     }
-    .footer { text-align: center; font-size: 11px; color: var(--text2); padding: 6px 0 16px; line-height: 1.5; }
+    .iddsi-badge {
+      display: inline-block; background: #e0f2fe; color: #0369a1; padding: 6px 12px;
+      border-radius: 10px; font-weight: 800; font-size: 14px; margin-bottom: 8px;
+    }
+    .nutrient-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; background: var(--bg);
+      padding: 12px; border-radius: 12px; margin: 12px 0; text-align: center;
+    }
+    .nutrient-item span { display: block; font-size: 11px; color: var(--text2); }
+    .nutrient-item strong { font-size: 14px; color: var(--text); }
+    
+    /* 運動處方 */
+    .ex-item {
+      background: var(--bg); border-left: 4px solid var(--teal); padding: 12px 14px;
+      border-radius: 8px; margin-bottom: 8px; font-size: 14px;
+    }
+    .ex-time { font-size: 12px; color: var(--teal); font-weight: 700; }
+
+    /* 吐司與浮動層 */
     .toast {
-      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
-      background: var(--text); color: var(--bg); padding: 12px 18px; border-radius: 14px;
-      font-size: 14px; font-weight: 500; z-index: 100; opacity: 0; transition: .3s; pointer-events: none;
-      max-width: 90%; text-align: center;
+      position: fixed; bottom: calc(24px + env(safe-area-inset-bottom)); left: 50%;
+      transform: translateX(-50%) translateY(80px); background: #1c1c1e; color: #fff;
+      padding: 12px 20px; border-radius: 14px; font-size: 14px; font-weight: 600;
+      z-index: 100; opacity: 0; transition: .3s; pointer-events: none; max-width: 90%; text-align: center;
     }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-    .listening {
-      position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%);
-      background: rgba(0,0,0,.85); color: #fff; padding: 24px 32px; border-radius: 20px;
-      font-size: 18px; z-index: 200; display: none; text-align: center;
-    }
-    .listening.show { display: block; }
-    .pulse-mic { animation: pulseMic 1.2s infinite; font-size: 40px; margin-bottom: 8px; }
-    @keyframes pulseMic { 0%,100% { transform: scale(1); } 50% { transform: scale(1.15); } }
-    #shareCanvas { display: none; }
-    .family-view .header { background: linear-gradient(135deg, #0d9488, #0f766e); color: #fff; }
-    .family-view .logo, .family-view .sub, .family-view h1 { color: #fff; }
+    .footer { text-align: center; font-size: 12px; color: var(--text2); padding: 12px 0 24px; line-height: 1.6; }
   </style>
 </head>
 <body>
-  <div class="app" id="app">
-    <header class="header" id="mainHeader">
+  <div class="app">
+    <!-- Header -->
+    <header class="header">
       <div class="brand">
-        <span class="logo">🌿 Lohascare Gerontech</span>
+        <span class="logo">🌿 樂活健康系統 · Lohascare</span>
         <div class="header-actions">
-          <button class="chip" id="btnElderly" title="長者友善模式">大字</button>
-          <button class="chip" id="btnVoice" title="語音模式">🔊 語音</button>
-          <button class="chip active" data-lang="zh" id="langZh">中</button>
-          <button class="chip" data-lang="en" id="langEn">EN</button>
+          <button class="chip" id="btnElderly">大字</button>
+          <button class="chip" id="btnVoice">🔊 語音</button>
         </div>
       </div>
-      <h1 id="titleMain">樂活健康系統 · 腸道微生態檢測</h1>
-      <p class="sub" id="subtitle">Your Gut. Your Rules. · 約 1 分鐘快速 Assessment</p>
+      <h1 id="headerTitle">腸道微生態與膳食吞嚥安全</h1>
+      <p class="sub">地道港式飲食多模態分析 · 症狀聯動運動處方</p>
       <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
       <div class="progress-text" id="progressText">0 / 10 題</div>
     </header>
 
-    <div class="tabs" id="mainTabs">
-      <button class="tab active" data-tab="quiz">評估</button>
-      <button class="tab" data-tab="log">日誌</button>
-      <button class="tab" data-tab="trend">趨勢</button>
-      <button class="tab" data-tab="qa">問答</button>
-      <button class="tab" data-tab="family">家庭</button>
+    <!-- Navigation Tabs -->
+    <div class="tabs">
+      <button class="tab active" data-tab="quiz">微生態評估</button>
+      <button class="tab" data-tab="meal">📸 識餐安全</button>
+      <button class="tab" data-tab="trend">趨勢記錄</button>
+      <button class="tab" data-tab="qa">AI 語音問答</button>
     </div>
 
-    <!-- Quiz Form -->
-    <form id="quizForm"></form>
-
-    <!-- Result -->
-    <div class="card result" id="resultCard">
-      <div class="result-label" id="resultLabel">System Health Report</div>
-      <div class="score-big" id="scoreBadge">0</div>
-      <div class="status" id="statusTitle"></div>
-      <div class="desc" id="statusDesc"></div>
-      <div class="sugg" id="suggestionsBox"></div>
-      <div class="ex-box" id="exerciseBox"></div>
-      <div class="disclaimer" id="disclaimer">
-        ⚠️ 本工具僅供自我評估與健康生活方式參考，不可替代專業醫療診斷、治療或建議。如有持續不適，請諮詢醫生。
-      </div>
-      <div class="qr-box">
-        <canvas id="qrCanvas" width="130" height="130"></canvas>
-        <div class="qr-label" id="qrLabel">掃碼 / 分享結果</div>
-      </div>
-      <div class="actions">
-        <button class="btn btn-voice" id="btnSpeakResult">🔊 播報結果</button>
-        <button class="btn btn-wa" id="btnShareWA">WhatsApp</button>
-        <button class="btn btn-primary" id="btnShareImg">生成圖片</button>
-        <button class="btn btn-outline" id="btnShareFamily">家庭連結</button>
-        <button class="btn btn-ghost" id="btnReset">重新測試</button>
-        <button class="btn btn-ghost" id="btnHistory">歷史</button>
+    <!-- Tab 1: Quiz Form -->
+    <div id="tabQuiz">
+      <form id="quizForm"></form>
+      
+      <!-- Quiz Result Card -->
+      <div class="card" id="resultCard" style="display:none;margin-top:14px">
+        <div style="font-size:12px;font-weight:700;color:var(--text2);text-transform:uppercase">Microbiome Health Score</div>
+        <div style="font-size:52px;font-weight:800;letter-spacing:-1.5px;margin:6px 0;line-height:1" id="scoreBadge">0</div>
+        <div style="font-size:18px;font-weight:800;margin-bottom:8px" id="statusTitle"></div>
+        <div style="font-size:14px;color:var(--text2);background:var(--bg);padding:14px;border-radius:var(--radius-sm);line-height:1.55" id="statusDesc"></div>
+        <div id="exerciseBox" style="margin-top:12px"></div>
+        <button class="btn btn-voice" style="margin-top:14px" id="btnSpeakResult">🔊 播報評估結果</button>
+        <button class="btn btn-ghost" style="margin-top:8px" id="btnResetQuiz">重新評估</button>
       </div>
     </div>
 
-    <!-- Daily Log -->
-    <div class="card" id="logCard" style="display:none">
-      <h3 id="logTitle" style="margin-bottom:10px">📅 今日腸道日誌</h3>
-      <p style="font-size:13px;color:var(--text2);margin-bottom:12px" id="logHint">每日記錄，幫助追蹤趨勢</p>
-      <div style="font-weight:600;margin-bottom:6px" id="logBowelLabel">排便情況</div>
-      <div class="log-grid" id="logBowel">
-        <div class="log-card" data-val="good"><div class="log-emoji">😊</div><div class="log-label">順暢</div></div>
-        <div class="log-card" data-val="ok"><div class="log-emoji">😐</div><div class="log-label">一般</div></div>
-        <div class="log-card" data-val="hard"><div class="log-emoji">😣</div><div class="log-label">困難</div></div>
-        <div class="log-card" data-val="none"><div class="log-emoji">🚫</div><div class="log-label">無</div></div>
-      </div>
-      <div style="font-weight:600;margin:14px 0 6px" id="logBloatLabel">肚脹感覺</div>
-      <div class="log-grid" id="logBloat">
-        <div class="log-card" data-val="none"><div class="log-emoji">✨</div><div class="log-label">無</div></div>
-        <div class="log-card" data-val="mild"><div class="log-emoji">🫧</div><div class="log-label">輕微</div></div>
-        <div class="log-card" data-val="mod"><div class="log-emoji">😮‍💨</div><div class="log-label">中等</div></div>
-        <div class="log-card" data-val="severe"><div class="log-emoji">😖</div><div class="log-label">明顯</div></div>
-      </div>
-      <button class="btn btn-primary" style="width:100%;margin-top:16px" id="btnSaveLog">儲存今日記錄</button>
-      <div style="margin-top:18px;border-top:1px solid rgba(0,0,0,.06);padding-top:14px">
-        <div style="font-weight:600;margin-bottom:8px">📸 拍照識餐（簡易纖維估算）</div>
-        <p style="font-size:12px;color:var(--text2);margin-bottom:8px">影低當日一餐，系統用顏色分析估算綠色蔬菜比例（僅供參考）</p>
-        <input type="file" id="mealPhoto" accept="image/*" capture="environment" style="font-size:13px;width:100%">
-        <canvas id="mealCanvas" style="display:none;max-width:100%;margin-top:10px;border-radius:12px"></canvas>
-        <div id="mealResult" style="margin-top:10px;font-size:13px;color:var(--text2)"></div>
-      </div>
-      <div id="logWeekSummary" style="margin-top:16px;font-size:13px;color:var(--text2)"></div>
-    </div>
+    <!-- Tab 2: Meal Vision AI (多模態識餐) -->
+    <div id="tabMeal" style="display:none">
+      <div class="card">
+        <h3 style="margin-bottom:6px">📸 港式餐食吞嚥質地與安全分析</h3>
+        <p style="font-size:13px;color:var(--text2);margin-bottom:14px">
+          拍攝餐膳（如火腿通粉、燒味飯），AI 依 IDDSI 標準即時初篩雙重質地嗆咳與骨頭窒息風險。
+        </p>
 
-    <!-- Trend -->
-    <div class="card" id="trendCard" style="display:none">
-      <h3 style="margin-bottom:10px">📈 腸道菌群趨勢分析</h3>
-      <div id="trafficLight" style="text-align:center;margin:12px 0;font-size:28px"></div>
-      <div id="trafficLabel" style="text-align:center;font-size:14px;font-weight:600;margin-bottom:12px"></div>
-      <canvas id="trendCanvas" width="400" height="180" style="width:100%;max-width:400px;background:var(--bg);border-radius:12px"></canvas>
-      <div id="trendHint" style="font-size:12px;color:var(--text2);margin-top:10px;text-align:center">過去最多 8 次評估分數趨勢</div>
-      <div id="weeklyReport" style="margin-top:16px;font-size:13px"></div>
-    </div>
+        <!-- 照護對象 IDDSI 處方設定 -->
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px">
+          <label style="font-size:13px;font-weight:600">照護對象處方：</label>
+          <select id="userPrescription" style="padding:6px 10px;border-radius:8px;border:1px solid rgba(0,0,0,.15);background:var(--bg);font-size:13px">
+            <option value="Level 7">Level 7 - 原質正常食物</option>
+            <option value="Level 6">Level 6 - 軟質及一口量</option>
+            <option value="Level 5" selected>Level 5 - 細碎及濕潤</option>
+            <option value="Level 4">Level 4 - 特稠/純糊餐</option>
+          </select>
+        </div>
 
-    <!-- Q&A -->
-    <div class="card" id="qaCard" style="display:none">
-      <h3 style="margin-bottom:10px">💬 腸道專科問答（粵語）</h3>
-      <p style="font-size:13px;color:var(--text2);margin-bottom:12px">根據你嘅評估結果提供個人化回答。可語音提問。</p>
-      <div style="display:flex;gap:8px;margin-bottom:12px">
-        <input id="qaInput" type="text" placeholder="例如：點解我成日肚脹？" style="flex:1;padding:12px;border-radius:12px;border:1.5px solid rgba(0,0,0,.1);font-size:14px;background:var(--bg);color:var(--text);font-family:inherit">
-        <button class="btn btn-primary" id="btnAsk" style="padding:12px 16px">問</button>
-        <button class="btn btn-voice" id="btnAskVoice" style="padding:12px 14px">🎤</button>
-      </div>
-      <div id="qaQuick" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px"></div>
-      <div id="qaAnswer" style="background:var(--bg);padding:14px;border-radius:14px;font-size:14px;line-height:1.55;min-height:60px;color:var(--text2)"></div>
-    </div>
+        <div class="upload-zone" id="dropZone" onclick="document.getElementById('mealInput').click()">
+          <div style="font-size:32px;margin-bottom:4px">📷</div>
+          <div style="font-weight:700;font-size:15px">點擊拍攝或上傳餐膳相片</div>
+          <div style="font-size:12px;color:var(--text2);margin-top:2px">支援茶餐廳碟頭飯、粉麵、湯飯及糊餐</div>
+          <input type="file" id="mealInput" accept="image/*" capture="environment" style="display:none">
+          <img id="imagePreview" class="upload-preview" alt="餐食預覽">
+        </div>
 
-    <!-- Family -->
-    <div class="card" id="familyCard" style="display:none">
-      <h3 id="familyTitle" style="margin-bottom:10px">👨‍👩‍👧 家庭守護模式</h3>
-      <p style="font-size:13px;color:var(--text2);margin-bottom:12px" id="familyDesc">
-        產生分享連結，子女打開即可查看最新評估結果（數據仍只存在你裝置）。
-      </p>
-      <button class="btn btn-primary" style="width:100%" id="btnGenFamilyLink">產生家庭分享連結</button>
-      <div id="familyLinkBox" style="display:none;margin-top:12px">
-        <input id="familyLinkInput" readonly style="width:100%;padding:12px;border-radius:12px;border:1px solid rgba(0,0,0,.1);font-size:13px;background:var(--bg)">
-        <button class="btn btn-wa" style="width:100%;margin-top:8px" id="btnCopyFamily">複製並用 WhatsApp 分享</button>
-      </div>
-      <div class="disclaimer" style="margin-top:14px" id="familyNote">
-        提示：連結包含分數摘要，不包含個人身份資料。連續兩次 Critical 會顯示本地提醒。
+        <button class="btn btn-primary" id="btnAnalyzeMeal" style="display:none">開始 AI 吞嚥與營養分析</button>
+
+        <!-- 辨識結果卡片 -->
+        <div id="mealReportCard" style="display:none;margin-top:16px;border-top:1px solid rgba(0,0,0,.08);padding-top:16px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <span class="iddsi-badge" id="resIddsiLevel">Level 5</span>
+            <span style="font-size:12px;color:var(--text2)" id="resConfidence">信心度: 88%</span>
+          </div>
+
+          <h2 style="font-size:19px;font-weight:800;margin-bottom:8px" id="resFoodName">火腿通粉 (Ham Macaroni)</h2>
+
+          <!-- 雙重質地危險警示 -->
+          <div class="danger-banner" id="resDualTextureBanner" style="display:none">
+            <div style="font-size:24px">⚠️</div>
+            <div>
+              <strong>雙重質地嗆咳警示 (Dual Texture)</strong>
+              <p id="resSafetyWarning"></p>
+            </div>
+          </div>
+
+          <!-- 照護員一鍵動作標籤 -->
+          <div class="action-chips" id="resActionChips"></div>
+
+          <!-- 營養素概覽 -->
+          <div class="nutrient-grid" id="resNutrientGrid"></div>
+
+          <button class="btn btn-voice" id="btnPlayMealVoice" style="margin-top:10px">
+            🔊 播放營養師廣東話叮囑
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- History -->
-    <div class="card" id="historyCard" style="display:none">
-      <h3 id="histTitle">📊 過往評估記錄</h3>
-      <div id="historyList"></div>
-      <button class="btn btn-outline" style="width:100%;margin-top:12px" id="btnClearHistory">清除記錄</button>
-      <button class="btn btn-ghost" style="width:100%;margin-top:8px" id="btnBackFromHistory">返回</button>
+    <!-- Tab 3: Trend & Log -->
+    <div id="tabTrend" style="display:none">
+      <div class="card">
+        <h3 style="margin-bottom:10px">📈 近期健康與飲食追蹤</h3>
+        <div id="historyList"></div>
+        <button class="btn btn-outline" style="margin-top:14px" id="btnClearHistory">清除本機紀錄</button>
+      </div>
+    </div>
+
+    <!-- Tab 4: AI Voice Q&A -->
+    <div id="tabQa" style="display:none">
+      <div class="card">
+        <h3 style="margin-bottom:6px">💬 樂齡腸道與飲食問答</h3>
+        <p style="font-size:13px;color:var(--text2);margin-bottom:12px">以地道繁體廣東話解答排便、肚脹及益生菌疑問。</p>
+        <div style="display:flex;gap:8px;margin-bottom:12px">
+          <input id="qaInput" type="text" placeholder="例如：點解食親火腿通粉都好脹？" style="flex:1;padding:12px;border-radius:12px;border:1.5px solid rgba(0,0,0,.15);background:var(--bg);color:var(--text);font-size:14px">
+          <button class="btn btn-primary" id="btnAsk" style="width:auto;padding:0 18px">問</button>
+        </div>
+        <div id="qaAnswer" style="background:var(--bg);padding:14px;border-radius:12px;font-size:14.5px;line-height:1.6;color:var(--text)"></div>
+      </div>
     </div>
 
     <div class="footer">
       © 樂活健康系統 · Lohascare Gerontech<br>
-      🔒 數據只存於本機 · 僅供自我評估參考 · 非醫療診斷<br>
-      <span id="pwaStatus"></span>
+      🔒 本機私隱保護 · 非醫療診斷證明 · 有持續不適請遵醫囑
     </div>
   </div>
 
   <div class="toast" id="toast"></div>
-  <div class="listening" id="listening"><div class="pulse-mic">🎤</div><div id="listenText">請講出答案…</div></div>
-  <canvas id="shareCanvas" width="720" height="1100"></canvas>
 
   <script>
-    // ========== i18n + data ==========
-    const i18n = {
-      zh: {
-        title: '樂活健康系統 · 腸道微生態檢測',
-        sub: 'Your Gut. Your Rules. · 約 1 分鐘快速 Assessment',
-        progress: (a,t) => `${a} / ${t} 題`,
-        resultLabel: 'System Health Report',
-        histTitle: '📊 過往評估記錄', clearHist: '清除記錄', back: '返回',
-        reset: '重新測試', history: '歷史', shareWA: 'WhatsApp', shareImg: '生成圖片',
-        speakResult: '🔊 播報結果', familyLink: '家庭連結',
-        qrLabel: '掃碼 / 分享結果', noHist: '暫無記錄',
-        toastReset: '已重新開始', toastClear: '記錄已清除', toastImg: '圖片已下載',
-        toastLog: '今日記錄已儲存', toastCopy: '連結已複製', toastVoice: '語音模式已開啟',
-        optimal: '🟢 0–8 pts · 完美狀態 (Optimal)',
-        warning: '🟡 9–20 pts · 亞健康 (Warning)',
-        critical: '🔴 21–40 pts · 需要救援 (Critical)',
-        descO: '<strong>System Status: All Green.</strong><br>你嘅腸道微生態非常健康！好菌滿滿，免疫力在線。繼續保持均衡飲食、充足睡眠同適量運動。',
-        descW: '<strong>System Update Required.</strong><br>腸道微生態開始失衡，身體俾緊 signal。建議增加膳食纖維、減少加工食品、考慮益生菌，並改善作息。',
-        descC: '<strong>Red Flag.</strong><br>壞菌已佔主導，嚴重影響消化與免疫。建議及早調整生活習慣，並尋求醫生或樂活健康團隊協助。',
-        suggT: '💡 個人化建議',
-        exT: '🏃 症狀聯動運動處方（跟住做）',
-        disclaimer: '⚠️ 本工具僅供自我評估與健康生活方式參考，不可替代專業醫療診斷、治療或建議。如有持續不適，請諮詢醫生。',
-        logTitle: '📅 今日腸道日誌', logHint: '每日記錄，幫助追蹤趨勢',
-        logBowel: '排便情況', logBloat: '肚脹感覺', saveLog: '儲存今日記錄',
-        familyTitle: '👨‍👩‍👧 家庭守護模式',
-        familyDesc: '產生分享連結，子女打開即可查看最新評估結果（數據仍只存在你裝置）。',
-        genLink: '產生家庭分享連結', copyWA: '複製並用 WhatsApp 分享',
-        familyNote: '提示：連結包含分數摘要，不包含個人身份資料。連續兩次 Critical 會顯示本地提醒。',
-        qs: [
-          { t: '排便情況', o: ['每日都順暢','2–3 日一次','3 日以上 / 經常便秘'] },
-          { t: '肚脹 / 腸氣', o: ['很少出現','每星期 1–2 次','幾乎每日都有'] },
-          { t: '免疫力', o: ['很少感冒','每年 3–4 次','容易病、恢復慢'] },
-          { t: '敏感問題（鼻敏感 / 濕疹）', o: ['無明顯敏感','偶爾發作','經常鼻敏感 / 皮膚痕癢'] },
-          { t: '腸胃敏感', o: ['無特別問題','偶爾胃氣 / 肚痛','經常腸胃不適'] },
-          { t: '抗生素使用記錄', o: ['很少或沒有','最近半年有服用','最近 1 個月有服用'] },
-          { t: '睡眠質素', o: ['每晚 7 小時以上，質素好','偶有失眠 / 不足 6 小時','經常失眠或睡眠差'] },
-          { t: '飲食習慣（高糖 / 加工食品）', o: ['以全食物為主，少加工','每星期食幾次甜食 / 快餐','每日都有高糖或加工食品'] },
-          { t: '壓力水平', o: ['壓力管理得宜','中等壓力，偶爾焦慮','長期高壓力 / 焦慮'] },
-          { t: '運動習慣', o: ['每星期 3 次或以上中等運動','偶爾運動','幾乎沒有運動'] }
-        ],
-        sugg: {
-          optimal: ['繼續均衡飲食，多吃發酵食品','保持規律運動與充足睡眠','每半年可再做一次評估'],
-          warning: ['每日增加膳食纖維（蔬菜、燕麥、豆類）','減少高糖飲料與加工零食','考慮補充多菌株益生菌','固定睡眠時間，減少熬夜','嘗試深呼吸或短暫冥想減壓'],
-          critical: ['立即減少高糖、高脂加工食品','優先改善睡眠（目標 7 小時+）','開始溫和運動（步行、瑜伽）','強烈建議諮詢醫生或營養師','考慮專業腸道檢測與個人化益生菌']
-        },
-        // Exercise prescriptions (創新點1)
-        exercises: {
-          q1: { title: '便秘傾向 · 飯後散步 + 腹部順時針按摩', time: '15 分鐘', how: '飯後慢行 10 分鐘，之後雙手順時針輕柔按摩肚臍周圍 5 分鐘。' },
-          q2: { title: '肚脹 · 瑜伽貓牛式 + 深呼吸', time: '10 分鐘', how: '四肢着地，吸氣拱背抬頭（牛式），呼氣拱背低頭（貓式），重複 8–10 次，配合深呼吸。' },
-          q9: { title: '高壓力 · 八段錦「調理脾胃須單舉」', time: '8 分鐘', how: '單手向上托舉，另一手下按，左右交替，緩慢呼吸，重複 6–8 次。' },
-          q7: { title: '睡眠差 · 睡前腿部抬高 + 腹式呼吸', time: '5 分鐘', how: '平躺，雙腿抬高靠牆或枕頭，雙手輕放腹部，深吸慢呼 5 分鐘。' },
-          general: { title: '日常推薦 · 溫和步行', time: '20 分鐘', how: '飯後或黃昏慢行，保持自然呼吸，有助腸道蠕動。' }
-        }
-      },
-      en: {
-        title: 'Lohas Health · Gut Microbiome Check',
-        sub: 'Your Gut. Your Rules. · ~1 min assessment',
-        progress: (a,t) => `${a} / ${t} questions`,
-        resultLabel: 'System Health Report',
-        histTitle: '📊 Assessment History', clearHist: 'Clear history', back: 'Back',
-        reset: 'Retake', history: 'History', shareWA: 'WhatsApp', shareImg: 'Save image',
-        speakResult: '🔊 Read result', familyLink: 'Family link',
-        qrLabel: 'Scan / share result', noHist: 'No records',
-        toastReset: 'Quiz reset', toastClear: 'History cleared', toastImg: 'Image downloaded',
-        toastLog: 'Today\'s log saved', toastCopy: 'Link copied', toastVoice: 'Voice mode on',
-        optimal: '🟢 0–8 pts · Optimal',
-        warning: '🟡 9–20 pts · Warning',
-        critical: '🔴 21–40 pts · Critical',
-        descO: '<strong>All Green.</strong><br>Your gut microbiome looks excellent! Keep balanced diet, sleep and movement.',
-        descW: '<strong>Update Required.</strong><br>Early imbalance signs. More fibre, less processed food, consider probiotic.',
-        descC: '<strong>Red Flag.</strong><br>Harmful bacteria may dominate. Act early and consult a professional.',
-        suggT: '💡 Personalised Suggestions',
-        exT: '🏃 Symptom-linked exercise prescription',
-        disclaimer: '⚠️ This tool is for self-assessment and lifestyle reference only. It does not replace professional medical diagnosis or advice. Seek a doctor if symptoms persist.',
-        logTitle: '📅 Daily Gut Log', logHint: 'Track daily to see trends',
-        logBowel: 'Bowel movement', logBloat: 'Bloating', saveLog: 'Save today\'s log',
-        familyTitle: '👨‍👩‍👧 Family Guardian Mode',
-        familyDesc: 'Generate a share link so family can see the latest score (data stays on your device).',
-        genLink: 'Generate family share link', copyWA: 'Copy & share via WhatsApp',
-        familyNote: 'Link contains score summary only, no personal identity. Local alert if two consecutive Critical scores.',
-        qs: [
-          { t: 'Bowel movement', o: ['Daily & smooth','Every 2–3 days','>3 days / constipation'] },
-          { t: 'Bloating / gas', o: ['Rarely','1–2× per week','Almost daily'] },
-          { t: 'Immunity', o: ['Rarely sick','3–4× a year','Easily sick, slow recovery'] },
-          { t: 'Allergies', o: ['None obvious','Occasional','Frequent rhinitis / eczema'] },
-          { t: 'Gut sensitivity', o: ['No issues','Occasional gas/pain','Frequent discomfort'] },
-          { t: 'Antibiotics', o: ['Rarely/never','Past 6 months','Past month'] },
-          { t: 'Sleep quality', o: ['7+ hrs good','Occasional insomnia','Frequent poor sleep'] },
-          { t: 'Diet (sugar/processed)', o: ['Mostly whole foods','Few times a week','Daily high-sugar'] },
-          { t: 'Stress level', o: ['Well managed','Moderate','Chronic high stress'] },
-          { t: 'Exercise', o: ['3+ sessions/week','Occasional','Almost none'] }
-        ],
-        sugg: {
-          optimal: ['Keep balanced diet + fermented foods','Regular exercise & good sleep','Re-assess every 6 months'],
-          warning: ['Increase daily fibre','Cut sugary drinks & snacks','Consider multi-strain probiotic','Fix sleep schedule','Try short meditation'],
-          critical: ['Reduce high-sugar & processed foods now','Prioritise 7+ hrs sleep','Start gentle walking/yoga','See a doctor or dietitian','Consider professional gut testing']
-        },
-        exercises: {
-          q1: { title: 'Constipation tendency · Post-meal walk + clockwise belly massage', time: '15 min', how: 'Walk slowly 10 min after meal, then gentle clockwise massage around navel for 5 min.' },
-          q2: { title: 'Bloating · Cat-Cow yoga + deep breathing', time: '10 min', how: 'On all fours: inhale arch (cow), exhale round (cat), 8–10 reps with deep breath.' },
-          q9: { title: 'High stress · Baduanjin “Spleen-stomach raise”', time: '8 min', how: 'One hand push up, other press down, alternate sides, slow breathing, 6–8 reps.' },
-          q7: { title: 'Poor sleep · Legs up + abdominal breathing', time: '5 min', how: 'Lie down, legs elevated, hands on belly, deep inhale slow exhale for 5 min.' },
-          general: { title: 'Daily · Gentle walking', time: '20 min', how: 'Slow walk after meal or in evening, natural breathing, supports gut motility.' }
-        }
-      }
+    // ========== 1. 狀態管理與問卷資料庫 ==========
+    const TOTAL_QUESTIONS = 10;
+    const SCORES = [0, 2, 4];
+    let elderlyMode = localStorage.getItem('lohas_elderly') === '1';
+    let voiceOn = false;
+    let selectedImageBase64 = null;
+
+    // Dify API 配置（請填入你的 Dify 工作流金鑰與端點）
+    const DIFY_CONFIG = {
+      apiKey: 'app-xxxxxx', // 替換為你的 Dify API Key
+      endpoint: 'https://api.dify.ai/v1/workflows/run'
     };
 
-    const SCORES = [0, 2, 4];
-    const TOTAL = 10;
-    const STORAGE = { ans: 'lohas_ans_v4', hist: 'lohas_hist_v4', log: 'lohas_daily_v4', lang: 'lohas_lang' };
+    const QUESTIONS = [
+      { t: '排便頻率與質地', o: ['每日皆順暢','2–3 日一次','3 日以上 / 經常乾硬便秘'] },
+      { t: '肚脹與多腸氣情況', o: ['很少出現','每星期 1–2 次','幾乎每日都有肚脹'] },
+      { t: '呼吸道抵抗力', o: ['很少感冒','每年 2–3 次','經常感冒、喉嚨不適'] },
+      { t: '敏感問題（鼻敏感 / 皮膚痕癢）', o: ['無明顯敏感','偶爾發作','經常鼻敏感或皮膚痕癢'] },
+      { t: '腸胃敏感度', o: ['無特別問題','間中胃氣或隱隱痛','經常肚瀉或劇烈不適'] },
+      { t: '近半年抗生素服用史', o: ['完全沒有','最近半年曾服用 1 次','最近 1 個月內曾服用'] },
+      { t: '夜間睡眠質素', o: ['每晚 7 小時以上高質睡眠','偶有失眠或早醒','經常失眠、半夜易醒'] },
+      { t: '高糖、高油與加工食品習慣', o: ['清淡全食物為主','每星期幾次甜品/快餐','每日皆有高糖加工食品'] },
+      { t: '自覺壓力與緊張程度', o: ['心情舒暢放鬆','中等壓力，間中焦慮','長期緊張、壓力大'] },
+      { t: '每週運動與散步習慣', o: ['每週 3 次以上（每次 20 分鐘）','偶爾慢行','幾乎完全不運動'] }
+    ];
 
-    let lang = localStorage.getItem(STORAGE.lang) || 'zh';
-    let voiceOn = false;
-    let elderlyMode = localStorage.getItem('lohas_elderly') === '1';
+    const EXERCISE_KB = {
+      q1: { title: '順時針腹部環形摩腹法', time: '10 分鐘', how: '雙手搓熱，平放於肚臍周圍，順時針方向緩慢輕柔打圈 50 次，促進結腸蠕動。' },
+      q2: { title: '坐姿轉體溫和排氣式', time: '8 分鐘', how: '端坐於有靠背椅上，挺直腰背，身體緩慢向左轉並深呼氣，維持 5 秒後換邊，重複 6 次。' },
+      q7: { title: '睡前抬腿腹式深呼吸', time: '5 分鐘', how: '平躺於床上，小腿墊高於枕頭上，雙手輕置腹部，緩慢深吸氣 4 秒、慢呼氣 6 秒。' },
+      q9: { title: '八段錦「調理脾胃須單舉」', time: '6 分鐘', how: '一手向上托舉如托天，另一手下按於胯旁，左右交替，動作緩慢配合自然呼吸。' }
+    };
 
-    // ========== Speech ==========
-    function speak(text, langCode) {
+    // ========== 2. 粵語語音核心 ==========
+    function speakCantonese(text) {
       if (!window.speechSynthesis) return;
       window.speechSynthesis.cancel();
-      const u = new SpeechSynthesisUtterance(text);
-      u.lang = langCode || (lang === 'zh' ? 'zh-HK' : 'en-US');
-      u.rate = elderlyMode ? 0.85 : 0.95;
-      u.pitch = 1;
-      window.speechSynthesis.speak(u);
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'zh-HK';
+      utterance.rate = elderlyMode ? 0.82 : 0.88; // 專為長者設計的清晰慢速
+      utterance.pitch = 1.0;
+      window.speechSynthesis.speak(utterance);
     }
 
-    function startListening(onResult) {
-      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SR) { toast(lang === 'zh' ? '此裝置不支援語音輸入' : 'Speech recognition not supported'); return; }
-      const rec = new SR();
-      rec.lang = lang === 'zh' ? 'zh-HK' : 'en-US';
-      rec.interimResults = false;
-      rec.maxAlternatives = 3;
-      document.getElementById('listening').classList.add('show');
-      document.getElementById('listenText').textContent = lang === 'zh' ? '請講出答案…' : 'Please speak your answer…';
-      rec.onresult = (e) => {
-        document.getElementById('listening').classList.remove('show');
-        const transcript = e.results[0][0].transcript.toLowerCase();
-        onResult(transcript);
-      };
-      rec.onerror = () => document.getElementById('listening').classList.remove('show');
-      rec.onend = () => document.getElementById('listening').classList.remove('show');
-      rec.start();
+    function showToast(msg) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 2600);
     }
 
-    // Match spoken answer to option
-    function matchAnswer(transcript, opts) {
-      const keywords = {
-        zh: [
-          ['每日','順暢','每天','好','正常'],
-          ['兩日','三日','2','3','隔'],
-          ['以上','便秘','難','幾日','無']
-        ],
-        en: [
-          ['daily','smooth','every day','good','normal'],
-          ['2','3','two','three','every other'],
-          ['more','constip','hard','difficult','none']
-        ]
-      };
-      const keys = keywords[lang] || keywords.zh;
-      for (let i = 0; i < 3; i++) {
-        if (keys[i].some(k => transcript.includes(k))) return SCORES[i];
-      }
-      // fallback: number words
-      if (/[0零]/.test(transcript) || /none|無|好/.test(transcript)) return 0;
-      if (/[24]/.test(transcript)) return 2;
-      if (/[4四]/.test(transcript) || /嚴重|almost/.test(transcript)) return 4;
-      return null;
-    }
-
-    // ========== Render questions ==========
-    function renderQuestions() {
+    // ========== 3. 問卷渲染與評分邏輯 ==========
+    function renderQuiz() {
       const form = document.getElementById('quizForm');
       form.innerHTML = '';
-      const t = i18n[lang];
-      t.qs.forEach((q, idx) => {
+      QUESTIONS.forEach((q, idx) => {
         const n = idx + 1;
         const card = document.createElement('div');
         card.className = 'card';
-        card.dataset.q = n;
+        card.style.marginTop = '10px';
         card.innerHTML = `
           <div class="q-header">
             <div class="q-num">${n}</div>
             <div class="q-title">${q.t}</div>
-            <button type="button" class="speak-btn" data-q="${n}" title="朗讀">🔊</button>
+            <button type="button" class="speak-btn" onclick="speakCantonese('${n}. ${q.t}。選項：${q.o.join('，')}')">🔊</button>
           </div>
           <div class="options">
             ${q.o.map((opt, i) => `
-              <label class="opt">
-                <input type="radio" name="q${n}" value="${SCORES[i]}">
+              <label class="opt" onclick="handleOptionSelect(${n},${SCORES[i]}, this)">
+                <input type="radio" name="q${n}" value="${SCORES[i]}" style="display:none">
                 <span class="radio"></span>
                 <span class="opt-label">${opt}</span>
-                <span class="opt-pts">${SCORES[i]}</span>
+                <span class="opt-pts">${SCORES[i]}分</span>
               </label>
             `).join('')}
           </div>
         `;
         form.appendChild(card);
       });
-      form.querySelectorAll('input[type="radio"]').forEach(r => r.addEventListener('change', () => updateProgress()));
-      form.querySelectorAll('.speak-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const n = +btn.dataset.q;
-          const q = t.qs[n-1];
-          const text = `${n}. ${q.t}。選項：${q.o.join('；')}`;
-          speak(text);
-          if (voiceOn) {
-            setTimeout(() => startListening(transcript => {
-              const val = matchAnswer(transcript, q.o);
-              if (val !== null) {
-                const radio = form.querySelector(`input[name="q${n}"][value="${val}"]`);
-                if (radio) { radio.checked = true; updateProgress(); toast(lang==='zh'?'已選擇':'Selected'); }
-              } else toast(lang==='zh'?'聽唔清楚，請再試':'Not clear, try again');
-            }), 800);
-          }
-        });
-      });
-      restoreAnswers();
     }
 
-    function setLang(l) {
-      lang = l;
-      localStorage.setItem(STORAGE.lang, l);
-      document.getElementById('langZh').classList.toggle('active', l === 'zh');
-      document.getElementById('langEn').classList.toggle('active', l === 'en');
-      document.documentElement.lang = l === 'zh' ? 'zh-HK' : 'en';
-      const t = i18n[l];
-      document.getElementById('titleMain').textContent = t.title;
-      document.getElementById('subtitle').textContent = t.sub;
-      document.getElementById('resultLabel').textContent = t.resultLabel;
-      document.getElementById('histTitle').textContent = t.histTitle;
-      document.getElementById('btnClearHistory').textContent = t.clearHist;
-      document.getElementById('btnBackFromHistory').textContent = t.back;
-      document.getElementById('btnReset').textContent = t.reset;
-      document.getElementById('btnHistory').textContent = t.history;
-      document.getElementById('btnShareWA').textContent = t.shareWA;
-      document.getElementById('btnShareImg').textContent = t.shareImg;
-      document.getElementById('btnSpeakResult').textContent = t.speakResult;
-      document.getElementById('btnShareFamily').textContent = t.familyLink;
-      document.getElementById('qrLabel').textContent = t.qrLabel;
-      document.getElementById('disclaimer').textContent = t.disclaimer;
-      document.getElementById('logTitle').textContent = t.logTitle;
-      document.getElementById('logHint').textContent = t.logHint;
-      document.getElementById('logBowelLabel').textContent = t.logBowel;
-      document.getElementById('logBloatLabel').textContent = t.logBloat;
-      document.getElementById('btnSaveLog').textContent = t.saveLog;
-      document.getElementById('familyTitle').textContent = t.familyTitle;
-      document.getElementById('familyDesc').textContent = t.familyDesc;
-      document.getElementById('btnGenFamilyLink').textContent = t.genLink;
-      document.getElementById('btnCopyFamily').textContent = t.copyWA;
-      document.getElementById('familyNote').textContent = t.familyNote;
-      renderQuestions();
-      if (document.getElementById('resultCard').style.display === 'block') {
-        let score = 0;
-        for (let i = 1; i <= TOTAL; i++) {
-          const sel = document.querySelector(`input[name="q${i}"]:checked`);
-          if (sel) score += +sel.value;
+    function handleOptionSelect(qNum, val, labelEl) {
+      const parent = labelEl.parentElement;
+      parent.querySelectorAll('.opt').forEach(el => el.classList.remove('selected'));
+      labelEl.classList.add('selected');
+      const radio = labelEl.querySelector('input');
+      radio.checked = true;
+      checkProgress();
+    }
+
+    function checkProgress() {
+      let answered = 0;
+      let total = 0;
+      for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+        const sel = document.querySelector(`input[name="q${i}"]:checked`);
+        if (sel) {
+          answered++;
+          total += parseInt(sel.value, 10);
         }
-        showResults(score, false);
+      }
+      document.getElementById('progressBar').style.width = (answered / TOTAL_QUESTIONS * 100) + '%';
+      document.getElementById('progressText').textContent = `${answered} / ${TOTAL_QUESTIONS} 題`;
+
+      if (answered === TOTAL_QUESTIONS) {
+        showQuizResult(total);
       }
     }
 
-    function restoreAnswers() {
-      try {
-        const saved = JSON.parse(localStorage.getItem(STORAGE.ans) || '{}');
-        Object.keys(saved).forEach(name => {
-          const radio = document.querySelector(`input[name="${name}"][value="${saved[name]}"]`);
-          if (radio) { radio.checked = true; radio.closest('.opt').classList.add('selected'); }
-        });
-        updateProgress(false);
-      } catch(e) {}
-    }
-
-    function saveAnswers() {
-      const data = {};
-      for (let i = 1; i <= TOTAL; i++) {
-        const sel = document.querySelector(`input[name="q${i}"]:checked`);
-        if (sel) data[`q${i}`] = sel.value;
-      }
-      localStorage.setItem(STORAGE.ans, JSON.stringify(data));
-    }
-
-    function updateProgress(scroll = true) {
-      let answered = 0, totalScore = 0;
-      document.querySelectorAll('.opt').forEach(item => {
-        const radio = item.querySelector('input');
-        if (radio && radio.checked) item.classList.add('selected');
-        else item.classList.remove('selected');
-      });
-      for (let i = 1; i <= TOTAL; i++) {
-        const sel = document.querySelector(`input[name="q${i}"]:checked`);
-        if (sel) { answered++; totalScore += +sel.value; }
-      }
-      document.getElementById('progressBar').style.width = (answered / TOTAL * 100) + '%';
-      document.getElementById('progressText').textContent = i18n[lang].progress(answered, TOTAL);
-      saveAnswers();
-      if (answered === TOTAL) showResults(totalScore, scroll);
-    }
-
-    // ========== Exercise prescription (創新點1) ==========
-    function getExercisePrescriptions() {
-      const t = i18n[lang];
-      const list = [];
-      const q1 = +(document.querySelector('input[name="q1"]:checked')?.value || 0);
-      const q2 = +(document.querySelector('input[name="q2"]:checked')?.value || 0);
-      const q7 = +(document.querySelector('input[name="q7"]:checked')?.value || 0);
-      const q9 = +(document.querySelector('input[name="q9"]:checked')?.value || 0);
-      if (q1 >= 2) list.push(t.exercises.q1);
-      if (q2 >= 2) list.push(t.exercises.q2);
-      if (q9 >= 2) list.push(t.exercises.q9);
-      if (q7 >= 2) list.push(t.exercises.q7);
-      if (list.length === 0) list.push(t.exercises.general);
-      return list;
-    }
-
-    function showResults(score, scroll = true) {
-      const t = i18n[lang];
+    function showQuizResult(score) {
       const card = document.getElementById('resultCard');
       card.style.display = 'block';
-      document.getElementById('historyCard').style.display = 'none';
-      document.getElementById('scoreBadge').textContent = score + ' pts';
+      document.getElementById('scoreBadge').textContent = `${score} 分`;
 
-      let status, color, html, key;
-      if (score <= 8) { color = '#22c55e'; status = t.optimal; html = t.descO; key = 'optimal'; }
-      else if (score <= 20) { color = '#f59e0b'; status = t.warning; html = t.descW; key = 'warning'; }
-      else { color = '#ef4444'; status = t.critical; html = t.descC; key = 'critical'; }
+      let title = '', desc = '', color = '';
+      if (score <= 8) {
+        color = '#22c55e';
+        title = '🟢 狀態極佳 (Optimal)';
+        desc = '你嘅腸道微生態好健康，好菌充足！繼續保持多吃高纖全食物、規律步行同良好睡眠習慣。';
+      } else if (score <= 20) {
+        color = '#f59e0b';
+        title = '🟡 輕度失衡 (Warning)';
+        desc = '腸道菌群開始出現失衡信號，易有消化不良或易攰。建議每餐增加半碗深綠色蔬菜，配合規律運動處方。';
+      } else {
+        color = '#ef4444';
+        title = '🔴 嚴重失衡 (Critical)';
+        desc = '微生態明顯失調，消化與屏障功能較弱。建議減少高糖油炸飲食，積極執行運動處方，並諮詢家庭醫生或營養師。';
+      }
+
       document.getElementById('scoreBadge').style.color = color;
-      document.getElementById('statusTitle').textContent = status;
-      document.getElementById('statusDesc').innerHTML = html;
+      document.getElementById('statusTitle').textContent = title;
+      document.getElementById('statusDesc').textContent = desc;
 
-      const list = t.sugg[key].map(s => `<li>${s}</li>`).join('');
-      document.getElementById('suggestionsBox').innerHTML = `<h4>${t.suggT}</h4><ul>${list}</ul>`;
+      // 提取症狀聯動運動處方
+      let exHtml = '<h4 style="color:var(--teal);margin-bottom:8px">🏃 個人化症狀運動處方</h4>';
+      const q1Val = parseInt(document.querySelector('input[name="q1"]:checked')?.value || 0, 10);
+      const q2Val = parseInt(document.querySelector('input[name="q2"]:checked')?.value || 0, 10);
+      const q7Val = parseInt(document.querySelector('input[name="q7"]:checked')?.value || 0, 10);
 
-      // Exercises
-      const exs = getExercisePrescriptions();
-      let exHtml = `<h4>${t.exT}</h4>`;
-      exs.forEach(ex => {
-        exHtml += `<div class="ex-item"><strong>${ex.title}</strong> <span class="ex-time">${ex.time}</span><br>${ex.how}</div>`;
-      });
+      if (q1Val >= 2) exHtml += createExItem(EXERCISE_KB.q1);
+      if (q2Val >= 2) exHtml += createExItem(EXERCISE_KB.q2);
+      if (q7Val >= 2) exHtml += createExItem(EXERCISE_KB.q7);
+      if (q1Val < 2 && q2Val < 2 && q7Val < 2) exHtml += createExItem(EXERCISE_KB.q9);
+
       document.getElementById('exerciseBox').innerHTML = exHtml;
+      saveHistory(score, title);
+      card.scrollIntoView({ behavior: 'smooth' });
 
-      // QR
-      const qrText = `Lohas Gut: ${score}pts | ${status.replace(/🟢|🟡|🔴/g,'').trim()}`;
-      const canvas = document.getElementById('qrCanvas');
-      if (window.QRCode) {
-        QRCode.toCanvas(canvas, qrText, { width: 130, margin: 1, color: { dark: '#0d9488', light: '#fff' } }, ()=>{});
+      if (voiceOn) {
+        speakCantonese(`評估完成，你嘅總分係 ${score} 分。${desc}`);
+      }
+    }
+
+    function createExItem(ex) {
+      return `<div class="ex-item"><strong>${ex.title}</strong> <span class="ex-time">${ex.time}</span><br>${ex.how}</div>`;
+    }
+
+    function saveHistory(score, status) {
+      const history = JSON.parse(localStorage.getItem('lohas_history') || '[]');
+      const dateStr = new Date().toLocaleDateString('zh-HK', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+      history.unshift({ score, status, date: dateStr });
+      localStorage.setItem('lohas_history', JSON.stringify(history.slice(0, 15)));
+    }
+
+    // ========== 4. 識餐多模態 AI 對接 (Dify Workflow) ==========
+    const mealInput = document.getElementById('mealInput');
+    const imagePreview = document.getElementById('imagePreview');
+    const btnAnalyzeMeal = document.getElementById('btnAnalyzeMeal');
+
+    mealInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        selectedImageBase64 = event.target.result;
+        imagePreview.src = selectedImageBase64;
+        imagePreview.style.display = 'block';
+        btnAnalyzeMeal.style.display = 'block';
+        document.getElementById('mealReportCard').style.display = 'none';
+      };
+      reader.readAsDataURL(file);
+    });
+
+    btnAnalyzeMeal.addEventListener('click', async () => {
+      btnAnalyzeMeal.disabled = true;
+      btnAnalyzeMeal.textContent = 'AI 正在進行物理質地與安全分析...';
+      
+      try {
+        // 真實發送至 Dify 工作流（如未填寫 Key，自動轉入精準 Mock 展示）
+        let resultData = null;
+        if (DIFY_CONFIG.apiKey && DIFY_CONFIG.apiKey !== 'app-xxxxxx') {
+          const resp = await fetch(DIFY_CONFIG.endpoint, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${DIFY_CONFIG.apiKey}`
+            },
+            body: JSON.stringify({
+              inputs: {
+                meal_photo: selectedImageBase64,
+                iddsi_prescription: document.getElementById('userPrescription').value,
+                user_id: 'Allen',
+                meal_type: '午餐'
+              },
+              response_mode: 'blocking',
+              user: 'Allen'
+            })
+          });
+          const resJson = await resp.json();
+          resultData = resJson.data.outputs;
+        } else {
+          // 本機演示模擬數據（完全遵循優化後的 Schema 標準）
+          await new Promise(r => setTimeout(r, 1200));
+          resultData = {
+            food: "火腿通粉 (Ham Macaroni in Soup)",
+            confidence: 0.88,
+            iddsi_level: "Level 5 - 細碎及濕潤 (須徹底瀝乾湯汁才適用)",
+            is_dual_texture: true,
+            caregiver_action: ["DRAIN_SOUP"],
+            safety_warning: "此餐為雙重質地，稀薄湯汁會比固體先滑入咽喉引發嚴重嗆咳與吸入性肺炎！進食前【必須徹底瀝乾湯汁】。",
+            spoken_advice: "老友記，呢碗通粉有湯又有粉，好易濁親㗎！食之前記得叫人幫手倒走啲湯，淨係食通粉呀。",
+            nutrients: { grams: 250, calories: 350, protein_g: 12, fiber_g: 2.0, sodium_mg: 800 }
+          };
+        }
+
+        renderMealResult(resultData);
+      } catch (err) {
+        showToast('分析服務連線失敗，請檢查網絡設定');
+      } finally {
+        btnAnalyzeMeal.disabled = false;
+        btnAnalyzeMeal.textContent = '開始 AI 吞嚥與營養分析';
+      }
+    });
+
+    let currentSpokenAdvice = '';
+    function renderMealResult(data) {
+      const card = document.getElementById('mealReportCard');
+      card.style.display = 'block';
+
+      document.getElementById('resFoodName').textContent = data.food;
+      document.getElementById('resIddsiLevel').textContent = data.iddsi_level;
+      document.getElementById('resConfidence').textContent = `信心度: ${Math.round((data.confidence || 0.85) * 100)}%`;
+
+      // 雙重質地警示
+      const dualBanner = document.getElementById('resDualTextureBanner');
+      if (data.is_dual_texture) {
+        dualBanner.style.display = 'flex';
+        document.getElementById('resSafetyWarning').textContent = data.safety_warning;
+      } else {
+        dualBanner.style.display = 'none';
       }
 
-      // Critical alert for family
-      saveToHistory(score, status);
-      checkCriticalAlert(score);
-
-      if (scroll) setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
-      if (voiceOn) setTimeout(() => speakResult(), 600);
-    }
-
-    function speakResult() {
-      const t = i18n[lang];
-      const score = document.getElementById('scoreBadge').textContent;
-      const status = document.getElementById('statusTitle').textContent;
-      const text = lang === 'zh'
-        ? `你的腸道評估分數係 ${score}。狀態：${status}。請留意個人化建議同運動處方。本工具僅供參考，唔可以代替醫生診斷。`
-        : `Your gut score is ${score}. Status: ${status}. Please review the suggestions and exercise prescription. This is for reference only.`;
-      speak(text);
-    }
-
-    function saveToHistory(score, statusText) {
-      let hist = JSON.parse(localStorage.getItem(STORAGE.hist) || '[]');
-      hist.unshift({
-        score, status: statusText,
-        date: new Date().toLocaleString(lang === 'zh' ? 'zh-HK' : 'en-GB', { year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit' })
+      // 照護員動作標籤
+      const chipBox = document.getElementById('resActionChips');
+      chipBox.innerHTML = '';
+      const actionMap = {
+        'DRAIN_SOUP': '🥣 必須徹底瀝乾湯汁',
+        'DEBONE': '🍗 必須徹底去骨剪碎',
+        'CUT_FINE': '✂️ 必須剪碎至 4mm',
+        'SERVE_AS_IS': '✅ 可直接進食'
+      };
+      (data.caregiver_action || ['SERVE_AS_IS']).forEach(act => {
+        const text = actionMap[act] || act;
+        chipBox.innerHTML += `<span class="action-chip">${text}</span>`;
       });
-      localStorage.setItem(STORAGE.hist, JSON.stringify(hist.slice(0, 20)));
+
+      // 營養素
+      const n = data.nutrients || {};
+      document.getElementById('resNutrientGrid').innerHTML = `
+        <div class="nutrient-item"><span>熱量</span><strong>${n.calories || 320} kcal</strong></div>
+        <div class="nutrient-item"><span>蛋白質</span><strong>${n.protein_g || 12} g</strong></div>
+        <div class="nutrient-item"><span>纖維</span><strong>${n.fiber_g || 2} g</strong></div>
+        <div class="nutrient-item"><span>鈉含量</span><strong>${n.sodium_mg || 800} mg</strong></div>
+      `;
+
+      currentSpokenAdvice = data.spoken_advice || '老友記，食飯要細嚼慢嚥，留意吞嚥安全。';
+      speakCantonese(currentSpokenAdvice);
+      card.scrollIntoView({ behavior: 'smooth' });
     }
 
-    function checkCriticalAlert(score) {
-      if (score <= 20) return;
-      const hist = JSON.parse(localStorage.getItem(STORAGE.hist) || '[]');
-      if (hist.length >= 2 && hist[0].score > 20 && hist[1].score > 20) {
-        setTimeout(() => toast(lang === 'zh' ? '⚠️ 連續兩次 Critical，建議家人關注並諮詢醫生' : '⚠️ Two consecutive Critical scores — consider family support & doctor'), 1500);
-      }
-    }
+    document.getElementById('btnPlayMealVoice').addEventListener('click', () => {
+      speakCantonese(currentSpokenAdvice);
+    });
 
-    function showHistory() {
-      const t = i18n[lang];
-      const hist = JSON.parse(localStorage.getItem(STORAGE.hist) || '[]');
+    // ========== 5. 趨勢與問答分頁 ==========
+    function renderHistory() {
       const list = document.getElementById('historyList');
-      list.innerHTML = hist.length === 0
-        ? `<p style="color:var(--text2);font-size:13px">${t.noHist}</p>`
-        : hist.map(h => `<div class="hist-item"><span>${h.date}</span><span style="font-weight:700;color:${h.score<=8?'#22c55e':h.score<=20?'#f59e0b':'#ef4444'}">${h.score} pts</span></div>`).join('');
-      document.getElementById('resultCard').style.display = 'none';
-      document.getElementById('historyCard').style.display = 'block';
-      document.getElementById('historyCard').scrollIntoView({ behavior: 'smooth' });
+      const hist = JSON.parse(localStorage.getItem('lohas_history') || '[]');
+      if (hist.length === 0) {
+        list.innerHTML = '<p style="color:var(--text2);font-size:14px">暫無檢測記錄，請先完成一次問卷或識餐。</p>';
+        return;
+      }
+      list.innerHTML = hist.map(h => `
+        <div style="display:flex;justify-content:space-between;padding:12px;background:var(--bg);border-radius:10px;margin-bottom:6px">
+          <span>${h.date}</span>
+          <span style="font-weight:700">${h.score} 分 · ${h.status}</span>
+        </div>
+      `).join('');
     }
 
-    function resetQuiz() {
-      document.getElementById('quizForm').reset();
-      document.querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
-      document.getElementById('resultCard').style.display = 'none';
-      document.getElementById('historyCard').style.display = 'none';
-      document.getElementById('progressBar').style.width = '0%';
-      document.getElementById('progressText').textContent = i18n[lang].progress(0, TOTAL);
-      localStorage.removeItem(STORAGE.ans);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      toast(i18n[lang].toastReset);
-    }
+    document.getElementById('btnClearHistory').addEventListener('click', () => {
+      localStorage.removeItem('lohas_history');
+      renderHistory();
+      showToast('紀錄已清除');
+    });
 
-    function toast(msg) {
-      const el = document.getElementById('toast');
-      el.textContent = msg;
-      el.classList.add('show');
-      setTimeout(() => el.classList.remove('show'), 2500);
-    }
+    // QA 簡易本地知識庫
+    const QA_KB = [
+      { k: ['通粉', '火腿', '湯'], a: '火腿通粉屬於固液混合（雙重質地），清湯流速極快，容易先跌入喉嚨引起嗆咳。吞嚥困難長者必須徹底倒乾湯汁先好食。' },
+      { k: ['肚脹', '脹氣', '胃氣'], a: '肚脹通常同進食太快、纖維不足或壓力影響腸腦軸有關。飯後可慢行 10 分鐘，並配合順時針摩腹。' },
+      { k: ['便秘', '唔通', '排便'], a: '便秘長者建議每日分次飲夠 1.5 公升水，增加深綠色蔬菜（如白灼菜心剪碎），並保持定時排便習慣。' },
+      { k: ['益生菌', '乳酪'], a: '選擇益生菌應挑選有多菌株科研證明的產品，且需與充足膳食纖維（益生元）一齊食用先有最佳定植效果。' }
+    ];
 
-    // Tabs
+    document.getElementById('btnAsk').addEventListener('click', () => {
+      const q = document.getElementById('qaInput').value.trim();
+      if (!q) return;
+      let matched = QA_KB.find(item => item.k.some(key => q.includes(key)));
+      const reply = matched ? matched.a : '老友記，建議每日保持均衡高纖飲食與充足飲水。如有持續腸胃痛或嚴重便秘，請聯絡家庭醫生診斷。';
+      document.getElementById('qaAnswer').textContent = reply;
+      speakCantonese(reply);
+    });
+
+    // ========== 6. Tab 切換與設定 ==========
     document.querySelectorAll('.tab').forEach(tab => {
       tab.addEventListener('click', () => {
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
-        const name = tab.dataset.tab;
-        document.getElementById('quizForm').style.display = name === 'quiz' ? 'block' : 'none';
-        document.getElementById('resultCard').style.display = 'none';
-        document.getElementById('historyCard').style.display = 'none';
-        document.getElementById('logCard').style.display = name === 'log' ? 'block' : 'none';
-        document.getElementById('trendCard').style.display = name === 'trend' ? 'block' : 'none';
-        document.getElementById('qaCard').style.display = name === 'qa' ? 'block' : 'none';
-        document.getElementById('familyCard').style.display = name === 'family' ? 'block' : 'none';
-        if (name === 'log') renderLogSummary();
-        if (name === 'trend') drawTrendChart();
-        if (name === 'qa') initQA();
+        const target = tab.dataset.tab;
+        document.getElementById('tabQuiz').style.display = target === 'quiz' ? 'block' : 'none';
+        document.getElementById('tabMeal').style.display = target === 'meal' ? 'block' : 'none';
+        document.getElementById('tabTrend').style.display = target === 'trend' ? 'block' : 'none';
+        document.getElementById('tabQa').style.display = target === 'qa' ? 'block' : 'none';
+        if (target === 'trend') renderHistory();
       });
     });
 
-    // Daily Log
-    let logBowel = null, logBloat = null;
-    document.querySelectorAll('#logBowel .log-card').forEach(c => {
-      c.addEventListener('click', () => {
-        document.querySelectorAll('#logBowel .log-card').forEach(x => x.classList.remove('sel'));
-        c.classList.add('sel'); logBowel = c.dataset.val;
-      });
-    });
-    document.querySelectorAll('#logBloat .log-card').forEach(c => {
-      c.addEventListener('click', () => {
-        document.querySelectorAll('#logBloat .log-card').forEach(x => x.classList.remove('sel'));
-        c.classList.add('sel'); logBloat = c.dataset.val;
-      });
-    });
-    document.getElementById('btnSaveLog').addEventListener('click', () => {
-      if (!logBowel || !logBloat) { toast(lang==='zh'?'請先選擇排便同肚脹':'Please select both'); return; }
-      const today = new Date().toISOString().slice(0,10);
-      const logs = JSON.parse(localStorage.getItem(STORAGE.log) || '{}');
-      logs[today] = { bowel: logBowel, bloat: logBloat };
-      localStorage.setItem(STORAGE.log, JSON.stringify(logs));
-      toast(i18n[lang].toastLog);
-      renderLogSummary();
-    });
-    function renderLogSummary() {
-      const logs = JSON.parse(localStorage.getItem(STORAGE.log) || '{}');
-      const days = Object.keys(logs).sort().slice(-7);
-      if (days.length === 0) { document.getElementById('logWeekSummary').innerHTML = ''; return; }
-      let html = `<strong>${lang==='zh'?'近7日摘要':'Last 7 days'}</strong><br>`;
-      days.forEach(d => {
-        const L = logs[d];
-        html += `${d}: 排便 ${L.bowel} · 肚脹 ${L.bloat}<br>`;
-      });
-      document.getElementById('logWeekSummary').innerHTML = html;
-    }
-
-    // Family share
-    document.getElementById('btnGenFamilyLink').addEventListener('click', () => {
-      let score = 0, status = '';
-      for (let i = 1; i <= TOTAL; i++) {
-        const sel = document.querySelector(`input[name="q${i}"]:checked`);
-        if (sel) score += +sel.value;
-      }
-      if (score === 0 && Object.keys(JSON.parse(localStorage.getItem(STORAGE.ans)||'{}')).length < TOTAL) {
-        toast(lang==='zh'?'請先完成評估':'Please complete assessment first'); return;
-      }
-      const hist = JSON.parse(localStorage.getItem(STORAGE.hist)||'[]');
-      if (hist[0]) { score = hist[0].score; status = hist[0].status; }
-      const payload = btoa(unescape(encodeURIComponent(JSON.stringify({ score, status, date: new Date().toISOString().slice(0,10) }))));
-      const url = location.href.split('?')[0].split('#')[0] + '?family=' + payload;
-      document.getElementById('familyLinkInput').value = url;
-      document.getElementById('familyLinkBox').style.display = 'block';
-    });
-    document.getElementById('btnCopyFamily').addEventListener('click', () => {
-      const url = document.getElementById('familyLinkInput').value;
-      navigator.clipboard.writeText(url).then(() => {
-        toast(i18n[lang].toastCopy);
-        const text = encodeURIComponent((lang==='zh'?'家人腸道健康最新評估：':'Family gut health update: ') + url);
-        window.open(`https://wa.me/?text=${text}`, '_blank');
-      });
-    });
-
-    // Check family view on load
-    function checkFamilyView() {
-      const params = new URLSearchParams(location.search);
-      const fam = params.get('family');
-      if (!fam) return;
-      try {
-        const data = JSON.parse(decodeURIComponent(escape(atob(fam))));
-        document.body.classList.add('family-view');
-        document.getElementById('mainTabs').style.display = 'none';
-        document.getElementById('quizForm').style.display = 'none';
-        document.getElementById('logCard').style.display = 'none';
-        document.getElementById('familyCard').style.display = 'none';
-        document.getElementById('resultCard').style.display = 'block';
-        document.getElementById('scoreBadge').textContent = data.score + ' pts';
-        document.getElementById('statusTitle').textContent = data.status || '';
-        document.getElementById('statusDesc').innerHTML = `<strong>${lang==='zh'?'家人分享的評估結果':'Shared family result'}</strong><br>日期：${data.date}<br><br>分數：${data.score} pts`;
-        document.getElementById('suggestionsBox').innerHTML = '';
-        document.getElementById('exerciseBox').innerHTML = '';
-        document.getElementById('scoreBadge').style.color = data.score <= 8 ? '#22c55e' : data.score <= 20 ? '#f59e0b' : '#ef4444';
-        document.querySelector('.actions').style.display = 'none';
-        document.getElementById('titleMain').textContent = lang==='zh' ? '家人腸道健康報告' : 'Family Gut Report';
-      } catch(e) {}
-    }
-
-    // Events
-    document.getElementById('langZh').addEventListener('click', () => setLang('zh'));
-    document.getElementById('langEn').addEventListener('click', () => setLang('en'));
-    document.getElementById('btnReset').addEventListener('click', resetQuiz);
-    document.getElementById('btnHistory').addEventListener('click', showHistory);
-    document.getElementById('btnBackFromHistory').addEventListener('click', () => {
-      document.getElementById('historyCard').style.display = 'none';
-      document.getElementById('resultCard').style.display = 'block';
-    });
-    document.getElementById('btnClearHistory').addEventListener('click', () => {
-      localStorage.removeItem(STORAGE.hist); showHistory(); toast(i18n[lang].toastClear);
-    });
-    document.getElementById('btnSpeakResult').addEventListener('click', speakResult);
-    document.getElementById('btnShareWA').addEventListener('click', () => {
-      const score = document.getElementById('scoreBadge').textContent;
-      const status = document.getElementById('statusTitle').textContent;
-      const text = encodeURIComponent(`🌿 Lohas Gut Result\nScore: ${score}\n${status}\nYour Gut. Your Rules.`);
-      window.open(`https://wa.me/?text=${text}`, '_blank');
-    });
-    document.getElementById('btnShareFamily').addEventListener('click', () => {
-      document.querySelector('.tab[data-tab="family"]').click();
-      document.getElementById('btnGenFamilyLink').click();
-    });
-    document.getElementById('btnShareImg').addEventListener('click', () => {
-      // simplified image gen
-      const canvas = document.getElementById('shareCanvas');
-      const ctx = canvas.getContext('2d');
-      const score = document.getElementById('scoreBadge').textContent;
-      const status = document.getElementById('statusTitle').textContent;
-      ctx.fillStyle = '#f8fafc'; ctx.fillRect(0,0,720,1100);
-      ctx.fillStyle = '#fff'; roundRect(ctx,40,40,640,1020,28); ctx.fill();
-      ctx.fillStyle = '#0d9488'; ctx.font = 'bold 22px sans-serif'; ctx.textAlign = 'center';
-      ctx.fillText('🌿 LOHASCARE GERONTECH', 360, 100);
-      ctx.fillStyle = '#1c1c1e'; ctx.font = 'bold 26px sans-serif';
-      ctx.fillText(lang==='zh'?'腸道微生態檢測報告':'Gut Microbiome Report', 360, 150);
-      ctx.font = '800 70px sans-serif';
-      const sn = parseInt(score);
-      ctx.fillStyle = sn<=8?'#22c55e':sn<=20?'#f59e0b':'#ef4444';
-      ctx.fillText(score, 360, 280);
-      ctx.fillStyle = '#1c1c1e'; ctx.font = 'bold 20px sans-serif';
-      ctx.fillText(status.replace(/🟢|🟡|🔴/g,'').trim().slice(0,40), 360, 340);
-      ctx.fillStyle = '#8e8e93'; ctx.font = '15px sans-serif';
-      ctx.fillText('Your Gut. Your Rules. · Self-assessment only', 360, 900);
-      canvas.toBlob(b => {
-        const a = document.createElement('a'); a.href = URL.createObjectURL(b);
-        a.download = `lohas-gut-${Date.now()}.png`; a.click();
-        toast(i18n[lang].toastImg);
-      });
-    });
-    function roundRect(ctx,x,y,w,h,r) {
-      ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
-      ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath();
-    }
-
-    // Voice toggle
-    document.getElementById('btnVoice').addEventListener('click', () => {
-      voiceOn = !voiceOn;
-      document.getElementById('btnVoice').classList.toggle('voice-on', voiceOn);
-      document.getElementById('btnVoice').textContent = voiceOn ? '🔊 ON' : '🔊 語音';
-      toast(voiceOn ? i18n[lang].toastVoice : (lang==='zh'?'語音已關閉':'Voice off'));
-      if (voiceOn) speak(lang==='zh' ? '語音模式已開啟。每題可以撳喇叭聽問題，或者直接講答案。' : 'Voice mode on. Tap speaker to hear question or speak your answer.');
-    });
-
-    // Elderly mode
-    if (elderlyMode) document.body.classList.add('elderly');
+    // 大字模式切換
     document.getElementById('btnElderly').addEventListener('click', () => {
       elderlyMode = !elderlyMode;
       document.body.classList.toggle('elderly', elderlyMode);
       localStorage.setItem('lohas_elderly', elderlyMode ? '1' : '0');
       document.getElementById('btnElderly').classList.toggle('active', elderlyMode);
-      toast(elderlyMode ? (lang==='zh'?'大字模式已開啟':'Large text on') : (lang==='zh'?'已關閉':'Off'));
+      showToast(elderlyMode ? '大字長者模式已開啟' : '已恢復標準字體');
     });
-    document.getElementById('btnElderly').classList.toggle('active', elderlyMode);
-
-    // ========== Trend Chart + Traffic Light ==========
-    function drawTrendChart() {
-      const hist = JSON.parse(localStorage.getItem(STORAGE.hist) || '[]').slice(0, 8).reverse();
-      const canvas = document.getElementById('trendCanvas');
-      const ctx = canvas.getContext('2d');
-      const w = canvas.width, h = canvas.height;
-      ctx.clearRect(0, 0, w, h);
-      ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim() || '#f2f2f7';
-      ctx.fillRect(0, 0, w, h);
-
-      if (hist.length < 1) {
-        ctx.fillStyle = '#8e8e93';
-        ctx.font = '14px sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText(lang === 'zh' ? '完成評估後顯示趨勢' : 'Complete assessments to see trend', w/2, h/2);
-        document.getElementById('trafficLight').textContent = '⚪';
-        document.getElementById('trafficLabel').textContent = lang === 'zh' ? '暫無數據' : 'No data';
-        document.getElementById('weeklyReport').innerHTML = '';
-        return;
-      }
-
-      const scores = hist.map(x => x.score);
-      const maxS = 40, minS = 0;
-      const pad = 30;
-      const chartW = w - pad * 2;
-      const chartH = h - pad * 2;
-
-      // grid
-      ctx.strokeStyle = 'rgba(0,0,0,0.06)';
-      ctx.lineWidth = 1;
-      for (let i = 0; i <= 4; i++) {
-        const y = pad + (chartH / 4) * i;
-        ctx.beginPath(); ctx.moveTo(pad, y); ctx.lineTo(w - pad, y); ctx.stroke();
-      }
-
-      // thresholds
-      const y8 = pad + chartH * (1 - 8/40);
-      const y20 = pad + chartH * (1 - 20/40);
-      ctx.strokeStyle = 'rgba(34,197,94,0.3)'; ctx.beginPath(); ctx.moveTo(pad, y8); ctx.lineTo(w-pad, y8); ctx.stroke();
-      ctx.strokeStyle = 'rgba(245,158,11,0.3)'; ctx.beginPath(); ctx.moveTo(pad, y20); ctx.lineTo(w-pad, y20); ctx.stroke();
-
-      // line
-      ctx.strokeStyle = '#0d9488';
-      ctx.lineWidth = 2.5;
-      ctx.beginPath();
-      scores.forEach((s, i) => {
-        const x = pad + (chartW / Math.max(scores.length - 1, 1)) * i;
-        const y = pad + chartH * (1 - s / 40);
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-      });
-      ctx.stroke();
-
-      // points
-      scores.forEach((s, i) => {
-        const x = pad + (chartW / Math.max(scores.length - 1, 1)) * i;
-        const y = pad + chartH * (1 - s / 40);
-        ctx.beginPath();
-        ctx.arc(x, y, 5, 0, Math.PI * 2);
-        ctx.fillStyle = s <= 8 ? '#22c55e' : s <= 20 ? '#f59e0b' : '#ef4444';
-        ctx.fill();
-      });
-
-      // traffic light
-      const latest = scores[scores.length - 1];
-      const prev = scores.length > 1 ? scores[scores.length - 2] : latest;
-      let light = '🟢', label = lang === 'zh' ? '穩定 / 良好' : 'Stable / Good';
-      if (latest > 20) { light = '🔴'; label = lang === 'zh' ? '需要關注（Critical）' : 'Needs attention'; }
-      else if (latest > 8) { light = '🟡'; label = lang === 'zh' ? '亞健康，留意改善' : 'Warning – improve lifestyle'; }
-      if (scores.length >= 2) {
-        if (latest < prev - 2) label += lang === 'zh' ? ' · 趨勢改善' : ' · Improving';
-        else if (latest > prev + 2) label += lang === 'zh' ? ' · 趨勢惡化' : ' · Worsening';
-      }
-      document.getElementById('trafficLight').textContent = light;
-      document.getElementById('trafficLabel').textContent = label;
-
-      // weekly report from daily logs
-      const logs = JSON.parse(localStorage.getItem(STORAGE.log) || '{}');
-      const days = Object.keys(logs).sort().slice(-7);
-      let report = `<strong>${lang==='zh'?'週報信號燈':'Weekly traffic lights'}</strong><br>`;
-      if (days.length === 0) {
-        report += lang === 'zh' ? '請先在「日誌」記錄每日排便與肚脹' : 'Record daily logs first';
-      } else {
-        const bowelGood = days.filter(d => logs[d].bowel === 'good').length;
-        const bloatNone = days.filter(d => logs[d].bloat === 'none' || logs[d].bloat === 'mild').length;
-        const bowelLight = bowelGood >= 5 ? '🟢' : bowelGood >= 3 ? '🟡' : '🔴';
-        const bloatLight = bloatNone >= 5 ? '🟢' : bloatNone >= 3 ? '🟡' : '🔴';
-        const scoreLight = latest <= 8 ? '🟢' : latest <= 20 ? '🟡' : '🔴';
-        report += `${lang==='zh'?'排便': 'Bowel'}: ${bowelLight} &nbsp; ${lang==='zh'?'肚脹':'Bloat'}: ${bloatLight} &nbsp; ${lang==='zh'?'評估':'Score'}: ${scoreLight}`;
-      }
-      document.getElementById('weeklyReport').innerHTML = report;
+    if (elderlyMode) {
+      document.body.classList.add('elderly');
+      document.getElementById('btnElderly').classList.add('active');
     }
 
-    // ========== AI Gut Q&A (curated knowledge base) ==========
-    const QA_KB = [
-      { keys: ['肚脹','脹氣','gas','bloat','腸氣'], 
-        ans_zh: '肚脹常見原因包括：進食太快、產氣食物（豆類、汽水）、便秘、壓力大影響腸腦軸。建議：細嚼慢嚥、飯後散步、減少碳酸飲料、練習腹式呼吸。如果問卷顯示你經常肚脹，優先做「貓牛式 + 深呼吸」運動處方。',
-        ans_en: 'Bloating is often caused by eating too fast, gas-producing foods, constipation or stress. Tips: chew slowly, walk after meals, reduce fizzy drinks, practice diaphragmatic breathing. If your quiz shows frequent bloating, prioritise the Cat-Cow exercise.' },
-      { keys: ['便秘','排便','大便','constip','bowel'],
-        ans_zh: '便秘與腸道蠕動減慢、纖維不足、水分少、缺乏運動有關。建議每日增加蔬菜水果、多飲水、飯後散步 + 腹部順時針按摩。你如果問卷 Q1 分數較高，請跟從結果頁嘅運動處方。',
-        ans_en: 'Constipation links to slow motility, low fibre, low water and inactivity. Increase vegetables/fruit, drink more water, walk after meals and do clockwise belly massage. Follow the exercise prescription if your Q1 score is high.' },
-      { keys: ['益生菌','益生元','probiotic','菌'],
-        ans_zh: '益生菌可幫助補充好菌，但效果因人而異。常見有用菌株包括 Lactobacillus、Bifidobacterium。選擇有科研支持、多菌株、活菌數清楚嘅產品。同時要食益生元（膳食纖維）先有效。抗生素後更應考慮補充。',
-        ans_en: 'Probiotics can help but results vary. Look for Lactobacillus and Bifidobacterium strains with clear CFU counts and research backing. Pair with prebiotic fibre. Especially useful after antibiotics.' },
-      { keys: ['敏感','濕疹','鼻敏感','allergy','過敏'],
-        ans_zh: '腸道同免疫系統密切相關（腸腦皮膚軸）。腸漏或菌群失衡可能加重敏感。建議減少加工食品、增加發酵食品、管理壓力同睡眠。持續嚴重敏感請睇醫生。',
-        ans_en: 'Gut and immune system are closely linked. Dysbiosis may worsen allergies. Reduce processed food, add fermented foods, manage stress and sleep. See a doctor for persistent symptoms.' },
-      { keys: ['睡眠','失眠','瞓','sleep'],
-        ans_zh: '睡眠差會透過腸腦軸影響腸道菌群。建議固定作息、睡前避免藍光同咖啡因、做腿部抬高 + 腹式呼吸。問卷如果顯示睡眠問題，結果頁已有對應運動處方。',
-        ans_en: 'Poor sleep affects the gut via the gut-brain axis. Fix schedule, avoid blue light/caffeine before bed, try legs-up + abdominal breathing. Your result page has a matching exercise if sleep score is high.' },
-      { keys: ['壓力','焦慮','stress','anxiety'],
-        ans_zh: '長期壓力會改變腸道蠕動同菌群組成。八段錦「調理脾胃須單舉」、深呼吸、短時間冥想都有幫助。結果頁如果有高壓力分數，已自動推薦相關運動。',
-        ans_en: 'Chronic stress changes motility and microbiota. Baduanjin, deep breathing and short meditation help. Matching exercises appear on your result page when stress score is elevated.' },
-      { keys: ['纖維','蔬菜','飲食','fiber','diet','食'],
-        ans_zh: '膳食纖維係好菌嘅食物。目標每日 25–30g，來自蔬菜、水果、全穀、豆類。可用「日誌」入面嘅拍照功能粗略估算一餐綠色比例。慢慢增加，同時多飲水，避免突然大量纖維引起脹氣。',
-        ans_en: 'Fibre feeds beneficial bacteria. Aim 25–30g/day from veg, fruit, whole grains, legumes. Use the photo tool in Daily Log for a rough green estimate. Increase gradually with more water.' },
-      { keys: ['抗生素','antibiotics'],
-        ans_zh: '抗生素會大幅減少腸道菌群多樣性。服藥期間同之後數星期，建議補充益生菌、多食發酵食品同高纖維飲食，幫助恢復。問卷有問抗生素記錄，分數會反映呢個風險。',
-        ans_en: 'Antibiotics reduce microbial diversity. During and after a course, consider probiotics, fermented foods and high-fibre diet to help recovery. Your quiz captures recent antibiotic use in the score.' }
-    ];
-
-    function initQA() {
-      const quick = document.getElementById('qaQuick');
-      const examples = lang === 'zh' 
-        ? ['點解成日肚脹？','便秘點算？','邊隻益生菌好？','壓力同腸道有關嗎？']
-        : ['Why am I bloated?','Help with constipation','Which probiotic?','Stress and gut?'];
-      quick.innerHTML = examples.map(e => `<button class="chip" style="margin:0" onclick="document.getElementById('qaInput').value='${e}';askQA()">${e}</button>`).join('');
-      document.getElementById('qaAnswer').innerHTML = lang === 'zh' 
-        ? '輸入問題或撳快速問題，系統會根據你嘅評估結果俾個人化建議。' 
-        : 'Type a question or tap a quick question. Answers are personalised from your assessment.';
-    }
-
-    function askQA() {
-      const q = (document.getElementById('qaInput').value || '').toLowerCase().trim();
-      if (!q) return;
-      let matched = null;
-      for (const item of QA_KB) {
-        if (item.keys.some(k => q.includes(k.toLowerCase()))) { matched = item; break; }
-      }
-      let ans = matched 
-        ? (lang === 'zh' ? matched.ans_zh : matched.ans_en)
-        : (lang === 'zh' 
-          ? '暫時未有完全對應嘅答案。建議先完成評估，查看結果頁嘅個人化建議同運動處方。常見問題包括肚脹、便秘、益生菌、睡眠、壓力同纖維。'
-          : 'No exact match yet. Complete the assessment for personalised tips. Common topics: bloating, constipation, probiotics, sleep, stress, fibre.');
-      
-      // Personalise with latest score
-      const hist = JSON.parse(localStorage.getItem(STORAGE.hist) || '[]');
-      if (hist[0]) {
-        const s = hist[0].score;
-        if (s > 20) ans += lang === 'zh' ? '\n\n（根據你最近評估屬 Critical，建議優先諮詢醫生。）' : '\n\n(Your latest score is Critical — consider seeing a doctor.)';
-        else if (s > 8) ans += lang === 'zh' ? '\n\n（你最近評估屬亞健康，可先從運動處方同飲食入手。）' : '\n\n(Your latest score is in the Warning range — start with exercise prescription and diet.)';
-      }
-      document.getElementById('qaAnswer').innerHTML = ans.replace(/\n/g, '<br>');
-      if (voiceOn) speak(ans.replace(/\n/g, '。'));
-    }
-
-    document.getElementById('btnAsk').addEventListener('click', askQA);
-    document.getElementById('btnAskVoice').addEventListener('click', () => {
-      startListening(transcript => {
-        document.getElementById('qaInput').value = transcript;
-        askQA();
-      });
-    });
-    document.getElementById('qaInput').addEventListener('keydown', e => { if (e.key === 'Enter') askQA(); });
-
-    // ========== Photo meal analysis (simple green ratio) ==========
-    document.getElementById('mealPhoto').addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      const img = new Image();
-      const url = URL.createObjectURL(file);
-      img.onload = () => {
-        const canvas = document.getElementById('mealCanvas');
-        canvas.style.display = 'block';
-        const maxW = 320;
-        const scale = Math.min(1, maxW / img.width);
-        canvas.width = img.width * scale;
-        canvas.height = img.height * scale;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-        let green = 0, total = 0;
-        for (let i = 0; i < data.length; i += 4) {
-          const r = data[i], g = data[i+1], b = data[i+2];
-          total++;
-          // rough green vegetable detection
-          if (g > r + 15 && g > b + 10 && g > 60) green++;
-        }
-        const ratio = Math.round((green / total) * 100);
-        let msg, light;
-        if (ratio >= 25) { light = '🟢'; msg = lang === 'zh' ? `綠色比例約 ${ratio}% · 纖維估算較高，不錯！` : `Green ~${ratio}% · Fibre estimate looks good`; }
-        else if (ratio >= 12) { light = '🟡'; msg = lang === 'zh' ? `綠色比例約 ${ratio}% · 可以再加多啲蔬菜` : `Green ~${ratio}% · Try adding more vegetables`; }
-        else { light = '🔴'; msg = lang === 'zh' ? `綠色比例約 ${ratio}% · 建議下一餐增加蔬菜` : `Green ~${ratio}% · Add more veg next meal`; }
-        document.getElementById('mealResult').innerHTML = `${light} ${msg}<br><span style="font-size:11px;opacity:.7">${lang==='zh'?'（簡易顏色分析，僅供參考，非精準營養計算）':'Simple colour analysis for reference only'}</span>`;
-        URL.revokeObjectURL(url);
-      };
-      img.src = url;
+    // 語音開關切換
+    document.getElementById('btnVoice').addEventListener('click', () => {
+      voiceOn = !voiceOn;
+      document.getElementById('btnVoice').classList.toggle('voice-on', voiceOn);
+      document.getElementById('btnVoice').textContent = voiceOn ? '🔊 語音 ON' : '🔊 語音';
+      showToast(voiceOn ? '廣東話語音播報已開啟' : '語音播報已關閉');
+      if (voiceOn) speakCantonese('語音播報已開啟。系統會以廣東話為你朗讀評估與飲食提醒。');
     });
 
-    // Load QR lib
-    (function(){ const s=document.createElement('script'); s.src='https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js'; document.head.appendChild(s); })();
+    // 重新評估
+    document.getElementById('btnResetQuiz').addEventListener('click', () => {
+      document.getElementById('quizForm').reset();
+      document.querySelectorAll('.opt').forEach(el => el.classList.remove('selected'));
+      document.getElementById('resultCard').style.display = 'none';
+      document.getElementById('progressBar').style.width = '0%';
+      document.getElementById('progressText').textContent = '0 / 10 題';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      showToast('問卷已重設');
+    });
 
-    // PWA
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js').then(() => {
-        document.getElementById('pwaStatus').textContent = '✅ PWA · Offline ready';
-      }).catch(()=>{});
-    }
+    document.getElementById('btnSpeakResult').addEventListener('click', () => {
+      const score = document.getElementById('scoreBadge').textContent;
+      const desc = document.getElementById('statusDesc').textContent;
+      speakCantonese(`評估結果總分係 ${score}。${desc}`);
+    });
 
-    // Init
-    setLang(lang);
-    checkFamilyView();
+    // 初始化
+    renderQuiz();
   </script>
 </body>
 </html>
