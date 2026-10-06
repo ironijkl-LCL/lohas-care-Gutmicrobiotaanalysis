@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#0d9488">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="description" content="樂活食得安 - 跟足 IDDSI 國際標準吞嚥質地與港式飲食安全檢驗">
+  <meta name="description" content="樂活食得安 - 跟足 IDDSI 國際標準吞嚥質地、多語言外傭對照與離線急救指引">
   <title>樂活食得安 | 睇真啲係咪真係食得</title>
   <style>
     :root {
@@ -55,14 +55,16 @@
     }
     .brand { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
     .logo { font-size: 14px; font-weight: 800; letter-spacing: .4px; color: var(--teal); }
-    .header-actions { display: flex; align-items: center; gap: 8px; }
+    .header-actions { display: flex; align-items: center; gap: 6px; }
     .chip {
-      font-size: 13.5px; font-weight: 700; padding: 6px 14px; border-radius: 20px;
+      font-size: 13px; font-weight: 700; padding: 5px 10px; border-radius: 20px;
       border: 1.5px solid rgba(0,0,0,.12); background: var(--bg); color: var(--text); cursor: pointer;
-      min-height: 40px; display: inline-flex; align-items: center; justify-content: center;
+      min-height: 36px; display: inline-flex; align-items: center; justify-content: center;
     }
     .chip.active { background: var(--teal); color: #fff; border-color: var(--teal); }
     .chip.voice-on { background: var(--wa); color: #fff; border-color: var(--wa); }
+    .chip.danger { background: #fee2e2; color: #dc2626; border-color: #ef4444; }
+
     h1 { font-size: var(--font-title); font-weight: 800; letter-spacing: -.3px; margin-bottom: 3px; }
     .sub { font-size: 13.5px; color: var(--text2); }
     .progress-wrap { margin-top: 10px; height: 7px; background: rgba(0,0,0,.08); border-radius: 4px; overflow: hidden; }
@@ -80,7 +82,7 @@
     }
     @keyframes cardIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
     
-    /* 查腸胃題目樣式 */
+    /* 查腸胃樣式 */
     .q-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
     .q-num {
       width: 34px; height: 34px; background: linear-gradient(135deg, var(--teal), var(--teal-dark));
@@ -120,13 +122,38 @@
     .btn-voice { background: #7c3aed; color: #fff; }
     .btn-outline { background: transparent; border: 1.5px solid rgba(0,0,0,.18); color: var(--text); }
     .btn-ghost { background: var(--bg); color: var(--text); }
+    .btn-danger { background: #dc2626; color: #fff; }
 
-    /* 影相驗餐卡片 */
+    /* 影相驗餐與 AR 標尺框容器 */
+    .preview-container {
+      position: relative; width: 100%; overflow: hidden; border-radius: 12px; margin-top: 10px; display: none;
+    }
+    .upload-preview { width: 100%; max-height: 270px; object-fit: cover; display: block; border-radius: 12px; }
+    
+    /* 15mm / 4mm 虛擬 AR 標尺覆蓋層 */
+    .ar-ruler-overlay {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      border: 3px dashed #22c55e; background: rgba(34, 197, 94, 0.25);
+      border-radius: 6px; pointer-events: none; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 12px rgba(34,197,94,0.6);
+    }
+    .ar-ruler-label {
+      background: rgba(0,0,0,0.85); color: #4ade80; font-size: 11.5px; font-weight: 900;
+      padding: 2px 6px; border-radius: 4px; letter-spacing: 0.3px;
+    }
+    .ruler-toggle-bar {
+      display: flex; gap: 8px; justify-content: center; margin-top: 8px;
+    }
+    .ruler-btn {
+      padding: 6px 12px; font-size: 12.5px; font-weight: 800; border-radius: 8px;
+      border: 1.5px solid var(--teal); background: var(--bg); color: var(--teal); cursor: pointer;
+    }
+    .ruler-btn.active { background: var(--teal); color: #fff; }
+
     .upload-zone {
       border: 2.5px dashed var(--teal); border-radius: var(--radius-sm); padding: 22px 16px;
       text-align: center; background: rgba(13,148,136,.05); cursor: pointer; margin-bottom: 14px;
     }
-    .upload-preview { width: 100%; max-height: 250px; object-fit: cover; border-radius: 12px; margin-top: 10px; display: none; }
     .danger-banner {
       background: #fef2f2; border: 2px solid #ef4444; border-radius: 14px; padding: 14px;
       display: flex; gap: 12px; align-items: flex-start; margin-bottom: 12px;
@@ -135,22 +162,18 @@
     .danger-banner p { color: #7f1d1d; font-size: 14px; line-height: 1.45; }
     .action-chips { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
     .action-chip {
-      background: #fff7ed; border: 1.5px solid #f97316; color: #c2410c; padding: 7px 13px;
-      border-radius: 20px; font-size: 14px; font-weight: 800; display: inline-flex; align-items: center; gap: 4px;
+      background: #fff7ed; border: 1.5px solid #f97316; color: #c2410c; padding: 8px 14px;
+      border-radius: 14px; font-size: 14px; font-weight: 800; display: flex; flex-direction: column; gap: 2px;
+    }
+    .action-chip .helper-sub {
+      font-size: 12px; font-weight: 600; color: #9a3412; opacity: 0.9;
     }
 
     /* 下拉選單 IDDSI 官方標準顏色動態聯動 */
     #userPrescription {
-      padding: 10px 14px;
-      border-radius: 12px;
-      border: 2px solid transparent;
-      font-size: 14.5px;
-      font-weight: 800;
-      cursor: pointer;
-      outline: none;
-      transition: all 0.25s ease;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      width: 100%;
+      padding: 10px 14px; border-radius: 12px; border: 2px solid transparent;
+      font-size: 14.5px; font-weight: 800; cursor: pointer; outline: none;
+      transition: all 0.25s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.1); width: 100%;
     }
     #userPrescription.sel-7 { background-color: var(--iddsi-7) !important; color: #ffffff !important; }
     #userPrescription.sel-6 { background-color: var(--iddsi-6) !important; color: #ffffff !important; }
@@ -164,11 +187,10 @@
     #userPrescription option[value*="Level 4"] { background-color: #65a143; color: #ffffff; font-weight: bold; }
     #userPrescription option[value*="Level 3"] { background-color: #fed430; color: #1c1c1e; font-weight: bold; }
 
-    /* IDDSI 國際標準徽章動態樣式（支援 Level 0-7 全等級） */
+    /* IDDSI 國際標準徽章動態樣式 */
     .iddsi-badge {
-      display: inline-block; padding: 7px 14px;
-      border-radius: 10px; font-weight: 900; font-size: 15px; margin-bottom: 8px;
-      color: #ffffff; letter-spacing: 0.3px;
+      display: inline-block; padding: 7px 14px; border-radius: 10px; font-weight: 900;
+      font-size: 15px; margin-bottom: 8px; color: #ffffff; letter-spacing: 0.3px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.12);
     }
     .iddsi-badge.level-7 { background-color: var(--iddsi-7); color: #fff; }
@@ -187,14 +209,29 @@
     .nutrient-item span { display: block; font-size: 11.5px; color: var(--text2); }
     .nutrient-item strong { font-size: 14.5px; color: var(--text); }
     
-    /* 伸展動作 */
     .ex-item {
       background: var(--bg); border-left: 4.5px solid var(--teal); padding: 13px 15px;
       border-radius: 8px; margin-bottom: 8px; font-size: 14.5px; line-height: 1.5;
     }
     .ex-time { font-size: 12.5px; color: var(--teal); font-weight: 800; }
 
-    /* 提示泡泡 */
+    /* 記憶健康提醒條 (超越 Kimi 的 Context 記憶閉環) */
+    .memory-alert {
+      background: #eff6ff; border: 1.5px solid #3b82f6; border-radius: 12px; padding: 12px 14px;
+      font-size: 13.5px; color: #1e40af; margin-bottom: 12px; display: none; line-height: 1.5;
+    }
+
+    /* 離線急救彈窗 */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 999;
+      display: none; align-items: center; justify-content: center; padding: 16px;
+    }
+    .modal-box {
+      background: var(--card); border-radius: 20px; padding: 22px; max-width: 440px; width: 100%;
+      max-height: 85vh; overflow-y: auto; box-shadow: var(--shadow);
+    }
+    .modal-title { font-size: 20px; font-weight: 900; color: #dc2626; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+
     .toast {
       position: fixed; bottom: calc(24px + env(safe-area-inset-bottom)); left: 50%;
       transform: translateX(-50%) translateY(80px); background: #1c1c1e; color: #fff;
@@ -207,24 +244,32 @@
 </head>
 <body>
   <div class="app">
+    <!-- 頂部欄（加入外傭多語言切換與離線急救按鈕） -->
     <header class="header">
       <div class="brand">
         <span class="logo">🌿 樂活食得安</span>
         <div class="header-actions">
-          <button class="chip" id="btnElderly">睇大字</button>
-          <button class="chip" id="btnVoice">🔊 開聲讀</button>
+          <button class="chip danger" id="btnEmergency">🚨 哽親急救</button>
+          <button class="chip" id="btnLangToggle">🇮🇩 外傭對照</button>
+          <button class="chip" id="btnElderly">大字</button>
+          <button class="chip" id="btnVoice">🔊 語音</button>
         </div>
       </div>
       <h1 id="headerTitle">睇真啲係咪真係食得</h1>
-      <p class="sub">影張相睇下哽唔哽親 · 跟住做通便伸展</p>
+      <p class="sub">影張相睇下哽唔哽親 · 15mm 叉背測試 · 離線急救</p>
       <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
       <div class="progress-text" id="progressText">第 0 / 10 條問題</div>
     </header>
 
+    <!-- 超越 Kimi 的「記憶日誌提醒閉環」 -->
+    <div class="memory-alert" id="memoryAlertBox">
+      💡 <strong>老友連續健康提示：</strong><span id="memoryAlertMsg"></span>
+    </div>
+
     <div class="tabs">
       <button class="tab active" data-tab="quiz">查下腸胃</button>
       <button class="tab" data-tab="meal">📸 影相驗餐</button>
-      <button class="tab" data-trend="trend" data-tab="trend">過往底簿</button>
+      <button class="tab" data-tab="trend">過往底簿</button>
       <button class="tab" data-tab="qa">街坊開解</button>
     </div>
 
@@ -243,7 +288,7 @@
       </div>
     </div>
 
-    <!-- 分頁 2: 影相驗餐 -->
+    <!-- 分頁 2: 影相驗餐（含 AR 標尺與雙語外傭對照） -->
     <div id="tabMeal" style="display:none">
       <div class="card">
         <h3 style="margin-bottom:6px">📸 影張相睇下食唔食得</h3>
@@ -267,27 +312,44 @@
           <div style="font-weight:800;font-size:16px">撳呢度即刻影張相</div>
           <div style="font-size:13px;color:var(--text2);margin-top:2px">茶餐廳粉麵、蒸肉餅、珍珠奶茶、瓜菜或粥餐都得</div>
           <input type="file" id="mealInput" accept="image/*" capture="environment" style="display:none">
-          <img id="imagePreview" class="upload-preview" alt="相片預覽">
         </div>
 
-        <button class="btn btn-primary" id="btnAnalyzeMeal" style="display:none">睇真啲係咪真係食得</button>
+        <!-- 相片預覽與 15mm / 4mm 虛擬 AR 標尺覆蓋 -->
+        <div class="preview-container" id="previewContainer">
+          <img id="imagePreview" class="upload-preview" alt="相片預覽">
+          <div class="ar-ruler-overlay" id="arRulerBox" style="width: 120px; height: 120px;">
+            <span class="ar-ruler-label" id="arRulerText">📏 15mm 一口量 (叉背)</span>
+          </div>
+        </div>
 
+        <div class="ruler-toggle-bar" id="rulerBar" style="display:none">
+          <button class="ruler-btn active" id="btnRuler15">📏 15mm 叉背 (Level 6)</button>
+          <button class="ruler-btn" id="btnRuler4">📐 4mm 叉齒 (Level 5)</button>
+          <button class="ruler-btn" id="btnRulerToggle">隱藏標尺</button>
+        </div>
+
+        <button class="btn btn-primary" id="btnAnalyzeMeal" style="display:none;margin-top:14px">睇真啲係咪真係食得</button>
+
+        <!-- 驗餐結果卡片 -->
         <div id="mealReportCard" style="display:none;margin-top:16px;border-top:1px solid rgba(0,0,0,.1);padding-top:16px">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
             <span class="iddsi-badge level-5" id="resIddsiLevel">Level 5 細碎及濕潤</span>
             <span style="font-size:12.5px;color:var(--text2);font-weight:600" id="resConfidence">睇得好清楚</span>
           </div>
 
-          <h2 style="font-size:20px;font-weight:900;margin-bottom:8px" id="resFoodName">珍珠奶茶</h2>
+          <h2 style="font-size:20px;font-weight:900;margin-bottom:8px" id="resFoodName">食物名稱</h2>
 
+          <!-- 雙重質地嗆咳危險警示（含外傭雙語） -->
           <div class="danger-banner" id="resDualTextureBanner" style="display:none">
             <div style="font-size:26px">⚠️</div>
             <div>
               <strong>提防濁親（又湯又渣雙重質地）</strong>
               <p id="resSafetyWarning"></p>
+              <p id="resSafetyWarningHelper" style="font-size:12.5px;color:#991b1b;margin-top:4px;font-style:italic"></p>
             </div>
           </div>
 
+          <!-- 照護動作標籤 -->
           <div class="action-chips" id="resActionChips"></div>
           <div class="nutrient-grid" id="resNutrientGrid"></div>
 
@@ -320,9 +382,32 @@
       </div>
     </div>
 
+    <!-- 離線哽親急救彈窗 (生命線急救模組) -->
+    <div class="modal-backdrop" id="emergencyModal">
+      <div class="modal-box">
+        <div class="modal-title">🚨 哽親急救黃金三分鐘</div>
+        <p style="font-size:13.5px;color:var(--text2);margin-bottom:12px">長者呼吸唔到、無法咳嗽、雙手掐住喉嚨時，即做以下兩步：</p>
+        
+        <div style="background:#fef2f2;border-left:4px solid #ef4444;padding:10px 12px;border-radius:8px;margin-bottom:10px;font-size:14px">
+          <strong>第一步：大力拍背 5 次 (Back Blows)</strong><br>
+          企喺長者身側稍後，一手支撐佢胸部，令身體前傾。用另一手掌跟用力拍擊兩肩胛骨中間 5 次！
+        </div>
+
+        <div style="background:#fff7ed;border-left:4px solid #f97316;padding:10px 12px;border-radius:8px;margin-bottom:12px;font-size:14px">
+          <strong>第二步：環抱壓腹 5 次 (謙烈治法)</strong><br>
+          企喺長者身後，雙手環抱其腰。一手握拳，拇指頂住肚臍上方、肋骨下方。另一手包住拳頭，用力向內、向上快速推壓 5 次！
+        </div>
+
+        <p style="font-size:12.5px;color:#dc2626;font-weight:700;margin-bottom:12px">⚠️️ 若失去知覺，請立即報警 999 並進行心肺復甦法 (CPR)！</p>
+
+        <button class="btn btn-danger" id="btnSpeakEmergency">🔊 廣東話大聲口述急救步驟</button>
+        <button class="btn btn-ghost" style="margin-top:8px" id="btnCloseEmergency">關閉</button>
+      </div>
+    </div>
+
     <div class="footer">
       © 樂活食得安 · 香港樂齡生活關懷團隊<br>
-      🔒 相片只係用嚟驗餐唔會外洩 · 身體有唔舒服記得睇醫生
+      🔒 本機私隱保護 · 非醫療診斷證明 · 有持續不適請遵醫囑
     </div>
   </div>
 
@@ -334,8 +419,37 @@
     let elderlyMode = localStorage.getItem('lohas_elderly') === '1';
     let voiceOn = false;
     let selectedImageBase64 = null;
+    let helperLang = localStorage.getItem('lohas_helper_lang') || 'ID'; // 'ID' (印尼文) 或 'EN' (英文)
 
     const BACKEND_API = "https://blue-mountain-bd34.ironijkl.workers.dev";
+
+    // 外傭雙語詞典對照庫
+    const HELPER_DICT = {
+      DRAIN_SOUP: {
+        ID: "Tiriskan kuah sup sepenuhnya sebelum disajikan!",
+        EN: "Drain all soup completely before serving!"
+      },
+      DEBONE: {
+        ID: "Buang semua tulang kecil dan cincang halus!",
+        EN: "Remove all bones and cut finely!"
+      },
+      CUT_FINE: {
+        ID: "Gunting makanan kecil-kecil ukuran 1 suapan!",
+        EN: "Cut food into small bite-sized pieces!"
+      },
+      SERVE_AS_IS: {
+        ID: "Tekstur lembut, aman untuk dimakan langsung.",
+        EN: "Soft texture, safe to serve directly."
+      },
+      BOBA_WARNING: {
+        ID: "PENTING: Saring semua boba agar tidak tersedak!",
+        EN: "IMPORTANT: Filter out all boba pearls to prevent choking!"
+      },
+      DUAL_WARNING: {
+        ID: "Peringatan: Makanan ini ada kuah dan isi! Kuah cair cepat tertelan dan bikin tersedak!",
+        EN: "Warning: Mixed texture! Thin liquid slips fast and causes severe choking!"
+      }
+    };
 
     const QUESTIONS = [
       { t: '平時去大便順唔順暢？質地係點？', o: ['日日都順順利利','兩三日先去到一次','三日以上先有 / 粒粒乾硬好辛苦'] },
@@ -357,7 +471,7 @@
       q9: { title: '雙手托天理脾胃（八段錦）', time: '每日 6 分鐘', how: '企直放鬆，一隻手慢慢向上推托天，另一隻手向下按，兩邊輪流做，動作放鬆自然呼吸。' }
     };
 
-    // IDDSI 下拉選單顏色聯動切換
+    // IDDSI 下拉選單顏色聯動
     const userPrescription = document.getElementById('userPrescription');
     function updatePrescriptionColor() {
       const val = userPrescription.value;
@@ -441,6 +555,31 @@
       });
     }
 
+    // ========== 連續個人化記憶與閉環管理 (超越 Kimi 的關鍵) ==========
+    function checkContinuousMemory() {
+      const history = JSON.parse(localStorage.getItem('lohas_history') || '[]');
+      const alertBox = document.getElementById('memoryAlertBox');
+      const alertMsg = document.getElementById('memoryAlertMsg');
+
+      // 統計近 7 次驗餐中高危雙重質地餐次數
+      const dualCount = history.filter(h => h.isDual).length;
+      if (dualCount >= 2) {
+        alertMsg.textContent = `老友，你最近已經有 ${dualCount} 餐係「又湯又渣」高危餐喇！食親記得倒乾啲湯，或者提照顧者幫手剪碎呀。`;
+        alertBox.style.display = 'block';
+      } else {
+        alertBox.style.display = 'none';
+      }
+    }
+
+    function saveHistory(mainText, subText, isDual = false) {
+      const history = JSON.parse(localStorage.getItem('lohas_history') || '[]');
+      const dateStr = new Date().toLocaleDateString('zh-HK', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+      history.unshift({ main: mainText, sub: subText, date: dateStr, isDual });
+      localStorage.setItem('lohas_history', JSON.stringify(history.slice(0, 25)));
+      checkContinuousMemory();
+    }
+
+    // 查腸胃問答
     function renderQuiz() {
       const form = document.getElementById('quizForm');
       form.innerHTML = '';
@@ -546,27 +685,14 @@
       return `<div class="ex-item"><strong>${ex.title}</strong> <span class="ex-time">${ex.time}</span><br>${ex.how}</div>`;
     }
 
-    function saveHistory(mainText, subText) {
-      const history = JSON.parse(localStorage.getItem('lohas_history') || '[]');
-      const dateStr = new Date().toLocaleDateString('zh-HK', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-      history.unshift({ main: mainText, sub: subText, date: dateStr });
-      localStorage.setItem('lohas_history', JSON.stringify(history.slice(0, 20)));
-    }
-
-    // 影相驗餐邏輯（修復 iddsi_prescription < 16 字符限制）
+    // 影相驗餐邏輯與 AR 標尺
     const mealInput = document.getElementById('mealInput');
     const imagePreview = document.getElementById('imagePreview');
+    const previewContainer = document.getElementById('previewContainer');
+    const rulerBar = document.getElementById('rulerBar');
+    const arRulerBox = document.getElementById('arRulerBox');
+    const arRulerText = document.getElementById('arRulerText');
     const btnAnalyzeMeal = document.getElementById('btnAnalyzeMeal');
-
-    const WAITING_MESSAGES = [
-      "睇緊啲飯餸軟唔軟、哽唔哽親...",
-      "睇緊塊肉有無碎骨、大唔大件...",
-      "量緊係咪 15 毫米一口量...",
-      "睇下啲湯水會唔會太稀易濁親...",
-      "計緊軟硬度，好快有結果，等多兩秒...",
-      "幫你睇緊啱唔啱吞嚥處方..."
-    ];
-    let waitInterval = null;
 
     mealInput.addEventListener('change', async (e) => {
       const file = e.target.files[0];
@@ -576,13 +702,48 @@
         showToast('正喺度幫你執好張相尺寸...');
         selectedImageBase64 = await compressImage(file);
         imagePreview.src = selectedImageBase64;
-        imagePreview.style.display = 'block';
+        previewContainer.style.display = 'block';
+        rulerBar.style.display = 'flex';
         btnAnalyzeMeal.style.display = 'block';
         document.getElementById('mealReportCard').style.display = 'none';
       } catch (err) {
         showToast('張相睇唔清，唔該影多張試下');
       }
     });
+
+    // 15mm / 4mm 虛擬 AR 標尺切換
+    document.getElementById('btnRuler15').addEventListener('click', () => {
+      arRulerBox.style.display = 'flex';
+      arRulerBox.style.width = '120px';
+      arRulerBox.style.height = '120px';
+      arRulerText.textContent = '📏 15mm 一口量 (叉背)';
+      document.getElementById('btnRuler15').classList.add('active');
+      document.getElementById('btnRuler4').classList.remove('active');
+    });
+
+    document.getElementById('btnRuler4').addEventListener('click', () => {
+      arRulerBox.style.display = 'flex';
+      arRulerBox.style.width = '45px';
+      arRulerBox.style.height = '45px';
+      arRulerText.textContent = '📐 4mm 細碎 (叉齒)';
+      document.getElementById('btnRuler4').classList.add('active');
+      document.getElementById('btnRuler15').classList.remove('active');
+    });
+
+    document.getElementById('btnRulerToggle').addEventListener('click', () => {
+      const isVisible = arRulerBox.style.display !== 'none';
+      arRulerBox.style.display = isVisible ? 'none' : 'flex';
+      document.getElementById('btnRulerToggle').textContent = isVisible ? '顯示標尺' : '隱藏標尺';
+    });
+
+    const WAITING_MESSAGES = [
+      "睇緊啲飯餸軟唔軟、哽唔哽親...",
+      "量緊係咪 15 毫米一口量...",
+      "睇緊塊肉有無碎骨、大唔大件...",
+      "睇下啲湯水會唔會太稀易濁親...",
+      "計緊軟硬度，好快有結果，等多兩秒..."
+    ];
+    let waitInterval = null;
 
     btnAnalyzeMeal.addEventListener('click', async () => {
       if (!selectedImageBase64) {
@@ -600,26 +761,22 @@
       }, 1800);
       
       try {
-        // 精確擷取 "Level 5" 等簡短代號，字符數只有 7 個，100% 低於 16 限制
         const rawPrescription = document.getElementById('userPrescription').value;
         const levelMatch = rawPrescription.match(/Level\s*\d/i);
         const cleanPrescription = levelMatch ? levelMatch[0] : "Level 5";
 
         const resp = await fetch(BACKEND_API, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             meal_photo: selectedImageBase64,
-            iddsi_prescription: cleanPrescription, // 確保少於 16 字符
+            iddsi_prescription: cleanPrescription,
             user_id: 'Allen',
             meal_type: '午餐'
           })
         });
 
         const data = await resp.json();
-
         if (!resp.ok) {
           const detailStr = data.details ? JSON.stringify(data.details) : (data.error || `狀態碼: ${resp.status}`);
           throw new Error(detailStr);
@@ -643,7 +800,7 @@
 
       const foodName = data.food || "茶餐廳家常飯餸";
       
-      // 跟足 IDDSI 國際官方標準等級（支援 Level 0 至 Level 7 全等級）
+      // IDDSI 國際等級色標
       let rawLevel = String(data.iddsi_level || "");
       let num = data.iddsi_number;
       if (num === undefined || num === null) {
@@ -655,41 +812,15 @@
       let badgeClass = "level-5";
 
       switch(num) {
-        case 7:
-          iddsiLabel = "Level 7 - 常規原質 (Regular)";
-          badgeClass = "level-7";
-          break;
-        case 6:
-          iddsiLabel = "Level 6 - 軟質一口量 (Soft & Bite-sized)";
-          badgeClass = "level-6";
-          break;
-        case 5:
-          iddsiLabel = "Level 5 - 細碎及濕潤 (Minced & Moist)";
-          badgeClass = "level-5";
-          break;
-        case 4:
-          iddsiLabel = "Level 4 - 糊狀純稠 (Pureed)";
-          badgeClass = "level-4";
-          break;
-        case 3:
-          iddsiLabel = "Level 3 - 稠流質 (Liquidised)";
-          badgeClass = "level-3";
-          break;
-        case 2:
-          iddsiLabel = "Level 2 - 輕稠 (Mildly Thick)";
-          badgeClass = "level-2";
-          break;
-        case 1:
-          iddsiLabel = "Level 1 - 極稀 (Slightly Thick)";
-          badgeClass = "level-1";
-          break;
-        case 0:
-          iddsiLabel = "Level 0 - 稀薄液體 (Thin Liquid)";
-          badgeClass = "level-0";
-          break;
-        default:
-          iddsiLabel = `Level ${num}`;
-          badgeClass = `level-${num}`;
+        case 7: iddsiLabel = "Level 7 - 常規原質 (Regular)"; badgeClass = "level-7"; break;
+        case 6: iddsiLabel = "Level 6 - 軟質一口量 (Soft & Bite-sized)"; badgeClass = "level-6"; break;
+        case 5: iddsiLabel = "Level 5 - 細碎及濕潤 (Minced & Moist)"; badgeClass = "level-5"; break;
+        case 4: iddsiLabel = "Level 4 - 糊狀純稠 (Pureed)"; badgeClass = "level-4"; break;
+        case 3: iddsiLabel = "Level 3 - 稠流質 (Liquidised)"; badgeClass = "level-3"; break;
+        case 2: iddsiLabel = "Level 2 - 輕稠 (Mildly Thick)"; badgeClass = "level-2"; break;
+        case 1: iddsiLabel = "Level 1 - 極稀 (Slightly Thick)"; badgeClass = "level-1"; break;
+        case 0: iddsiLabel = "Level 0 - 稀薄液體 (Thin Liquid)"; badgeClass = "level-0"; break;
+        default: iddsiLabel = `Level ${num}`; badgeClass = `level-${num}`;
       }
 
       const badgeEl = document.getElementById('resIddsiLevel');
@@ -701,25 +832,27 @@
       const confPercent = Math.round((data.confidence || 0.85) * 100);
       document.getElementById('resConfidence').textContent = `睇得好清楚 (${confPercent}%)`;
 
-      // 雙重質地嗆咳危險警示
+      // 雙重質地嗆咳危險警示（外傭對照支援）
       const dualBanner = document.getElementById('resDualTextureBanner');
       if (data.is_dual_texture) {
         dualBanner.style.display = 'flex';
         document.getElementById('resSafetyWarning').textContent = 
           data.safety_warning || "呢餐又湯又渣，稀薄嘅清湯會快過固體滑入喉嚨，好容易濁親！倒走啲湯穩陣啲先好餵呀！";
+        document.getElementById('resSafetyWarningHelper').textContent = 
+          `🇮🇩/🇵🇭 Helper: ${HELPER_DICT.DUAL_WARNING[helperLang]}`;
       } else {
         dualBanner.style.display = 'none';
       }
 
-      // 照護動作標籤
+      // 照顧者動作標籤（雙語外傭對照對應）
       const chipBox = document.getElementById('resActionChips');
       chipBox.innerHTML = '';
       
       const actionMap = {
-        'DRAIN_SOUP': '🥣 倒走啲湯穩陣啲',
-        'DEBONE': '🍗 一定要挑乾淨啲碎骨',
-        'CUT_FINE': '✂️ 剪碎佢食啦易咬啲',
-        'SERVE_AS_IS': '✅ 堅係無哽親風險嘅 · 可以直接食'
+        'DRAIN_SOUP': { zh: '🥣 倒走啲湯穩陣啲', helper: HELPER_DICT.DRAIN_SOUP[helperLang] },
+        'DEBONE': { zh: '🍗 一定要挑乾淨啲碎骨', helper: HELPER_DICT.DEBONE[helperLang] },
+        'CUT_FINE': { zh: '✂️️ 剪碎佢食啦易咬啲', helper: HELPER_DICT.CUT_FINE[helperLang] },
+        'SERVE_AS_IS': { zh: '✅ 堅係無哽親風險嘅 · 可以直接食', helper: HELPER_DICT.SERVE_AS_IS[helperLang] }
       };
 
       const actions = (data.caregiver_action && data.caregiver_action.length > 0) 
@@ -727,29 +860,24 @@
         : ['SERVE_AS_IS'];
 
       actions.forEach(act => {
-        const text = actionMap[act] || act;
-        chipBox.innerHTML += `<span class="action-chip">${text}</span>`;
+        const item = actionMap[act] || { zh: act, helper: '' };
+        chipBox.innerHTML += `
+          <div class="action-chip">
+            <span>${item.zh}</span>
+            <span class="helper-sub">👉 ${item.helper}</span>
+          </div>`;
       });
 
-      // 針對珍珠奶茶顆粒窒息高危標籤
+      // 針對珍珠奶茶顆粒窒息
       if (data.is_drink && data.is_dual_texture) {
-        chipBox.innerHTML += `<span class="action-chip" style="background:#fef2f2;border-color:#ef4444;color:#b91c1c">🧋 必須隔走珍珠！避免倒吸入氣管窒息</span>`;
+        chipBox.innerHTML += `
+          <div class="action-chip" style="background:#fef2f2;border-color:#ef4444;color:#b91c1c">
+            <span>🧋 必須隔走珍珠！避免倒吸入氣管窒息</span>
+            <span class="helper-sub">👉 ${HELPER_DICT.BOBA_WARNING[helperLang]}</span>
+          </div>`;
       }
 
-      if (data.allergen_tags && data.allergen_tags.length > 0) {
-        data.allergen_tags.forEach(tag => {
-          let tagZh = tag;
-          if (tag === 'EGG') tagZh = '雞蛋';
-          if (tag === 'SEAFOOD') tagZh = '海鮮';
-          if (tag === 'PEANUT') tagZh = '花生';
-          if (tag === 'GLUTEN') tagZh = '麩質';
-          if (tag === 'SOY') tagZh = '大豆';
-          if (tag === 'DAIRY') tagZh = '奶類';
-          chipBox.innerHTML += `<span class="action-chip" style="background:#fef2f2;border-color:#ef4444;color:#b91c1c">⚠️ 留意有：${tagZh}</span>`;
-        });
-      }
-
-      // 營養素速覽
+      // 營養素
       const n = data.nutrients || {};
       document.getElementById('resNutrientGrid').innerHTML = `
         <div class="nutrient-item"><span>熱量</span><strong>${n.calories ?? 250} 卡</strong></div>
@@ -758,13 +886,13 @@
         <div class="nutrient-item"><span>鹽份鈉</span><strong>${n.sodium_mg ?? 400} 毫克</strong></div>
       `;
 
-      // 口語叮囑
       let rawAdvice = data.spoken_advice || "老友，食飯千祈唔好急，慢慢嚼碎先好吞呀！";
       rawAdvice = rawAdvice.replace(/老友記/g, "老友");
       currentSpokenAdvice = rawAdvice;
       speakCantonese(currentSpokenAdvice);
 
-      saveHistory(`驗餐: ${foodName}`, `${iddsiLabel} · ${n.calories ?? 250} 卡路里`);
+      // 記錄日誌（寫入連續性記憶檔案）
+      saveHistory(`驗餐: ${foodName}`, `${iddsiLabel} · ${n.calories ?? 250} 卡路里`, !!data.is_dual_texture);
 
       card.scrollIntoView({ behavior: 'smooth' });
     }
@@ -773,7 +901,31 @@
       speakCantonese(currentSpokenAdvice);
     });
 
-    // 紀錄底簿與街坊問答
+    // ========== 離線急救語音與彈窗操作 ==========
+    const emergencyModal = document.getElementById('emergencyModal');
+    document.getElementById('btnEmergency').addEventListener('click', () => {
+      emergencyModal.style.display = 'flex';
+      speakCantonese('老友哽親急救！第一步：前傾用力拍背五次！第二步：環抱肚臍上方向上壓腹五次！');
+    });
+
+    document.getElementById('btnCloseEmergency').addEventListener('click', () => {
+      emergencyModal.style.display = 'none';
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
+    });
+
+    document.getElementById('btnSpeakEmergency').addEventListener('click', () => {
+      speakCantonese('老友哽親急救法！第一：身體前傾，掌跟大力拍打背部兩肩胛骨中間五次！第二：雙手環抱腹部，拳頭放喺肚臍上方，快速向內向上壓腹五次！如果窒息失去知覺，即刻打九九九叫救護車！');
+    });
+
+    // 外傭語言切換 (ID 印尼文 / EN 英文)
+    document.getElementById('btnLangToggle').addEventListener('click', () => {
+      helperLang = (helperLang === 'ID') ? 'EN' : 'ID';
+      localStorage.setItem('lohas_helper_lang', helperLang);
+      document.getElementById('btnLangToggle').textContent = (helperLang === 'ID') ? '🇮🇩 印尼對照' : '🇵🇭 English';
+      showToast(helperLang === 'ID' ? '已切換為：印尼文 (Bahasa) 照護對照' : 'Switched to: English Helper Mode');
+    });
+
+    // 紀錄底簿與問答
     function renderHistory() {
       const list = document.getElementById('historyList');
       const hist = JSON.parse(localStorage.getItem('lohas_history') || '[]');
@@ -784,7 +936,7 @@
       list.innerHTML = hist.map(h => `
         <div style="display:flex;justify-content:space-between;padding:12px 14px;background:var(--bg);border-radius:12px;margin-bottom:6px">
           <div>
-            <div style="font-weight:700;font-size:14.5px">${h.main}</div>
+            <div style="font-weight:700;font-size:14.5px">${h.main} ${h.isDual ? '<span style="color:#dc2626;font-size:12px">⚠️高危雙質地</span>' : ''}</div>
             <div style="font-size:12.5px;color:var(--text2)">${h.sub}</div>
           </div>
           <span style="font-size:12px;color:var(--text2);align-self:center">${h.date}</span>
@@ -795,6 +947,7 @@
     document.getElementById('btnClearHistory').addEventListener('click', () => {
       localStorage.removeItem('lohas_history');
       renderHistory();
+      checkContinuousMemory();
       showToast('紀錄已經清走晒');
     });
 
@@ -804,8 +957,7 @@
       { k: ['牛肉麵', '牛腩', '麵'], a: '牛肉麵有粗麵有牛肉又有湯，屬於典型的雙重質地！清湯好易濁親喉嚨，老友食之前記得徹底倒走啲湯，牛肉亦都要剪碎至細件先好食呀！' },
       { k: ['蛋包飯', '蛋', '飯'], a: '蛋包飯質地好軟滑，剪碎佢食啦易咬啲。只要煮到啲飯粒濕潤、雞蛋唔好煎到硬邊，剪成細啖粒狀就食得好安心。' },
       { k: ['肚脹', '脹氣', '胃氣'], a: '食得太急、飲水唔夠或者心事多緊張都會搞到肚脹。食飽飯之後千祈唔好即刻瞓低，企起身慢行 10 分鐘，再用暖手順時針抹下個肚腩仔啦。' },
-      { k: ['便秘', '唔通', '大便'], a: '如果幾日都去唔到大便，記得每日分幾次飲夠 6 至 8 杯溫水。每餐叫屋企人幫手剪碎半碗菜心，等腸道有足夠纖維幫手推便便出嚟。' },
-      { k: ['益生菌', '乳酪'], a: '食益生菌要揀有科研證明嘅牌子，最緊要係平日都要食深綠色蔬菜，啲好菌食飽飽先可以喺腸道生得好。' }
+      { k: ['便秘', '唔通', '大便'], a: '如果幾日都去唔到大便，記得每日分幾次飲夠 6 至 8 杯溫水。每餐叫屋企人幫手剪碎半碗菜心，等腸道有足夠纖維幫手推便便出嚟。' }
     ];
 
     document.getElementById('btnAsk').addEventListener('click', () => {
@@ -819,7 +971,6 @@
       speakCantonese(reply);
     });
 
-    // 分頁與長者設定
     document.querySelectorAll('.tab').forEach(tab => {
       tab.addEventListener('click', () => {
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -848,11 +999,9 @@
     document.getElementById('btnVoice').addEventListener('click', () => {
       voiceOn = !voiceOn;
       document.getElementById('btnVoice').classList.toggle('voice-on', voiceOn);
-      document.getElementById('btnVoice').textContent = voiceOn ? '🔊 讀緊' : '🔊 開聲讀';
+      document.getElementById('btnVoice').textContent = voiceOn ? '🔊 讀緊' : '🔊 語音';
       showToast(voiceOn ? '已開聲，會逐句讀畀你聽' : '已閂咗語音');
-      if (voiceOn) {
-        speakCantonese('開咗聲音喇！我會用自然嘅廣東話，逐句讀畀你聽。');
-      }
+      if (voiceOn) speakCantonese('開咗聲音喇！我會用自然嘅廣東話，逐句讀畀你聽。');
     });
 
     document.getElementById('btnResetQuiz').addEventListener('click', () => {
@@ -871,7 +1020,9 @@
       speakCantonese(`評估做完喇！你嘅總分係${score}。${desc}`);
     });
 
+    // 初始化執行
     renderQuiz();
+    checkContinuousMemory();
   </script>
 </body>
 </html>
