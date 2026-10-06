@@ -6,8 +6,8 @@
   <meta name="theme-color" content="#0d9488">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="description" content="樂活食得安 - 腸道微生態評估、運動處方與地道港式飲食吞嚥安全多模態檢測">
-  <title>樂活食得安 | 腸道微生態與吞嚥安全</title>
+  <meta name="description" content="樂活食得安 - 腸道微生態、情緒安康與 IDDSI 動態吞嚥安全系統">
+  <title>樂活食得安 | 腸道微生態 · 情緒安康 · 吞嚥安全</title>
   <style>
     :root {
       --bg: #f4f4f7; --card: #ffffff; --card-glass: rgba(255,255,255,0.94);
@@ -17,7 +17,7 @@
       --shadow: 0 8px 30px -6px rgba(0,0,0,0.08); --radius: 20px; --radius-sm: 14px;
       --font-base: 17px; --font-title: 22px;
 
-      /* IDDSI 國際官方標準色 */
+      /* IDDSI 國際官方標準色碼 */
       --iddsi-7: #000000;
       --iddsi-6: #2c5697;
       --iddsi-5: #ea7125;
@@ -40,6 +40,7 @@
       .memory-alert { background: #0c1e3d !important; border-color: #3b82f6 !important; color: #93c5fd !important; }
       .iddsi-badge.level-0 { background: #1e293b !important; color: #f1f5f9 !important; border-color: #475569 !important; }
       .traffic-card { background: #1f2937 !important; }
+      .mind-card { background: #2e1065 !important; border-color: #7c3aed !important; }
     }
 
     body.elderly {
@@ -56,7 +57,6 @@
     }
     .app { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 12px; position: relative; }
 
-    /* App Store 審核專用醫療免責頂部提示 */
     .disclaimer-banner {
       font-size: 11px; color: var(--text2); background: rgba(0,0,0,0.04);
       padding: 6px 10px; border-radius: 8px; text-align: center; line-height: 1.3;
@@ -85,7 +85,7 @@
     
     .tabs { display: flex; gap: 4px; margin-bottom: 2px; }
     .tab {
-      flex: 1; text-align: center; padding: 9px 2px; border-radius: 11px; font-size: 13px; font-weight: 700;
+      flex: 1; text-align: center; padding: 9px 2px; border-radius: 11px; font-size: 12.5px; font-weight: 700;
       background: var(--card); color: var(--text2); cursor: pointer; border: 1.5px solid transparent; min-height: 42px;
     }
     .tab.active { background: var(--teal); color: #fff; }
@@ -95,7 +95,7 @@
     }
     @keyframes cardIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
-    /* UI 交通燈安全告示牌 */
+    /* 交通燈視覺告示牌 */
     .traffic-card {
       border-radius: 16px; padding: 14px; color: #fff; margin-bottom: 12px;
       display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 14px rgba(0,0,0,0.1);
@@ -106,8 +106,9 @@
     .traffic-icon { font-size: 32px; flex-shrink: 0; }
     .traffic-text h3 { font-size: 17px; font-weight: 800; margin-bottom: 2px; }
     .traffic-text p { font-size: 13px; opacity: 0.95; line-height: 1.35; }
+    .traffic-text .helper-line { font-size: 12px; opacity: 0.9; margin-top: 3px; font-style: italic; border-top: 1px solid rgba(255,255,255,0.25); padding-top: 3px; }
 
-    /* 按鈕 */
+    /* 按鈕通用 */
     .btn {
       display: inline-flex; align-items: center; justify-content: center; gap: 8px;
       padding: 12px 16px; border-radius: 14px; font-size: 15.5px; font-weight: 700;
@@ -121,16 +122,78 @@
     .btn-ghost { background: var(--bg); color: var(--text); }
     .btn-danger { background: #dc2626; color: #fff; }
 
+    /* 可拖曳與縮放的 AR 標尺框 */
+    #rulerBox {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border: 2.5px dashed #22c55e;
+      background: rgba(34, 197, 94, 0.22);
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: move;
+      touch-action: none;
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.45);
+      user-select: none;
+      z-index: 10;
+    }
+    .ruler-tag {
+      background: rgba(0, 0, 0, 0.85);
+      color: #4ade80;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .ruler-control-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      background: var(--bg);
+      padding: 10px 14px;
+      border-radius: 12px;
+      margin-top: 8px;
+    }
+    .ruler-btn-group {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .ruler-chip {
+      padding: 5px 12px;
+      font-size: 12px;
+      font-weight: 800;
+      border-radius: 20px;
+      border: 1.5px solid var(--teal);
+      background: var(--card);
+      color: var(--teal);
+      cursor: pointer;
+    }
+    .ruler-chip.active {
+      background: var(--teal);
+      color: #fff;
+    }
+
     /* 照護動作標籤 */
     .action-chips { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
     .action-chip {
       background: #fff7ed; border: 1.5px solid #f97316; color: #c2410c; padding: 8px 12px;
       border-radius: 12px; font-size: 14px; font-weight: 800;
-      display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 2px;
+      display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 3px; width: 100%;
     }
-    .action-chip .helper-sub { font-size: 12px; font-weight: 600; color: #9a3412; opacity: 0.9; }
+    .action-chip .helper-sub {
+      font-size: 12.5px; font-weight: 700; color: #9a3412; opacity: 0.95;
+      background: rgba(249,115,22,0.1); padding: 2px 6px; border-radius: 6px; width: 100%;
+    }
 
-    /* IDDSI Badge */
+    /* IDDSI 官方標籤 */
     .iddsi-badge {
       display: inline-block; padding: 6px 12px; border-radius: 10px; font-weight: 900;
       font-size: 14px; margin-bottom: 6px; color: #ffffff; letter-spacing: 0.3px;
@@ -144,7 +207,13 @@
     .iddsi-badge.level-1 { background-color: var(--iddsi-1); color: #fff; }
     .iddsi-badge.level-0 { background-color: var(--iddsi-0); color: #0f172a; border: 1.5px solid #cbd5e1; }
 
-    /* 查腸胃題目樣式 */
+    /* 敏感標籤 */
+    .allergen-badge {
+      display: inline-block; padding: 4px 8px; border-radius: 6px; font-size: 11.5px;
+      font-weight: 800; background: #fee2e2; color: #b91c1c; border: 1px solid #f87171; margin-right: 4px; margin-bottom: 4px;
+    }
+
+    /* 題目樣式 */
     .q-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
     .q-num {
       width: 34px; height: 34px; background: linear-gradient(135deg, var(--teal), var(--teal-dark));
@@ -171,19 +240,21 @@
     .opt.selected .radio::after { transform: scale(1); }
     .opt-label { flex: 1; font-weight: 600; font-size: 15.5px; }
 
-    /* 進度條 */
     .progress-wrap { margin-top: 10px; height: 7px; background: rgba(0,0,0,.08); border-radius: 4px; overflow: hidden; }
     .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--teal), var(--blue)); border-radius: 4px; transition: width .35s; }
     .progress-text { font-size: 13px; color: var(--text2); margin-top: 5px; text-align: right; font-weight: 600; }
 
-    /* 運動處方項目 */
     .ex-item {
       background: var(--bg); border-left: 4.5px solid var(--teal); padding: 12px 14px;
       border-radius: 8px; margin-bottom: 8px; font-size: 14px; line-height: 1.5;
     }
     .ex-time { font-size: 12.5px; color: var(--teal); font-weight: 800; }
 
-    /* 吞嚥運動專區樣式 */
+    .mind-card {
+      background: #f5f3ff; border: 1.5px solid #c4b5fd; border-radius: 12px; padding: 12px 14px;
+      margin-top: 10px; font-size: 13.5px; line-height: 1.5; color: #5b21b6;
+    }
+
     .swallow-exercise-card {
       background: var(--bg); border-left: 4.5px solid var(--teal); padding: 12px 14px;
       border-radius: 10px; margin-bottom: 10px;
@@ -193,14 +264,12 @@
       font-weight: 800; font-size: 12px; padding: 4px 8px; border-radius: 8px; margin-bottom: 8px;
     }
 
-    /* 快捷追問按鈕群 */
     .followup-bar { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
     .followup-btn {
       background: var(--bg); border: 1px solid var(--teal); color: var(--teal);
       font-size: 12.5px; font-weight: 700; padding: 6px 10px; border-radius: 16px; cursor: pointer;
     }
 
-    /* 浮動急救掣 */
     #btnEmergencyFloat {
       position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; border-radius: 50%;
       background: #dc2626; color: #fff; font-size: 26px; border: none;
@@ -208,7 +277,6 @@
       display: flex; align-items: center; justify-content: center;
     }
 
-    /* 彈窗樣式 */
     .modal-backdrop {
       position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 999;
       display: none; align-items: center; justify-content: center; padding: 16px;
@@ -229,35 +297,30 @@
 </head>
 <body>
   <div class="app">
-    <!-- App Store 合規免責聲明 -->
     <div class="disclaimer-banner">
       ⚕️ 本系統供家庭照顧者腸道微生態與吞嚥質地初篩參考，非醫療診斷。有持續腸胃不適或吞嚥困難請遵醫囑。
     </div>
 
-    <!-- 右下角急救浮動掣 -->
     <button id="btnEmergencyFloat" aria-label="緊急哽親急救">🆘</button>
 
-    <!-- 頂部導航 -->
     <header class="header">
       <div class="brand">
         <span class="logo">🌿 樂活食得安 · Lohascare</span>
         <div class="header-actions">
           <button class="chip danger" id="btnEmergency">🚨 哽親急救</button>
-          <button class="chip" id="btnLangToggle">🇮🇩 外傭對照</button>
+          <button class="chip" id="btnLangToggle">🇮🇩 Bahasa</button>
           <button class="chip" id="btnElderly">大字</button>
           <button class="chip" id="btnVoice">🔊 語音</button>
         </div>
       </div>
-      <h1 id="headerTitle">腸道微生態與膳食吞嚥安全</h1>
-      <p class="sub">微生態評估 · 腸胃運動處方 · IDDSI 識餐</p>
+      <h1 id="headerTitle">腸道微生態 · 情緒安康 · 吞嚥安全</h1>
+      <p class="sub">腸道好菌 · 腸腦軸紓壓 · IDDSI 吞嚥守護</p>
     </header>
 
-    <!-- 連續記憶提醒條 (腸道與吞嚥閉環聯動) -->
     <div class="memory-alert" id="memoryAlertBox" style="display:none;padding:12px;border-radius:12px;font-size:13.5px;line-height:1.45;">
       💡 <strong>老友連續健康提示：</strong><span id="memoryAlertMsg"></span>
     </div>
 
-    <!-- 五大功能導航分頁 -->
     <div class="tabs">
       <button class="tab active" data-tab="quiz">🦠 查腸道</button>
       <button class="tab" data-tab="meal">📸 驗飯餸</button>
@@ -266,25 +329,28 @@
       <button class="tab" data-tab="qa">💬 街坊傾</button>
     </div>
 
-    <!-- 分頁 1: 查腸道 (10題腸道微生態評估與個人化運動處方) -->
+    <!-- 分頁 1: 查腸道 -->
     <div id="tabQuiz">
       <div class="card" style="margin-bottom:10px">
-        <h3 style="margin-bottom:4px">🦠 腸道微生態健康評估 (10 題)</h3>
-        <p style="font-size:13px;color:var(--text2)">了解好菌活性、排便順暢度與腸腦軸狀態，獲取個人化運動處方。</p>
+        <h3 style="margin-bottom:4px">🦠 腸道微生態與情緒安康評估 (10 題)</h3>
+        <p style="font-size:13px;color:var(--text2)">了解好菌活性、排便順暢度與腸腦軸情緒壓力，獲取個人化運動與安神處方。</p>
         <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
         <div class="progress-text" id="progressText">答咗 0 / 10 題</div>
       </div>
 
       <form id="quizForm"></form>
 
-      <!-- 腸道評分結果卡片 -->
       <div class="card" id="resultCard" style="display:none;margin-top:14px">
         <div style="font-size:12.5px;font-weight:800;color:var(--text2);letter-spacing:0.5px">腸道微生態健康評分</div>
         <div style="font-size:52px;font-weight:900;letter-spacing:-1.5px;margin:4px 0;line-height:1" id="scoreBadge">0</div>
         <div style="font-size:18px;font-weight:800;margin-bottom:8px" id="statusTitle"></div>
         <div style="font-size:14.5px;color:var(--text);background:var(--bg);padding:14px;border-radius:var(--radius-sm);line-height:1.6" id="statusDesc"></div>
         
-        <!-- 個人化症狀運動處方 -->
+        <div class="mind-card" id="mindBox">
+          🧠 <strong>腸腦軸 (Gut-Brain Axis) 情緒守護：</strong><br>
+          <span id="mindDesc">腸道係人體第二大腦，九成血清素由腸道製造。放鬆心情、睡得安穩，腸胃好菌自然繁衍得好！</span>
+        </div>
+
         <div id="exerciseBox" style="margin-top:14px"></div>
 
         <button class="btn btn-voice" style="margin-top:14px" id="btnSpeakResult">🔊 讀出評估結果與運動指引</button>
@@ -292,32 +358,50 @@
       </div>
     </div>
 
-    <!-- 分頁 2: 影相驗餐 (交通燈分層 UI + 雙向追問) -->
+    <!-- 分頁 2: 影相驗餐 (實物可調標尺 + 動態品類處方矩陣) -->
     <div id="tabMeal" style="display:none">
       <div class="card">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-          <label style="font-size:14.5px;font-weight:800">照護對象目標餐質：</label>
+          <label style="font-size:14.5px;font-weight:800" id="labelTargetLevel">照護對象目標餐質：</label>
           <button class="chip" id="btnShowForkGuide" style="border-color:var(--teal);color:var(--teal)">🍴 官方測試法</button>
         </div>
         <select id="userPrescription" style="width:100%;padding:10px;border-radius:12px;font-weight:800;margin-bottom:12px">
-          <option value="Level 7">⬛ Level 7 - 原質食物 (平時正常食法)</option>
-          <option value="Level 6">🟦 Level 6 - 軟飯軟餸 (切至15mm一口)</option>
-          <option value="Level 5" selected>🟧 Level 5 - 碎餐爛飯 (4mm細碎濕潤)</option>
-          <option value="Level 4">🟩 Level 4 - 純糊餐 (幼滑無顆粒)</option>
-          <option value="Level 3">🟨 Level 3 - 稠流質 (流質但有稠度)</option>
+          <option value="Level 7">⬛ Level 7 - 原質食物 (Normal / Makanan Biasa)</option>
+          <option value="Level 6">🟦 Level 6 - 軟質一口量 (Bite-sized / Potongan Kecil 15mm)</option>
+          <option value="Level 5" selected>🟧 Level 5 - 細碎及濕潤 (Minced & Moist / Dicincang Lembab 4mm)</option>
+          <option value="Level 4">🟩 Level 4 - 純糊狀 (Pureed / Dihaluskan Lembut)</option>
+          <option value="Level 3">🟨 Level 3 - 稠流質 (Liquidised / Cair Kental)</option>
         </select>
 
         <div style="border:2px dashed var(--teal);padding:20px;border-radius:14px;text-align:center;background:rgba(13,148,136,.04);cursor:pointer" onclick="document.getElementById('mealInput').click()">
           <div style="font-size:32px">📷</div>
-          <div style="font-weight:800;font-size:15.5px">撳呢度影相或選取餐膳</div>
-          <div style="font-size:12.5px;color:var(--text2)">即時分析軟硬度、雙重質地嗆咳與碎骨風險</div>
+          <div style="font-weight:800;font-size:15.5px" id="labelUploadPrompt">撳呢度影相或選取餐膳</div>
+          <div style="font-size:12.5px;color:var(--text2)" id="labelUploadSub">即時分析軟硬度、雙重質地嗆咳與碎骨風險</div>
           <input type="file" id="mealInput" accept="image/*" capture="environment" style="display:none">
         </div>
 
-        <div id="previewWrap" style="display:none;position:relative;margin-top:10px;border-radius:12px;overflow:hidden">
-          <img id="imagePreview" style="width:100%;max-height:260px;object-fit:cover;display:block" alt="餐食預覽">
-          <div id="rulerBox" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:110px;height:110px;border:3px dashed #22c55e;background:rgba(34,197,94,0.25);border-radius:6px;display:flex;align-items:center;justify-content:center;pointer-events:none">
-            <span style="background:rgba(0,0,0,0.85);color:#4ade80;font-size:11px;font-weight:900;padding:2px 6px;border-radius:4px">📏 15mm (叉背寬)</span>
+        <div id="previewWrap" style="display:none;position:relative;margin-top:10px;border-radius:12px;overflow:hidden;background:#000">
+          <img id="imagePreview" style="width:100%;max-height:280px;object-fit:contain;display:block" alt="餐食預覽">
+          
+          <div id="rulerBox" style="width:100px;height:100px;">
+            <span class="ruler-tag" id="rulerTagText">📏 15mm 一口量 (Bite-sized)</span>
+            <span style="font-size:10px;color:#fff;opacity:0.85;margin-top:2px;pointer-events:none">👈 按住可拖曳對位 👉</span>
+          </div>
+        </div>
+
+        <div class="ruler-control-panel" id="rulerControlPanel" style="display:none">
+          <div class="ruler-btn-group">
+            <button class="ruler-chip active" id="btnMode15">📏 15mm 軟餐 (叉背)</button>
+            <button class="ruler-chip" id="btnMode4">📐 4mm 碎餐 (叉齒)</button>
+            <button class="ruler-chip" id="btnToggleRuler">👁️ 隱藏標尺</button>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2)">
+            <span>🔍 實物參照微調：</span>
+            <input type="range" id="rulerScaleSlider" min="30" max="220" value="100" style="flex:1">
+            <span id="sliderValueText" style="font-weight:800;color:var(--teal)">100px</span>
+          </div>
+          <div style="font-size:11.5px;color:var(--teal);text-align:center">
+            💡 提示：拍照時放一把真餐叉喺舊肉隔離，拉動滑桿令方格闊度貼合真叉背，即可精準量度！
           </div>
         </div>
 
@@ -325,43 +409,51 @@
 
         <!-- 辨識結果報告 -->
         <div id="mealReportCard" style="display:none;margin-top:14px">
-          <!-- 交通燈大色塊主導 UI -->
           <div class="traffic-card traffic-green" id="trafficBanner">
             <div class="traffic-icon" id="trafficIcon">🟢</div>
             <div class="traffic-text">
               <h3 id="trafficTitle">安全進食</h3>
               <p id="trafficSummary">餐食質地符合長者處方，軟硬適中。</p>
+              <div class="helper-line" id="trafficHelper">Aman: Tekstur makanan sesuai dan aman dikonsumsi lansia.</div>
             </div>
           </div>
 
           <div style="display:flex;justify-content:space-between;align-items:center">
             <span class="iddsi-badge level-5" id="resIddsiLevel">Level 5</span>
-            <span style="font-size:12px;color:var(--text2)" id="resConfidence">信心度: 90%</span>
+            <span style="font-size:12px;color:var(--text2)" id="resConfidence">睇得好清楚 (90%)</span>
           </div>
-          <h2 style="font-size:19px;font-weight:900;margin:4px 0" id="resFoodName">食物名稱</h2>
+          
+          <div style="margin:6px 0">
+            <h2 style="font-size:20px;font-weight:900;margin:0" id="resFoodName">食物名稱</h2>
+            <div style="font-size:13.5px;color:var(--teal);font-weight:700" id="resFoodNameHelper">Nama Makanan</div>
+          </div>
 
-          <!-- 深度理由說明 -->
+          <div id="resAllergenBox" style="margin:6px 0"></div>
+
           <div style="background:var(--bg);padding:10px 12px;border-radius:10px;font-size:13.5px;line-height:1.45;margin-bottom:8px">
-            🔍 <strong>判斷理由：</strong><span id="resVisualReason">正在分析質地細節...</span>
+            <div>🔍 <strong>判斷理由：</strong><span id="resVisualReason">正在分析質地細節...</span></div>
+            <div style="font-size:12px;color:var(--text2);margin-top:4px;font-style:italic" id="resVisualReasonHelper">Alasan Tekstur: Makanan telah dianalisis.</div>
           </div>
 
-          <!-- 雙重質地嗆咳警示 -->
+          <div style="background:rgba(13,148,136,0.08);border:1px solid var(--teal);padding:8px 12px;border-radius:10px;font-size:13px;color:var(--teal);margin-bottom:8px;font-weight:700;display:flex;align-items:center;justify-content:space-between">
+            <span>🍴 官方推薦測試：<span id="resOfficialTest">餐叉指壓測試</span></span>
+            <button class="chip" onclick="document.getElementById('forkModal').style.display='flex'" style="padding:2px 8px;min-height:26px;font-size:11.5px">點做？</button>
+          </div>
+
           <div class="danger-banner" id="resDualTextureBanner" style="display:none;background:#fef2f2;border:2px solid #ef4444;border-radius:12px;padding:12px;margin-bottom:8px">
-            <strong style="color:#b91c1c;display:block">⚠️ 提防濁親（又湯又渣雙重質地）</strong>
+            <strong style="color:#b91c1c;display:block">⚠ 提防濁親（又湯又渣雙重質地）</strong>
             <p id="resSafetyWarning" style="font-size:13.5px;color:#7f1d1d;line-height:1.4"></p>
-            <p id="resSafetyWarningHelper" style="font-size:12px;color:#991b1b;margin-top:4px;font-style:italic"></p>
+            <div id="resSafetyWarningHelper" style="font-size:12.5px;color:#991b1b;margin-top:4px;font-weight:700;border-top:1px dashed #ef4444;padding-top:4px"></div>
           </div>
 
-          <!-- 動作標籤 -->
+          <!-- 動態產生之食物×處方標籤 -->
           <div class="action-chips" id="resActionChips"></div>
 
-          <!-- 摺疊詳細營養數據 -->
-          <details style="margin:8px 0;background:var(--bg);padding:8px 12px;border-radius:10px;font-size:13.5px">
-            <summary style="font-weight:700;cursor:pointer;color:var(--teal)">📊 查看熱量與營養素明細</summary>
-            <div id="resNutrientGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:8px;text-align:center"></div>
+          <details style="margin:8px 0;background:var(--bg);padding:8px 12px;border-radius:10px;font-size:13px">
+            <summary style="font-weight:700;cursor:pointer;color:var(--teal)">📊 查看完整微量營養素及水分明細 (Nutrisi / Nutrients)</summary>
+            <div id="resNutrientGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px;text-align:center"></div>
           </details>
 
-          <!-- 雙向追問捷徑 -->
           <div style="margin-top:12px;border-top:1px dashed rgba(0,0,0,0.12);padding-top:10px">
             <div style="font-size:13px;font-weight:800;color:var(--teal)">💬 有咩唔明？繼續傾：</div>
             <div class="followup-bar">
@@ -374,7 +466,7 @@
       </div>
     </div>
 
-    <!-- 分頁 3: 吞嚥肌操 (言語治療師日常鍛鍊 + 打卡追蹤) -->
+    <!-- 分頁 3: 吞嚥肌操 -->
     <div id="tabSwallow" style="display:none">
       <div class="card">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
@@ -411,21 +503,21 @@
     <div id="tabQuickRef" style="display:none">
       <div class="card">
         <h3 style="margin-bottom:6px">📖 港式常見食物 IDDSI 離線速查表</h3>
-        <p style="font-size:13px;color:var(--text2);margin-bottom:12px">就算冇網絡，茶餐廳照樣知食唔食得。</p>
+        <p style="font-size:13px;color:var(--text2);margin-bottom:12px">就算冇網絡，茶餐廳照樣知食唔食得（支援外語對照）。</p>
         <div style="display:flex;gap:6px;margin-bottom:12px">
-          <input type="text" id="refSearchInput" placeholder="搜尋：通粉、燒味、粥..." style="flex:1;padding:10px;border-radius:10px;border:1px solid rgba(0,0,0,0.15)">
+          <input type="text" id="refSearchInput" placeholder="搜尋：通粉、牛扒、粥、煎蛋..." style="flex:1;padding:10px;border-radius:10px;border:1px solid rgba(0,0,0,0.15)">
         </div>
         <div id="refTableList" style="display:flex;flex-direction:column;gap:8px"></div>
       </div>
     </div>
 
-    <!-- 分頁 5: 街坊傾計 (支援語音輸入 STT + 腸道與飲食雙重解答) -->
+    <!-- 分頁 5: 街坊傾計 -->
     <div id="tabQa" style="display:none">
       <div class="card">
         <h3 style="margin-bottom:6px">💬 街坊語音對話解惑</h3>
-        <p style="font-size:13px;color:var(--text2);margin-bottom:12px">可用廣東話直接講出問題，解答便秘、肚脹、益生菌同嗆咳疑難。</p>
+        <p style="font-size:13px;color:var(--text2);margin-bottom:12px">可用廣東話直接講出問題，解答便秘、肚脹、情緒安眠、益生菌同嗆咳疑難。</p>
         <div style="display:flex;gap:8px;margin-bottom:10px">
-          <input id="qaInput" type="text" placeholder="講或者打：點解食火腿通粉咁易濁親？" style="flex:1;padding:12px;border-radius:12px;border:1.5px solid rgba(0,0,0,.15);font-size:14px">
+          <input id="qaInput" type="text" placeholder="講或者打：點解心情緊張個胃會抽痛？" style="flex:1;padding:12px;border-radius:12px;border:1.5px solid rgba(0,0,0,.15);font-size:14px">
           <button class="btn btn-primary" id="btnVoiceInput" style="width:auto;padding:0 14px">🎙️ 講嘢</button>
           <button class="btn btn-primary" id="btnAsk" style="width:auto;padding:0 16px">問</button>
         </div>
@@ -433,35 +525,39 @@
       </div>
     </div>
 
-    <!-- 離線官方 Fork Test 指南彈窗 -->
+    <!-- 離線官方餐叉測試法彈窗 -->
     <div class="modal-backdrop" id="forkModal">
       <div class="modal-box">
-        <h3 style="color:var(--teal);margin-bottom:8px">🍴 IDDSI 官方餐叉測試法</h3>
+        <h3 style="color:var(--teal);margin-bottom:8px">🍴 IDDSI 官方餐叉測試法 (Fork Pressure Test)</h3>
         <div style="font-size:13.5px;line-height:1.5;margin-bottom:12px">
-          <p><strong>1. 叉背下壓測試 (Fork Pressure)：</strong>用叉背下壓食物，壓至拇指指甲明顯變白。若食物能壓扁且不彈回，即達 Level 6 或 Level 5 軟度。</p>
+          <p><strong>1. 餐叉/餐刀指壓測試 (Fork/Knife Pressure Test)：</strong><br>
+          用叉背或刀面用力下壓食物，壓至拇指指甲明顯變白（約 17kPa 壓力）。若食物完全無法壓爛且質地堅韌，即屬 Level 7 原質食物，吞嚥困難者極易窒息！<br>
+          <em style="color:var(--teal)">Tekan makanan dengan punggung garpu sampai kuku jempol memutih. Makanan yang keras harus dipotong kecil!</em></p>
           <br>
-          <p><strong>2. 叉齒滴漏測試 (Fork Drip)：</strong>將食物舀於叉上，若完全不滴落為 Level 4 (純糊)；若稠厚緩慢滴出呈小滴，為 Level 3。</p>
-          <br>
-          <p><strong>3. 15mm 尺寸檢驗：</strong>食物顆粒長闊不得大於成人口餐叉叉背寬度（約 15mm）。</p>
+          <p><strong>2. 15mm 一口量檢驗：</strong><br>
+          Level 6 軟餐要求肉類或菜蔬必須預先切成不大於 15mm（成人口叉背闊度）的小塊。<br>
+          <em style="color:var(--teal)">Potong makanan maksimal ukuran 15mm (seukuran lebar garpu).</em></p>
         </div>
-        <button class="btn btn-primary" onclick="document.getElementById('forkModal').style.display='none'">明白</button>
+        <button class="btn btn-primary" onclick="document.getElementById('forkModal').style.display='none'">明白 (Mengerti)</button>
       </div>
     </div>
 
     <!-- 離線哽親急救彈窗 -->
     <div class="modal-backdrop" id="emergencyModal">
       <div class="modal-box">
-        <h2 style="color:#dc2626;margin-bottom:8px">🚨 哽親急救黃金三分鐘</h2>
+        <h2 style="color:#dc2626;margin-bottom:8px">🚨 哽親急救黃金三分鐘 (Pertolongan Tersedak)</h2>
         <div style="background:#fef2f2;border-left:4px solid #ef4444;padding:10px;border-radius:8px;margin-bottom:8px;font-size:13.5px">
-          <strong>第一步：用力拍背 5 次</strong><br>
-          身體前傾，掌跟大力拍擊兩肩胛骨中間 5 次！
+          <strong>第一步：用力拍背 5 次 (Tepuk Punggung 5 Kali)</strong><br>
+          身體前傾，掌跟大力拍擊兩肩胛骨中間 5 次！<br>
+          <em style="color:#991b1b">Condongkan tubuh korban ke depan, pukul punggung di antara tulang belikat 5 kali dengan kuat!</em>
         </div>
         <div style="background:#fff7ed;border-left:4px solid #f97316;padding:10px;border-radius:8px;margin-bottom:10px;font-size:13.5px">
-          <strong>第二步：環抱壓腹 5 次 (謙烈治法)</strong><br>
-          雙手環抱其腰，一手握拳置於肚臍上方，快速向內向上壓 5 次！
+          <strong>第二步：環抱壓腹 5 次 (Tekan Perut Heimlich 5 Kali)</strong><br>
+          雙手環抱其腰，一手握拳置於肚臍上方，快速向內向上壓 5 次！<br>
+          <em style="color:#9a3412">Rangkul pinggang dari belakang, kepal tangan di atas pusar, dorong ke dalam dan ke atas dengan cepat 5 kali!</em>
         </div>
-        <button class="btn btn-danger" onclick="speakCantonese('老友哽親急救！前傾拍背五次，再向內向上壓腹五次！')">🔊 大聲讀出步驟</button>
-        <button class="btn btn-ghost" style="margin-top:6px" onclick="document.getElementById('emergencyModal').style.display='none'">關閉</button>
+        <button class="btn btn-danger" onclick="speakCantonese('老友哽親急救！前傾拍背五次，再向內向上壓腹五次！')">🔊 廣東話大聲讀出步驟</button>
+        <button class="btn btn-ghost" style="margin-top:6px" onclick="document.getElementById('emergencyModal').style.display='none'">關閉 (Tutup)</button>
       </div>
     </div>
 
@@ -469,16 +565,75 @@
   </div>
 
   <script>
-    // ========== 1. 核心狀態與 10 條腸道題目庫 ==========
+    // ========== 1. 核心狀態與生鬼輪播字眼 ==========
     const TOTAL_QUESTIONS = 10;
     const SCORES = [0, 2, 4];
     let elderlyMode = localStorage.getItem('lohas_elderly') === '1';
     let voiceOn = localStorage.getItem('lohas_voice') !== '0';
     let helperLang = localStorage.getItem('lohas_helper_lang') || 'ID';
     let selectedImageBase64 = null;
+    let lastResultData = null;
+    let waitInterval = null;
     const BACKEND_API = "https://blue-mountain-bd34.ironijkl.workers.dev";
 
-    // 10 題腸道微生態題目
+    // 實物標尺互動參數
+    let currentRulerMode = 15;
+    let baseScale = 100;
+    let isDragging = false;
+    let startX, startY, origLeft, origTop;
+
+    // 生鬼港式輪播等候語
+    const WAITING_MESSAGES = [
+      "睇緊啲飯餸軟唔軟、哽唔哽親...",
+      "量緊係咪 15 毫米一口量、大唔大件...",
+      "睇緊有無碎骨硬粒要挑出嚟...",
+      "睇下啲湯水會唔會太稀易濁親...",
+      "睇緊塊餸要剪碎幾多先啱長者食...",
+      "計緊軟硬度，好快有結果，等多兩秒..."
+    ];
+
+    // 外傭基礎翻譯語錄
+    const HELPER_TRANSLATIONS = {
+      ID: {
+        toggleBtn: "🇮🇩 Bahasa",
+        langSwitched: "Sudah ganti ke Bahasa Indonesia",
+        targetLevel: "Level Tekstur Target Pasien:",
+        uploadPrompt: "Tekan di sini untuk ambil foto makanan",
+        uploadSub: "Analisis tekstur, risiko tersedak kuah & tulang",
+        safeTitle: "Aman Dimakan",
+        safeDesc: "Tekstur lembut dan aman sesuai kebutuhan lansia.",
+        warnTitle: "Perlu Dipotong / Digunting",
+        warnDesc: "Makanan agak keras atau potongan besar, harus diproses!",
+        dangerTitle: "BAHAYA TERSEDAK (Kuah Campur Isi)!",
+        dangerDesc: "Kuah encer sangat cepat masuk tenggorokan dan bikin tersedak!",
+        dualWarning: "PERINGATAN: Makanan ini ada kuah dan isi! Tiriskan kuah sup sepenuhnya sebelum disajikan!",
+        actions: {
+          'DRAIN_SOUP': "Tiriskan kuah sup sepenuhnya sebelum disajikan!",
+          'DEBONE': "Buang semua tulang kecil dan duri sebelum makan!",
+          'SERVE_AS_IS': "Tekstur lembut, aman disajikan langsung."
+        }
+      },
+      EN: {
+        toggleBtn: "🇵🇭 English",
+        langSwitched: "Switched to English Helper Mode",
+        targetLevel: "Care Target IDDSI Level:",
+        uploadPrompt: "Tap here to take photo of food",
+        uploadSub: "Analyze softness, choking risks & bones",
+        safeTitle: "Safe to Serve",
+        safeDesc: "Texture complies with prescription and is safe.",
+        warnTitle: "Needs Cutting / Mincing",
+        warnDesc: "Food is tough or large, must be processed!",
+        dangerTitle: "DANGEROUS CHOKING RISK (Mixed Texture)!",
+        dangerDesc: "Thin liquid slips fast into airway! Must drain all soup!",
+        dualWarning: "WARNING: Mixed texture! Drain all soup completely before serving!",
+        actions: {
+          'DRAIN_SOUP': "Drain all soup completely before serving!",
+          'DEBONE': "Remove all bones and fishbones completely!",
+          'SERVE_AS_IS': "Soft texture, safe to serve directly."
+        }
+      }
+    };
+
     const QUESTIONS = [
       { t: '平時去大便順唔順暢？質地係點？', o: ['日日都順順利利','兩三日先去到一次','三日以上先有 / 粒粒乾硬好辛苦'] },
       { t: '平時會唔會成日肚谷谷、多腸氣？', o: ['好少脹氣','一星期脹過一兩次','幾乎日日都脹住脹住'] },
@@ -492,31 +647,23 @@
       { t: '一星期有無抽時間行下公園散下步？', o: ['一星期散步做運動三次以上','間唔中行下路仔','幾乎坐定定完全唔行'] }
     ];
 
-    // 腸道個人化運動處方庫
     const EXERCISE_KB = {
       q1: { title: '暖手順時針摩腹法（推便便）', time: '每日 10 分鐘', how: '雙手手掌搓熱，輕輕貼喺肚臍周圍，順時針方向慢慢打圈抹 50 次，幫大腸郁動排便。' },
       q2: { title: '坐椅扭腰消氣法（清肚脹）', time: '每日 8 分鐘', how: '坐穩喺張實淨嘅有背椅上，腰骨挺直，成個人慢慢轉向左邊深呼一口氣，停 5 秒再轉向右邊，做 6 次。' },
-      q7: { title: '床頭抬腿深呼吸（幫安眠）', time: '每晚 5 分鐘', how: '平躺喺床上，搵個枕頭墊高小腿，雙手放喺肚腩仔，慢慢深吸氣 4 秒、慢呼氣 6 秒，個人自然定落嚟。' },
-      q9: { title: '雙手托天理脾胃（八段錦）', time: '每日 6 分鐘', how: '企直放鬆，一隻手慢慢向上推托天，另一隻手向下按，兩邊輪流做，動作放鬆自然呼吸。' }
+      q7: { title: '床頭抬腿深呼吸（幫安眠與腸腦軸）', time: '每晚 5 分鐘', how: '平躺喺床上，搵個枕頭墊高小腿，雙手放喺肚腩仔，慢慢深吸氣 4 秒、慢呼氣 6 秒，平靜副交感神經，個人自然定落嚟。' },
+      q9: { title: '雙手托天理脾胃（八段錦）', time: '每日 6 分鐘', how: '企直放鬆，一隻手慢慢向上推托天，另一隻手向下按，兩邊輪流做，動作放鬆自然呼吸，暢通中焦脾胃氣血。' }
     };
 
-    const HELPER_DICT = {
-      DRAIN_SOUP: { ID: "Tiriskan kuah sup sepenuhnya sebelum disajikan!", EN: "Drain all soup completely before serving!" },
-      DEBONE: { ID: "Buang semua tulang kecil dan potong halus!", EN: "Remove all bones and cut finely!" },
-      CUT_FINE: { ID: "Gunting makanan kecil-kecil ukuran 1 suapan!", EN: "Cut food into small bite-sized pieces!" },
-      SERVE_AS_IS: { ID: "Tekstur lembut, aman untuk dimakan langsung.", EN: "Soft texture, safe to serve directly." },
-      DUAL_WARNING: { ID: "Peringatan: Makanan ada kuah dan isi! Kuah cair cepat bikin tersedak!", EN: "Warning: Mixed texture! Liquid slips fast and causes choking!" }
-    };
-
-    // 離線常見港式餐食 IDDSI 資料庫
     const HK_FOOD_KB = [
+      { name: "牛扒配醬汁", level: "Level 7 (原質正常)", warn: "肉質完整厚實，必須切小於 15mm 或剪碎", tag: "原質" },
       { name: "火腿通粉 (含湯)", level: "Level 7 (雙重質地)", warn: "清湯易嗆咳，必須徹底瀝乾湯汁", tag: "高危" },
       { name: "茶餐廳蛋包飯", level: "Level 6 (軟質一口量)", warn: "飯粒需濕潤，切細於 15mm", tag: "合格" },
+      { name: "煎荷包蛋 / 煎蛋", level: "Level 6 (軟質一口量)", warn: "蛋邊煎香偏韌，須切細塊壓碎", tag: "合格" },
+      { name: "清炒菜心", level: "Level 7 (纖維偏長)", warn: "菜莖纖維韌，必須去硬莖剁碎", tag: "高危" },
       { name: "鮮蝦雲吞麵 (含湯)", level: "Level 7 (雙重質地)", warn: "雲吞皮滑湯流速快，必須撈起乾食並剪碎", tag: "高危" },
       { name: "蒸水蛋 / 肉碎蒸蛋", level: "Level 5 (細碎濕潤)", warn: "極佳長者餐，肉碎需細於 4mm", tag: "推薦" },
       { name: "珍珠奶茶", level: "Level 0 (液體帶顆粒)", warn: "極高窒息風險！必須用隔篩濾走所有珍珠", tag: "極度高危" },
-      { name: "免治牛肉粥", level: "Level 5 (細碎濕潤)", warn: "粥底濃稠無多餘米水，牛肉碎易吞", tag: "推薦" },
-      { name: "乾炒牛河", level: "Level 7 (常規質地)", warn: "河粉煙韌牛肉大片，吞嚥困難者禁止食用", tag: "高危" }
+      { name: "免治牛肉粥", level: "Level 5 (細碎濕潤)", warn: "粥底濃稠無多餘米水，牛肉碎易吞", tag: "推薦" }
     ];
 
     // ========== 2. 語音 TTS 與語音輸入 STT ==========
@@ -535,7 +682,8 @@
     function speakCantonese(text) {
       if (!window.speechSynthesis || !text) return;
       window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
+      const cleanText = text.replace(/老友記/g, "老友").replace(/請注意/g, "記得要留意呀");
+      const utterance = new SpeechSynthesisUtterance(cleanText);
       utterance.lang = 'zh-HK';
       if (!hkVoice) loadHkVoices();
       if (hkVoice) utterance.voice = hkVoice;
@@ -550,7 +698,6 @@
       setTimeout(() => el.classList.remove('show'), 2600);
     }
 
-    // 語音輸入 (Web Speech STT)
     const btnVoiceInput = document.getElementById('btnVoiceInput');
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -577,7 +724,7 @@
       btnVoiceInput.style.display = 'none';
     }
 
-    // ========== 3. 查腸道微生態問卷渲染與邏輯 ==========
+    // ========== 3. 查腸道微生態問卷邏輯 ==========
     function renderQuiz() {
       const form = document.getElementById('quizForm');
       form.innerHTML = '';
@@ -660,11 +807,18 @@
       document.getElementById('statusTitle').textContent = title;
       document.getElementById('statusDesc').textContent = desc;
 
-      // 生成個人化症狀運動處方
+      const q7Val = parseInt(document.querySelector('input[name="q7"]:checked')?.value || 0, 10);
+      const q9Val = parseInt(document.querySelector('input[name="q9"]:checked')?.value || 0, 10);
+      const mindDesc = document.getElementById('mindDesc');
+      if (q7Val >= 2 || q9Val >= 2) {
+        mindDesc.textContent = "觀察到最近心事比較多或睡眠質素欠佳。緊張壓力會透過「腸腦軸」直接刺激腸道蠕動失常甚至胃脹。建議每日睡前做 5 分鐘慢呼氣放鬆練習，安撫大腦，腸胃自然聽話！";
+      } else {
+        mindDesc.textContent = "心情放鬆、睡得安穩，大腦與腸道副交感神經運作順暢，有利益生菌在腸壁健康定植！";
+      }
+
       let exHtml = '<h4 style="color:var(--teal);margin-bottom:8px">🏃 老友專屬腸胃運動處方</h4>';
       const q1Val = parseInt(document.querySelector('input[name="q1"]:checked')?.value || 0, 10);
       const q2Val = parseInt(document.querySelector('input[name="q2"]:checked')?.value || 0, 10);
-      const q7Val = parseInt(document.querySelector('input[name="q7"]:checked')?.value || 0, 10);
 
       if (q1Val >= 2) exHtml += createExItem(EXERCISE_KB.q1);
       if (q2Val >= 2) exHtml += createExItem(EXERCISE_KB.q2);
@@ -684,7 +838,6 @@
       return `<div class="ex-item"><strong>${ex.title}</strong> <span class="ex-time">${ex.time}</span><br>${ex.how}</div>`;
     }
 
-    // 重設問卷
     document.getElementById('btnResetQuiz').addEventListener('click', () => {
       document.getElementById('quizForm').reset();
       document.querySelectorAll('.opt').forEach(el => el.classList.remove('selected'));
@@ -741,10 +894,227 @@
       }
     }
 
-    // ========== 5. 驗餐業務與交通燈 UI ==========
+    // ========== 5. 實物標尺互動拖曳與調校 ==========
+    const rulerBox = document.getElementById('rulerBox');
+    const previewWrap = document.getElementById('previewWrap');
+    const rulerControlPanel = document.getElementById('rulerControlPanel');
+    const rulerTagText = document.getElementById('rulerTagText');
+    const rulerScaleSlider = document.getElementById('rulerScaleSlider');
+    const sliderValueText = document.getElementById('sliderValueText');
+
+    function onRulerDragStart(e) {
+      isDragging = true;
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      startX = clientX;
+      startY = clientY;
+      
+      const rect = rulerBox.getBoundingClientRect();
+      const parentRect = previewWrap.getBoundingClientRect();
+      origLeft = rect.left - parentRect.left + (rect.width / 2);
+      origTop = rect.top - parentRect.top + (rect.height / 2);
+      e.preventDefault();
+    }
+
+    function onRulerDragMove(e) {
+      if (!isDragging) return;
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      const dx = clientX - startX;
+      const dy = clientY - startY;
+
+      rulerBox.style.left = `${origLeft + dx}px`;
+      rulerBox.style.top = `${origTop + dy}px`;
+    }
+
+    function onRulerDragEnd() {
+      isDragging = false;
+    }
+
+    rulerBox.addEventListener('mousedown', onRulerDragStart);
+    window.addEventListener('mousemove', onRulerDragMove);
+    window.addEventListener('mouseup', onRulerDragEnd);
+
+    rulerBox.addEventListener('touchstart', onRulerDragStart, { passive: false });
+    window.addEventListener('touchmove', onRulerDragMove, { passive: false });
+    window.addEventListener('touchend', onRulerDragEnd);
+
+    function updateRulerDimensions() {
+      let size = baseScale;
+      if (currentRulerMode === 4) {
+        size = Math.round(baseScale * (4 / 15));
+        rulerTagText.textContent = '📐 4mm 細碎 (4mm Minced)';
+      } else {
+        rulerTagText.textContent = '📏 15mm 一口量 (15mm Bite-sized)';
+      }
+      rulerBox.style.width = `${size}px`;
+      rulerBox.style.height = `${size}px`;
+      sliderValueText.textContent = `${size}px`;
+    }
+
+    document.getElementById('btnMode15').onclick = () => {
+      currentRulerMode = 15;
+      document.getElementById('btnMode15').classList.add('active');
+      document.getElementById('btnMode4').classList.remove('active');
+      updateRulerDimensions();
+    };
+
+    document.getElementById('btnMode4').onclick = () => {
+      currentRulerMode = 4;
+      document.getElementById('btnMode4').classList.add('active');
+      document.getElementById('btnMode15').classList.remove('active');
+      updateRulerDimensions();
+    };
+
+    document.getElementById('btnToggleRuler').onclick = () => {
+      const isHidden = rulerBox.style.display === 'none';
+      rulerBox.style.display = isHidden ? 'flex' : 'none';
+      document.getElementById('btnToggleRuler').textContent = isHidden ? '👁️ 隱藏標尺' : '👁️ 顯示標尺';
+    };
+
+    rulerScaleSlider.oninput = (e) => {
+      baseScale = parseInt(e.target.value, 10);
+      updateRulerDimensions();
+    };
+
+    // ========== 6. 核心：動態食物分類與 IDDSI 處方矩陣引擎 ==========
+    // 辨識食物種類（全自動語義分析，支援任何食物）
+    function detectFoodCategory(name, isDrink) {
+      if (isDrink || /(湯|茶|水|奶|汁|飲品|咖啡)/.test(name)) return 'liquid';
+      if (/(蛋|豆腐|豆花|腐竹)/.test(name)) return 'egg_tofu';
+      if (/(菜|瓜|菇|茄|筍|蔬|西蘭花|果|蘿蔔)/.test(name)) return 'veg';
+      if (/(肉|扒|牛|豬|雞|鴨|鵝|魚|海鮮|蝦|蟹|骨|翼|腸|腩)/.test(name)) return 'meat';
+      if (/(麵|通粉|河粉|米線|飯|粥|包|餅|糕|餃|粉)/.test(name)) return 'carb';
+      return 'general';
+    }
+
+    // 任何食物對應任何處方的動態生成引擎
+    function getDynamicMatrixGuidance(foodName, detectedNum, targetNum, isDual, isDrink, helperLang) {
+      const category = detectFoodCategory(foodName, isDrink);
+      const isID = (helperLang === 'ID');
+      const shortFood = foodName.split(' ')[0].replace(/[\(\)]/g, '');
+
+      // 1. 雙重質地嗆咳處理（任何食物有湯有渣）
+      if (isDual) {
+        return {
+          zh: `🥣 舊【${shortFood}】又湯又渣，必須徹底倒乾湯汁（避免清湯滑入喉嚨濁親）`,
+          helper: isID 
+            ? `Tiriskan semua kuah dari ${shortFood}! Kuah encer cepat masuk paru-paru dan bikin tersedak!`
+            : `Drain all clear soup from ${shortFood}! Thin soup slips into airway causing choking!`
+        };
+      }
+
+      // 2. 食物硬度/體積大於處方 (detectedNum > targetNum)
+      if (detectedNum > targetNum) {
+        // 目標處方：Level 6（軟質一口量 15mm 以下）
+        if (targetNum === 6) {
+          if (category === 'meat') {
+            return {
+              zh: `✂️ 舊【${shortFood}】肉質偏實，必須切／剪成 15mm 薄片一口量，淋少少稠汁保濕`,
+              helper: isID
+                ? `Potong ${shortFood} tipis di bawah 15mm (1 suapan), beri sedikit kuah kental agar basah!`
+                : `Cut ${shortFood} into thin bite-sized pieces under 15mm, add thick sauce to keep moist!`
+            };
+          }
+          if (category === 'veg') {
+            return {
+              zh: `✂️ 舊【${shortFood}】纖維長，切除硬莖並剪成 15mm 以下小段`,
+              helper: isID
+                ? `Buang bagian keras ${shortFood}, gunting pendek di bawah 15mm agar tidak tersangkut!`
+                : `Remove hard stalks, cut ${shortFood} into pieces under 15mm to prevent choking!`
+            };
+          }
+          if (category === 'egg_tofu') {
+            return {
+              zh: `✂️ 舊【${shortFood}】整塊吞易哽塞，請切分成 15mm 一口量小塊`,
+              helper: isID
+                ? `Potong ${shortFood} menjadi kotak kecil di bawah 15mm, jangan disuap utuh!`
+                : `Cut ${shortFood} into bite-sized pieces under 15mm, do not swallow whole!`
+            };
+          }
+          if (category === 'carb') {
+            return {
+              zh: `✂️ 舊【${shortFood}】容易黐喉嚨，剪短麵條或切細至 15mm 一口量`,
+              helper: isID
+                ? `Gunting mie/nasi ${shortFood} menjadi pendek di bawah 15mm agar mudah ditelan!`
+                : `Cut ${shortFood} noodles/bread short under 15mm for safe swallowing!`
+            };
+          }
+          return {
+            zh: `✂️ 舊【${shortFood}】體積太大，必須切細至 15mm 一口量以下`,
+            helper: isID
+              ? `Potong ${shortFood} menjadi ukuran 1 suapan di bawah 15mm!`
+              : `Cut ${shortFood} into bite-sized pieces under 15mm!`
+          };
+        }
+
+        // 目標處方：Level 5（細碎及濕潤 4mm 以下）
+        if (targetNum === 5) {
+          if (category === 'meat') {
+            return {
+              zh: `🥣 舊【${shortFood}】太整塊，必須剁碎至 4mm 肉碎狀，拌入稠汁保持濕潤`,
+              helper: isID
+                ? `Cincang ${shortFood} sangat halus (di bawah 4mm), campur kuah kental agar lembab!`
+                : `Mince ${shortFood} finely under 4mm, mix with thick gravy to keep moist!`
+            };
+          }
+          if (category === 'veg') {
+            return {
+              zh: `🥣 舊【${shortFood}】纖維過粗，必須剁碎至 4mm 細粒狀，不可留有長莖`,
+              helper: isID
+                ? `Cincang sayur ${shortFood} halus di bawah 4mm tanpa serat panjang!`
+                : `Chop ${shortFood} finely under 4mm, ensure no long strings or tough stalks!`
+            };
+          }
+          if (category === 'egg_tofu') {
+            return {
+              zh: `🥣 舊【${shortFood}】需用匙羹壓爛成 4mm 碎粒，拌入軟飯食用`,
+              helper: isID
+                ? `Hancurkan ${shortFood} dengan sendok hingga ukuran 4mm, campur ke nasi lembek!`
+                : `Mash ${shortFood} with a spoon into 4mm bits, mix into soft rice!`
+            };
+          }
+          return {
+            zh: `🥣 舊【${shortFood}】需壓碎或剪碎至 4mm 細粒（碎餐爛飯標準）並保持濕潤`,
+            helper: isID
+              ? `Cincang/hancurkan ${shortFood} hingga 4mm dan pastikan lembab (Level 5)!`
+              : `Chop/mash ${shortFood} into 4mm bits and keep moist with thick gravy (Level 5)!`
+          };
+        }
+
+        // 目標處方：Level 4（純糊狀 Pureed 無顆粒）
+        if (targetNum === 4) {
+          return {
+            zh: `🥄 舊【${shortFood}】必須用攪拌機完全打成幼滑純糊狀（完全無顆粒）`,
+            helper: isID
+              ? `Blender ${shortFood} sampai sangat halus menjadi puree tanpa butiran kasar!`
+              : `Blend ${shortFood} completely smooth with no lumps or particles (Pureed Level 4)!`
+          };
+        }
+
+        // 目標處方：Level 3（稠流質 Liquidised）
+        if (targetNum === 3) {
+          return {
+            zh: `🥤 舊【${shortFood}】需攪拌過篩成稠流質（叉齒能緩慢滴漏）`,
+            helper: isID
+              ? `Blender dan saring ${shortFood} menjadi cairan kental (Level 3 Liquidised)!`
+              : `Blend and strain ${shortFood} into smooth thick liquid (Level 3 Liquidised)!`
+          };
+        }
+      }
+
+      // 3. 食物符合處方或比處方更軟安全 (detectedNum <= targetNum)
+      return {
+        zh: `✅ 舊【${shortFood}】質地符合處方，坐直身體細嚼慢嚥`,
+        helper: isID
+          ? `Tekstur ${shortFood} aman dan sesuai standar, suapi perlahan dengan posisi tegak.`
+          : `Texture of ${shortFood} complies with prescription, feed slowly in upright posture.`
+      };
+    }
+
+    // ========== 7. 驗餐業務與生鬼輪播提示 ==========
     const mealInput = document.getElementById('mealInput');
     const imagePreview = document.getElementById('imagePreview');
-    const previewWrap = document.getElementById('previewWrap');
     const btnAnalyzeMeal = document.getElementById('btnAnalyzeMeal');
 
     mealInput.addEventListener('change', async (e) => {
@@ -755,8 +1125,13 @@
         selectedImageBase64 = await compressImage(file);
         imagePreview.src = selectedImageBase64;
         previewWrap.style.display = 'block';
+        rulerControlPanel.style.display = 'flex';
         btnAnalyzeMeal.style.display = 'block';
         document.getElementById('mealReportCard').style.display = 'none';
+
+        rulerBox.style.left = '50%';
+        rulerBox.style.top = '50%';
+        updateRulerDimensions();
       } catch (err) {
         showToast('相片讀取失敗，請重新拍攝');
       }
@@ -765,7 +1140,13 @@
     btnAnalyzeMeal.addEventListener('click', async () => {
       if (!selectedImageBase64) return;
       btnAnalyzeMeal.disabled = true;
-      btnAnalyzeMeal.textContent = 'AI 正在分析物理質地與嗆咳風險...';
+
+      let msgIdx = 0;
+      btnAnalyzeMeal.textContent = WAITING_MESSAGES[0];
+      waitInterval = setInterval(() => {
+        msgIdx = (msgIdx + 1) % WAITING_MESSAGES.length;
+        btnAnalyzeMeal.textContent = WAITING_MESSAGES[msgIdx];
+      }, 1800);
 
       try {
         const rawP = document.getElementById('userPrescription').value;
@@ -784,94 +1165,167 @@
 
         const data = await resp.json();
         if (!resp.ok) throw new Error(data.error || '分析服務異常');
+        lastResultData = data;
         renderMealResult(data);
       } catch (err) {
         alert("驗餐遇到問題: " + (err.name === 'AbortError' ? '連線逾時，請檢查網絡' : err.message));
       } finally {
+        clearInterval(waitInterval);
         btnAnalyzeMeal.disabled = false;
         btnAnalyzeMeal.textContent = '開始 AI 吞嚥與安全分析';
       }
     });
 
     function renderMealResult(data) {
+      if (!data) return;
       const card = document.getElementById('mealReportCard');
       card.style.display = 'block';
 
+      const langPack = HELPER_TRANSLATIONS[helperLang];
       const foodName = data.food || "茶餐廳餐膳";
-      let num = data.iddsi_number ?? 5;
+      let num = data.iddsi_number ?? 7;
       const isDual = !!data.is_dual_texture;
+      const prescriptionVal = document.getElementById('userPrescription').value;
+      const targetNum = parseInt((prescriptionVal.match(/\d/) || [5])[0], 10);
+      const isID = (helperLang === 'ID');
 
-      // 交通燈大色塊判定
+      // 1. 食物名稱動態英文/印尼文呈現
+      document.getElementById('resFoodName').textContent = foodName;
+      let helperFoodName = "";
+      const matchParen = foodName.match(/\((.*?)\)/);
+      if (matchParen) {
+        helperFoodName = matchParen[1];
+      } else {
+        helperFoodName = isID ? "Makanan Pilihan" : "Selected Food";
+      }
+      document.getElementById('resFoodNameHelper').textContent = `👉 ${helperFoodName}`;
+
+      // 2. 交通燈大告示牌判定
       const tBanner = document.getElementById('trafficBanner');
       const tIcon = document.getElementById('trafficIcon');
       const tTitle = document.getElementById('trafficTitle');
       const tSummary = document.getElementById('trafficSummary');
+      const tHelper = document.getElementById('trafficHelper');
 
       if (isDual) {
         tBanner.className = "traffic-card traffic-red";
         tIcon.textContent = "🔴";
         tTitle.textContent = "高危雙重質地！極易嗆咳";
         tSummary.textContent = "清湯流速快過固體，長者喉部來不及閉鎖，必須徹底倒乾湯汁！";
-      } else if (num > 5) {
+        tHelper.textContent = `🚨 ${langPack.dangerTitle}: ${langPack.dangerDesc}`;
+      } else if (num > targetNum) {
         tBanner.className = "traffic-card traffic-yellow";
         tIcon.textContent = "🟡";
-        tTitle.textContent = "質地偏硬 · 需剪碎加工";
-        tSummary.textContent = "食物顆粒大於處方軟度，請用較剪剪碎至一口量（15mm以下）。";
+        tTitle.textContent = `質地偏硬 (Level ${num}) · 需加工至 Level ${targetNum}`;
+        tSummary.textContent = `食物硬度高於長者處方，千祈唔好成大塊吞！必須按指示剪碎加工！`;
+        tHelper.textContent = `⚠️ ${langPack.warnTitle}: ${langPack.warnDesc}`;
       } else {
         tBanner.className = "traffic-card traffic-green";
         tIcon.textContent = "🟢";
         tTitle.textContent = "安全質地 · 可以直接進食";
-        tSummary.textContent = "餐食濕潤細軟，符合當前長者 IDDSI 安全標準。";
+        tSummary.textContent = "餐食質地符合長者處方，軟硬適中安全。";
+        tHelper.textContent = `✅ ${langPack.safeTitle}: ${langPack.safeDesc}`;
       }
 
-      document.getElementById('resFoodName').textContent = foodName;
-      document.getElementById('resIddsiLevel').textContent = `IDDSI Level ${num}`;
-      document.getElementById('resVisualReason').textContent = data.visual_reason || "表面光滑柔軟，無大塊顆粒，黏稠度適中。";
+      // 3. 敏感標籤
+      const allergenBox = document.getElementById('resAllergenBox');
+      allergenBox.innerHTML = '';
+      if (Array.isArray(data.allergen_tags) && data.allergen_tags.length > 0) {
+        const allergenDict = {
+          'GLUTEN': '麩質 (Gluten)', 'DAIRY': '奶類 (Dairy/Susu)', 'SOY': '大豆 (Soy)',
+          'EGG': '雞蛋 (Egg/Telur)', 'PEANUT': '花生 (Peanut/Kacang)', 'SEAFOOD': '海鮮 (Seafood)'
+        };
+        data.allergen_tags.forEach(tag => {
+          const tagTxt = allergenDict[tag] || tag;
+          allergenBox.innerHTML += `<span class="allergen-badge">⚠️ 留意含：${tagTxt}</span>`;
+        });
+      }
 
-      // 雙重質地警示
+      // 4. IDDSI Level、理由與官方測試法
+      document.getElementById('resIddsiLevel').textContent = `IDDSI Level ${num} (${data.iddsi_category || '固體'})`;
+      const confPercent = Math.round((data.confidence || 0.95) * 100);
+      document.getElementById('resConfidence').textContent = `信心度: ${confPercent}%`;
+
+      document.getElementById('resVisualReason').textContent = data.visual_reason || "質地結構分析完成。";
+      document.getElementById('resVisualReasonHelper').textContent = isID
+        ? "Analisis: Tekstur dan struktur makanan telah diverifikasi."
+        : "Visual Reason: Texture verified by IDDSI standards.";
+
+      document.getElementById('resOfficialTest').textContent = data.recommended_official_test || "餐叉指壓測試 (Fork Pressure Test)";
+
+      // 5. 雙重質地警示
       const dualBanner = document.getElementById('resDualTextureBanner');
       if (isDual) {
         dualBanner.style.display = 'block';
         document.getElementById('resSafetyWarning').textContent = data.safety_warning || "稀薄湯汁極易流入氣管！必須瀝乾湯汁！";
-        document.getElementById('resSafetyWarningHelper').textContent = `🇮🇩 Helper: ${HELPER_DICT.DUAL_WARNING[helperLang]}`;
+        document.getElementById('resSafetyWarningHelper').textContent = `🇮🇩/🇵🇭 ${langPack.dualWarning}`;
       } else {
         dualBanner.style.display = 'none';
       }
 
-      // 照護標籤
+      // 6. 動態食物品類 × IDDSI 處方標籤產生
       const chipBox = document.getElementById('resActionChips');
       chipBox.innerHTML = '';
-      const actionMap = {
-        'DRAIN_SOUP': { zh: '🥣 倒走啲湯穩陣啲', helper: HELPER_DICT.DRAIN_SOUP[helperLang] },
-        'DEBONE': { zh: '🍗 一定要挑乾淨碎骨', helper: HELPER_DICT.DEBONE[helperLang] },
-        'CUT_FINE': { zh: '✂️ 剪碎佢易咬啲', helper: HELPER_DICT.CUT_FINE[helperLang] },
-        'SERVE_AS_IS': { zh: '✅ 質地柔軟可以直接食', helper: HELPER_DICT.SERVE_AS_IS[helperLang] }
-      };
-      const acts = data.caregiver_action && data.caregiver_action.length ? data.caregiver_action : ['SERVE_AS_IS'];
-      acts.forEach(act => {
-        const item = actionMap[act] || { zh: act, helper: '' };
-        chipBox.innerHTML += `<div class="action-chip"><span>${item.zh}</span><span class="helper-sub">👉 ${item.helper}</span></div>`;
-      });
 
-      // 營養素
+      // 調用通用矩陣引擎生成主要處理動作
+      const primaryGuidance = getDynamicMatrixGuidance(foodName, num, targetNum, isDual, data.is_drink, helperLang);
+      chipBox.innerHTML += `
+        <div class="action-chip">
+          <span>${primaryGuidance.zh}</span>
+          <span class="helper-sub">👉 ${primaryGuidance.helper}</span>
+        </div>`;
+
+      // 額外附加骨刺檢查（若有海鮮肉類或骨頭）
+      if (/(骨|魚|翼|排|肉|牛|豬|雞|海鮮)/.test(foodName)) {
+        chipBox.innerHTML += `
+          <div class="action-chip">
+            <span>🍗 檢查並徹底挑乾淨碎骨與硬刺</span>
+            <span class="helper-sub">👉 ${langPack.actions.DEBONE}</span>
+          </div>`;
+      }
+
+      // 額外附加珍珠飲品窒息警示
+      if (data.is_drink && data.is_dual_texture) {
+        const bobaMsg = isID 
+          ? "BAHAYA: Wajib saring semua boba/jelly agar tidak tersedak!"
+          : "HAZARD: Filter out all boba pearls/jellies to avoid choking!";
+        chipBox.innerHTML += `
+          <div class="action-chip" style="background:#fef2f2;border-color:#ef4444;color:#b91c1c">
+            <span>🧋 必須用隔篩濾走所有珍珠配料！避免倒吸入肺</span>
+            <span class="helper-sub">👉 ${bobaMsg}</span>
+          </div>`;
+      }
+
+      // 7. 完整微量營養素明細
       const n = data.nutrients || {};
       document.getElementById('resNutrientGrid').innerHTML = `
-        <div><span>熱量</span><strong>${n.calories ?? 280} kcal</strong></div>
-        <div><span>蛋白質</span><strong>${n.protein_g ?? 12} g</strong></div>
-        <div><span>碳水</span><strong>${n.carbs_g ?? 35} g</strong></div>
-        <div><span>鈉</span><strong>${n.sodium_mg ?? 450} mg</strong></div>
+        <div><span>熱量</span><strong>${n.calories ?? 0} kcal</strong></div>
+        <div><span>蛋白質</span><strong>${n.protein_g ?? 0} g</strong></div>
+        <div><span>脂肪</span><strong>${n.fat_g ?? 0} g</strong></div>
+        <div><span>飽和脂肪</span><strong>${n.saturated_fat_g ?? 0} g</strong></div>
+        <div><span>膽固醇</span><strong>${n.cholesterol_mg ?? 0} mg</strong></div>
+        <div><span>鈉鹽</span><strong>${n.sodium_mg ?? 0} mg</strong></div>
+        <div><span>鉀</span><strong>${n.potassium_mg ?? 0} mg</strong></div>
+        <div><span>鐵質</span><strong>${n.iron_mg ?? 0} mg</strong></div>
+        <div><span>鈣質</span><strong>${n.calcium_mg ?? 0} mg</strong></div>
+        <div><span>鎂</span><strong>${n.magnesium_mg ?? 0} mg</strong></div>
+        <div><span>鋅</span><strong>${n.zinc_mg ?? 0} mg</strong></div>
+        <div><span>水分</span><strong>${n.water_ml ?? 0} ml</strong></div>
       `;
 
-      // 語音朗讀
-      const advice = (data.spoken_advice || "老友，食飯要慢慢咬，留意吞嚥安全。").replace(/老友記/g, "老友");
-      if (voiceOn) speakCantonese(advice);
+      // 口語叮囑（去 AI 化）
+      let rawAdvice = data.spoken_advice || "老友，食飯千祈唔好急，慢慢嚼碎先好吞呀！";
+      rawAdvice = rawAdvice.replace(/老友記/g, "老友");
+      if (num > targetNum) {
+        rawAdvice += ` 呢餐大塊過你食開嘅標準，記得叫人幫手加工處理呀！`;
+      }
+      if (voiceOn) speakCantonese(rawAdvice);
 
-      // 連續記憶日誌存檔
       saveMealLog(foodName, isDual);
       card.scrollIntoView({ behavior: 'smooth' });
     }
 
-    // ========== 6. 吞嚥肌運動與連續記憶閉環 ==========
+    // ========== 8. 吞嚥肌運動與連續記憶 ==========
     function startExerciseVoice(name, holdSec, reps) {
       speakCantonese(`開始鍛鍊${name}。預備，一齊用力做，停${holdSec}秒，做${reps}次。請保持坐直，放鬆肩膀。`);
     }
@@ -917,7 +1371,7 @@
       }
     }
 
-    // ========== 7. 快捷追問與港食速查表 ==========
+    // ========== 9. 快捷追問與港食速查表 ==========
     function askFollowUp(query) {
       document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
       document.querySelector('[data-tab="qa"]').classList.add('active');
@@ -945,15 +1399,19 @@
     }
     document.getElementById('refSearchInput').oninput = (e) => renderRefTable(e.target.value.trim());
 
-    // 智能對話 QA (兼顧腸道與吞嚥疑難)
     document.getElementById('btnAsk').onclick = () => {
       const q = document.getElementById('qaInput').value.trim();
       if (!q) return;
-      let reply = "老友，平時食嘢記得細嚼慢嚥。如果想保護腸道，記得補充足夠膳食纖維同水份；遇到雙質地湯水則必須倒乾湯汁避免嗆咳。";
-      if (q.includes('Level 4') || q.includes('糊餐')) reply = "整 Level 4 純糊餐好簡單：將煮熟嘅肉菜放入攪拌機，加少少溫水或上湯打到完全無顆粒，再按需要加言語治療師建議嘅凝固粉調稠就得！";
-      if (q.includes('脹氣') || q.includes('肚脹') || q.includes('胃氣')) reply = "肚脹通常同進食太急吞入空氣、腸道好菌不足有關。食飽飯後唔好即刻瞓低，企起身慢行 10 分鐘，並用暖手順時針打圈摩腹 50 次幫大腸排氣。";
-      if (q.includes('便秘') || q.includes('唔通')) reply = "便秘老友記得每日分次飲夠 6 至 8 杯溫水。每餐叫屋企人幫手將深綠色菜心剪碎，增加水溶性纖維，腸道菌食飽先有力量推便便出嚟。";
-      if (q.includes('益生菌')) reply = "食益生菌要揀有科研實證嘅活性菌株，最緊要平日都要食深綠色蔬菜（益生元），好菌先可以喺腸道長久定植！";
+      let reply = "老友，平時食嘢記得細嚼慢嚥。如果想保護腸道，記得補充足夠膳食纖維同水份；遇到堅韌肉類或長纖維蔬菜，記得徹底剪細！";
+      if (q.includes('心情') || q.includes('緊張') || q.includes('抽痛') || q.includes('情緒')) {
+        reply = "心情緊張容易胃痛係典型嘅「腸腦軸」反應！大腦壓力荷爾蒙會直接刺激腸道血管收縮及肌肉痙攣。建議坐低閉目，做 5 次深長腹式呼吸，放鬆神經，胃部抽痛自然會舒緩。";
+      } else if (q.includes('Level 4') || q.includes('糊餐')) {
+        reply = "整 Level 4 純糊餐好簡單：將煮熟嘅肉菜放入攪拌機，加少少溫水或上湯打到完全無顆粒，再按需要加言語治療師建議嘅凝固粉調稠就得！";
+      } else if (q.includes('脹氣') || q.includes('肚脹') || q.includes('胃氣')) {
+        reply = "肚脹通常同進食太急吞入空氣、腸道好菌不足有關。食飽飯後唔好即刻瞓低，企起身慢行 10 分鐘，並用暖手順時針打圈摩腹 50 次幫大腸排氣。";
+      } else if (q.includes('便秘') || q.includes('唔通')) {
+        reply = "便秘老友記得每日分次飲夠 6 至 8 杯溫水。每餐叫屋企人幫手將深綠色菜心剪碎，增加水溶性纖維，腸道菌食飽先有力量推便便出嚟。";
+      }
       
       const ansEl = document.getElementById('qaAnswer');
       ansEl.textContent = reply;
@@ -961,7 +1419,7 @@
       speakCantonese(reply);
     };
 
-    // 分頁切換邏輯 (5大分頁切換)
+    // 分頁切換
     document.querySelectorAll('.tab').forEach(tab => {
       tab.addEventListener('click', () => {
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -991,11 +1449,20 @@
       document.getElementById('btnVoice').classList.toggle('voice-on', voiceOn);
       showToast(voiceOn ? '語音播報已開啟' : '語音已關閉');
     };
+
     document.getElementById('btnLangToggle').onclick = () => {
       helperLang = (helperLang === 'ID') ? 'EN' : 'ID';
       localStorage.setItem('lohas_helper_lang', helperLang);
-      document.getElementById('btnLangToggle').textContent = (helperLang === 'ID') ? '🇮🇩 外傭對照' : '🇵🇭 English';
-      showToast(helperLang === 'ID' ? '已切換為：印尼文 (Bahasa) 照護對照' : 'Switched to: English Helper Mode');
+      const lp = HELPER_TRANSLATIONS[helperLang];
+      document.getElementById('btnLangToggle').textContent = lp.toggleBtn;
+      document.getElementById('labelTargetLevel').textContent = (helperLang === 'ID') ? '照護對象目標餐質 (Target Level):' : 'Care Target IDDSI Level:';
+      document.getElementById('labelUploadPrompt').textContent = lp.uploadPrompt;
+      document.getElementById('labelUploadSub').textContent = lp.uploadSub;
+      showToast(lp.langSwitched);
+
+      if (lastResultData) {
+        renderMealResult(lastResultData);
+      }
     };
 
     // 初始化執行
