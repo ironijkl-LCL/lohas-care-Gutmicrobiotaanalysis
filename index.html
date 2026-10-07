@@ -20,7 +20,7 @@
       --font-base: 16.5px; --font-title: 22px;
       --app-max-w: 480px;
 
-      /* IDDSI 國際官方標準色碼 */
+      /* IDDSI 官方標準色 */
       --iddsi-7: #000000; --iddsi-6: #2c5697; --iddsi-5: #ea7125; --iddsi-4: #65a143;
       --iddsi-3: #fed430; --iddsi-2: #ee629c; --iddsi-1: #626366; --iddsi-0: #f8fafc;
     }
@@ -66,8 +66,11 @@
       .med-metric-lbl { color: #a1a1a6 !important; }
       .med-group-title { color: #d1d5db !important; }
       .step-item { background: rgba(255,255,255,0.06) !important; color: #e5e7eb !important; }
+      .mistake-box { background: rgba(220,38,38,0.12) !important; border-color: #ef4444 !important; color: #fca5a5 !important; }
       .exercise-img-wrap { background: #111827 !important; }
       .today-task-box { background: #1f2937 !important; border-color: #374151 !important; }
+      .checklist-card { background: #1f2937 !important; border-color: #374151 !important; }
+      .checklist-item { background: #2c2c2e !important; color: #f5f5f7 !important; }
     }
 
     body.elderly { --font-base: 20px; --font-title: 26px; }
@@ -99,7 +102,7 @@
     }
     .brand { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
     .logo { font-size: 14px; font-weight: 800; letter-spacing: .4px; color: var(--teal); }
-    .header-actions { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .header-actions { display: flex; align-items: center; gap: 6px; }
     .chip {
       font-size: 12.5px; font-weight: 700; padding: 5px 9px; border-radius: 18px;
       border: 1.5px solid rgba(0,0,0,.12); background: var(--bg); color: var(--text); cursor: pointer;
@@ -112,18 +115,21 @@
     h1 { font-size: var(--font-title); font-weight: 800; letter-spacing: -.3px; margin-bottom: 2px; }
     .sub { font-size: 13px; color: var(--text2); }
 
-    /* 今日護理看板 */
+    /* 今日護理看板 (主角級別) */
     .today-task-box {
-      background: #ffffff; border: 1.5px solid rgba(13,148,136,0.25); border-radius: 16px;
-      padding: 12px 14px; box-shadow: var(--shadow);
+      background: var(--card); border: 2px solid var(--teal); border-radius: 18px;
+      padding: 14px 16px; box-shadow: var(--shadow);
     }
-    .task-bar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 13.5px; font-weight: 800; color: var(--teal); }
+    .task-bar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 14px; font-weight: 900; color: var(--teal); }
+    .task-progress-ring-wrap { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .task-bar-outer { flex: 1; height: 10px; background: rgba(0,0,0,0.08); border-radius: 5px; overflow: hidden; }
+    .task-bar-inner { height: 100%; width: 0%; background: linear-gradient(90deg, var(--teal), var(--green)); border-radius: 5px; transition: width 0.4s ease; }
     .task-chips-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; text-align: center; }
     .task-chip-btn {
-      background: var(--bg); border: 1.5px solid transparent; border-radius: 10px; padding: 8px 4px;
-      font-size: 12px; font-weight: 700; cursor: pointer; transition: all .2s;
+      background: var(--bg); border: 1.5px solid transparent; border-radius: 12px; padding: 10px 4px;
+      font-size: 12.5px; font-weight: 800; cursor: pointer; transition: all .2s;
     }
-    .task-chip-btn.done { background: rgba(34,197,94,0.12); border-color: var(--green); color: var(--green); }
+    .task-chip-btn.done { background: rgba(34,197,94,0.14); border-color: var(--green); color: var(--green); }
     
     .tabs { display: flex; gap: 5px; margin-bottom: 2px; flex-wrap: wrap; }
     .tab {
@@ -149,6 +155,18 @@
     .traffic-text p { font-size: 13.5px; opacity: 0.95; line-height: 1.4; }
     .traffic-text .helper-line { font-size: 12.5px; opacity: 0.92; margin-top: 6px; font-style: italic; border-top: 1px solid rgba(255,255,255,0.25); padding-top: 5px; }
 
+    /* 即時照護執行 Checklist */
+    .checklist-card {
+      background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 14px; padding: 12px 14px; margin: 12px 0;
+    }
+    .checklist-title { font-size: 14px; font-weight: 800; color: #1e293b; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; }
+    .checklist-items { display: flex; flex-direction: column; gap: 8px; }
+    .checklist-item {
+      display: flex; align-items: center; gap: 10px; background: #ffffff; padding: 9px 12px; border-radius: 10px;
+      border: 1px solid rgba(0,0,0,0.06); font-size: 13.5px; font-weight: 700; cursor: pointer; transition: all .15s;
+    }
+    .checklist-item.checked { background: rgba(34,197,94,0.12); color: #166534; text-decoration: line-through; border-color: #22c55e; }
+
     .btn {
       display: inline-flex; align-items: center; justify-content: center; gap: 8px;
       padding: 12px 16px; border-radius: 14px; font-size: 15.5px; font-weight: 700;
@@ -162,7 +180,7 @@
     .btn-ghost { background: var(--bg); color: var(--text); }
     .btn-danger { background: #dc2626; color: #fff; }
 
-    /* 影相掃描動態波浪 */
+    /* 影相掃描動態波浪與倒數預估 */
     #previewWrap {
       position: relative; margin-top: 10px; border-radius: 14px; overflow: hidden; background: #000;
       width: 100%; max-height: clamp(260px, 45vh, 460px);
@@ -181,6 +199,10 @@
       0% { top: 5%; }
       50% { top: 90%; }
       100% { top: 5%; }
+    }
+    .countdown-pill {
+      position: absolute; bottom: 12px; background: rgba(0,0,0,0.75); color: #4ade80;
+      padding: 4px 12px; border-radius: 14px; font-size: 12px; font-weight: 800; z-index: 20; display: none;
     }
 
     #rulerBox {
@@ -241,9 +263,10 @@
       border: 1px solid rgba(0,0,0,0.06); box-shadow: 0 2px 10px rgba(0,0,0,0.03);
     }
     .med-dashboard-title {
-      font-size: 15px; font-weight: 900; color: var(--teal); margin-bottom: 12px;
+      font-size: 15px; font-weight: 900; color: var(--teal); margin-bottom: 4px;
       display: flex; align-items: center; gap: 6px;
     }
+    .med-disclaimer-note { font-size: 11px; color: var(--text2); margin-bottom: 10px; }
     .med-group-title {
       font-size: 13px; font-weight: 800; color: #4b5563; margin: 12px 0 6px;
     }
@@ -263,12 +286,13 @@
 
     /* 👅 吞嚥肌運動動作解析 */
     .swallow-exercise-card {
-      background: var(--bg); border-left: 4.5px solid var(--teal); padding: 14px 15px;
-      border-radius: 12px; margin-bottom: 14px;
+      background: var(--card); border-left: 4.5px solid var(--teal); padding: 14px 15px;
+      border-radius: 12px; margin-bottom: 14px; box-shadow: var(--shadow);
     }
     .exercise-img-wrap {
       width: 100%; border-radius: 12px; overflow: hidden; margin: 8px 0 12px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.08); background: #000;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08); background: #f3f4f6; min-height: 140px;
+      display: flex; align-items: center; justify-content: center;
     }
     .exercise-img {
       width: 100%; max-height: 220px; object-fit: cover; display: block;
@@ -278,27 +302,34 @@
     }
     .step-item {
       display: flex; gap: 8px; align-items: flex-start; font-size: 13px; line-height: 1.45;
-      background: rgba(0,0,0,0.02); padding: 8px 10px; border-radius: 8px;
+      background: var(--bg); padding: 8px 10px; border-radius: 8px;
     }
     .step-pill {
       background: var(--teal); color: #fff; font-size: 11px; font-weight: 800;
       padding: 2px 6px; border-radius: 6px; white-space: nowrap; flex-shrink: 0; margin-top: 1px;
     }
+    .mistake-box {
+      background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 8px 10px;
+      font-size: 12px; color: #b91c1c; margin-top: 6px; line-height: 1.4;
+    }
 
-    /* 倒數計時 Modal */
+    /* SVG 圓形進度環計時器 */
     .timer-overlay {
       position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000;
       display: none; align-items: center; justify-content: center; flex-direction: column; padding: 20px;
     }
     .timer-card {
-      background: var(--card); border-radius: 24px; padding: 30px 24px; max-width: 380px; width: 100%;
+      background: var(--card); border-radius: 24px; padding: 26px 20px; max-width: 360px; width: 100%;
       text-align: center; box-shadow: var(--shadow);
     }
-    .timer-circle-wrap {
-      position: relative; width: 150px; height: 150px; margin: 16px auto; display: flex; align-items: center; justify-content: center;
+    .timer-svg-wrap {
+      position: relative; width: 140px; height: 140px; margin: 12px auto; display: flex; align-items: center; justify-content: center;
     }
-    .timer-number { font-size: 64px; font-weight: 900; color: var(--teal); }
-    .timer-action-hint { font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+    .timer-svg { transform: rotate(-90deg); }
+    .timer-number {
+      position: absolute; font-size: 54px; font-weight: 900; color: var(--teal); line-height: 1;
+    }
+    .timer-action-hint { font-size: 17px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
 
     .q-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
     .q-num {
@@ -406,27 +437,31 @@
         <span class="logo">🌿 Lohascare GutSafe 樂活食得安</span>
         <div class="header-actions">
           <button class="chip danger" id="btnEmergency">🚨 哽親急救</button>
-          <button class="chip" id="btnEmergencyContact">📞 家人</button>
-          <button class="chip" id="btnExportDoctor">📋 醫生報告</button>
-          <button class="chip" id="btnLangToggle">🇮🇩 Bahasa</button>
           <button class="chip" id="btnElderly">大字</button>
           <button class="chip" id="btnVoice">🔊 語音</button>
+          <button class="chip" id="btnMoreMenu">⋯ 更多</button>
         </div>
       </div>
       <h1 id="headerTitle">腸道微生態 · 情緒安康 · 吞嚥安全</h1>
       <p class="sub">腸道好菌 · 腸腦軸紓壓 · IDDSI 吞嚥守護</p>
     </header>
 
-    <!-- 今日護理任務三部曲（降低長者上手成本） -->
+    <!-- 今日護理進度 (主角面板 · 帶進度條與完成率) -->
     <div class="today-task-box">
       <div class="task-bar-header">
-        <span>📅 今日護理進度</span>
-        <span id="weeklyComplianceText">本週完成率: 0%</span>
+        <span>📅 今日護理任務（3部曲）</span>
+        <span id="weeklyComplianceText">本週打卡率: 0%</span>
+      </div>
+      <div class="task-progress-ring-wrap">
+        <div class="task-bar-outer">
+          <div class="task-bar-inner" id="todayTaskProgressBar"></div>
+        </div>
+        <span style="font-size:12.5px;font-weight:900;color:var(--teal)" id="todayTaskCount">0 / 3 完成</span>
       </div>
       <div class="task-chips-grid">
         <button class="task-chip-btn" id="taskBtnMeal" onclick="switchTab('meal')">📸 1. 驗餐</button>
-        <button class="task-chip-btn" id="taskBtnSwallow" onclick="switchTab('swallow')">👅 2. 吞嚥肌操</button>
-        <button class="task-chip-btn" id="taskBtnQuiz" onclick="switchTab('quiz')">🦠 3. 腸道評估</button>
+        <button class="task-chip-btn" id="taskBtnSwallow" onclick="switchTab('swallow')">👅 2. 吞嚥操</button>
+        <button class="task-chip-btn" id="taskBtnQuiz" onclick="switchTab('quiz')">🦠 3. 查腸道</button>
       </div>
     </div>
 
@@ -466,6 +501,7 @@
 
         <div id="previewWrap">
           <div class="scan-line" id="scanLaserLine"></div>
+          <div class="countdown-pill" id="scanCountdownPill">⏳ 分析中... 預計仲有 4 秒</div>
           <img id="imagePreview" alt="餐食預覽">
           <div id="rulerBox" style="width:100px;height:100px;">
             <span class="ruler-tag" id="rulerTagText">📏 15mm 一口量 (Bite-sized)</span>
@@ -512,7 +548,15 @@
           </div>
 
           <div id="resAllergenBox" style="margin:6px 0"></div>
-          <div class="action-chips" id="resPrimaryAction"></div>
+
+          <!-- 📋 即刻照做 3 件事：可勾選執行清單 (Checklist) -->
+          <div class="checklist-card">
+            <div class="checklist-title">
+              <span>📋 即時照護執行清單（做完打個勾）</span>
+              <span style="font-size:11px;color:var(--text2)">點擊完成</span>
+            </div>
+            <div class="checklist-items" id="actionChecklistItems"></div>
+          </div>
 
           <div class="safety-tip" id="resSafetyTip" style="display:none">
             🍴 <strong>Safety-first：</strong>建議用餐叉做官方指壓測試確認質地。若食物無法壓爛或過硬，請再加工。
@@ -526,94 +570,42 @@
 
           <div class="action-chips" id="resActionChips"></div>
 
-          <!-- 📊 完整營養素醫療儀表板 (每份估算) -->
-          <div class="med-dashboard-wrap">
-            <div class="med-dashboard-title">📊 完整營養素醫療儀表板 (每份估算)</div>
-            
-            <div class="med-group-title">熱量與基礎指標</div>
-            <div class="med-metric-grid">
-              <div class="med-metric-box">
-                <span class="med-metric-lbl">總重量</span>
-                <span class="med-metric-val" id="valGrams">-- g</span>
+          <!-- 📊 完整營養素醫療儀表板 (摺疊顯示，強調估算免責) -->
+          <details style="margin:10px 0;background:var(--bg);padding:10px 12px;border-radius:10px;font-size:13px">
+            <summary style="font-weight:700;cursor:pointer;color:var(--teal)">📊 查看完整營養素醫療儀表板 (每份估算)</summary>
+            <div class="med-dashboard-wrap" style="margin-top:10px;padding:10px 8px">
+              <div class="med-disclaimer-note">⚕️ 臨床粗估：以下數據由 AI 視覺模型估算，僅供家庭配餐與營養監測參考。</div>
+              <div class="med-group-title">熱量與基礎指標</div>
+              <div class="med-metric-grid">
+                <div class="med-metric-box"><span class="med-metric-lbl">總重量</span><span class="med-metric-val" id="valGrams">-- g</span></div>
+                <div class="med-metric-box"><span class="med-metric-lbl">熱量</span><span class="med-metric-val" id="valCalories">-- kcal</span></div>
+                <div class="med-metric-box"><span class="med-metric-lbl">水份含量</span><span class="med-metric-val" id="valWater">-- ml</span></div>
+                <div class="med-metric-box"><span class="med-metric-lbl">蛋白質</span><span class="med-metric-val" id="valProtein">-- g</span></div>
+                <div class="med-metric-box"><span class="med-metric-lbl">碳水化合物</span><span class="med-metric-val" id="valCarbs">-- g</span></div>
+                <div class="med-metric-box"><span class="med-metric-lbl">總脂肪</span><span class="med-metric-val" id="valFat">-- g</span></div>
               </div>
-              <div class="med-metric-box">
-                <span class="med-metric-lbl">熱量</span>
-                <span class="med-metric-val" id="valCalories">-- kcal</span>
-              </div>
-              <div class="med-metric-box">
-                <span class="med-metric-lbl">水份含量</span>
-                <span class="med-metric-val" id="valWater">-- ml</span>
-              </div>
-              <div class="med-metric-box">
-                <span class="med-metric-lbl">蛋白質</span>
-                <span class="med-metric-val" id="valProtein">-- g</span>
-              </div>
-              <div class="med-metric-box">
-                <span class="med-metric-lbl">碳水化合物</span>
-                <span class="med-metric-val" id="valCarbs">-- g</span>
-              </div>
-              <div class="med-metric-box">
-                <span class="med-metric-lbl">總脂肪</span>
-                <span class="med-metric-val" id="valFat">-- g</span>
-              </div>
-            </div>
 
-            <div class="med-group-title">心血管與腸道防護 (脂肪/糖/纖維)</div>
-            <div class="med-metric-grid">
-              <div class="med-metric-box">
-                <span class="med-metric-lbl">膳食纖維</span>
-                <span class="med-metric-val" id="valFiber">-- g</span>
+              <div class="med-group-title">心血管與腸道防護 (脂肪/糖/纖維)</div>
+              <div class="med-metric-grid">
+                <div class="med-metric-box"><span class="med-metric-lbl">膳食纖維</span><span class="med-metric-val" id="valFiber">-- g</span></div>
+                <div class="med-metric-box"><span class="med-metric-lbl">糖份</span><span class="med-metric-val" id="valSugar">-- g</span></div>
+                <div class="med-metric-box"><span class="med-metric-lbl">膽固醇</span><span class="med-metric-val" id="valCholesterol">-- mg</span></div>
+                <div class="med-metric-box"><span class="med-metric-lbl">飽和脂肪</span><span class="med-metric-val" id="valSatFat">-- g</span></div>
+                <div class="med-metric-box"><span class="med-metric-lbl">反式脂肪</span><span class="med-metric-val" id="valTransFat">-- g</span></div>
+                <div class="med-metric-box"><span class="med-metric-lbl">鈉 (鹽份)</span><span class="med-metric-val" id="valSodium">-- mg</span></div>
               </div>
-              <div class="med-metric-box">
-                <span class="med-metric-lbl">糖份</span>
-                <span class="med-metric-val" id="valSugar">-- g</span>
-              </div>
-              <div class="med-metric-box">
-                <span class="med-metric-lbl">膽固醇</span>
-                <span class="med-metric-val" id="valCholesterol">-- mg</span>
-              </div>
-              <div class="med-metric-box">
-                <span class="med-metric-lbl">飽和脂肪</span>
-                <span class="med-metric-val" id="valSatFat">-- g</span>
-              </div>
-              <div class="med-metric-box">
-                <span class="med-metric-lbl">反式脂肪</span>
-                <span class="med-metric-val" id="valTransFat">-- g</span>
-              </div>
-              <div class="med-metric-box">
-                <span class="med-metric-lbl">鈉 (鹽份)</span>
-                <span class="med-metric-val" id="valSodium">-- mg</span>
-              </div>
-            </div>
 
-            <div class="med-group-title">長者骨骼與電解質微量元素</div>
-            <div class="med-metric-grid">
-              <div class="med-metric-box">
-                <span class="med-metric-lbl">鈣 (骨骼)</span>
-                <span class="med-metric-val" id="valCalcium">-- mg</span>
-              </div>
-              <div class="med-metric-box">
-                <span class="med-metric-lbl">鐵 (補血)</span>
-                <span class="med-metric-val" id="valIron">-- mg</span>
-              </div>
-              <div class="med-metric-box">
-                <span class="med-metric-lbl">鎂 (舒緩)</span>
-                <span class="med-metric-val" id="valMagnesium">-- mg</span>
-              </div>
-              <div class="med-metric-box">
-                <span class="med-metric-lbl">鉀 (血壓)</span>
-                <span class="med-metric-val" id="valPotassium">-- mg</span>
-              </div>
-              <div class="med-metric-box">
-                <span class="med-metric-lbl">鋅 (免疫)</span>
-                <span class="med-metric-val" id="valZinc">-- mg</span>
-              </div>
-              <div class="med-metric-box">
-                <span class="med-metric-lbl">維他命 C</span>
-                <span class="med-metric-val" id="valVitC">-- mg</span>
+              <div class="med-group-title">長者骨骼與電解質微量元素</div>
+              <div class="med-metric-grid">
+                <div class="med-metric-box"><span class="med-metric-lbl">鈣 (骨骼)</span><span class="med-metric-val" id="valCalcium">-- mg</span></div>
+                <div class="med-metric-box"><span class="med-metric-lbl">鐵 (補血)</span><span class="med-metric-val" id="valIron">-- mg</span></div>
+                <div class="med-metric-box"><span class="med-metric-lbl">鎂 (舒緩)</span><span class="med-metric-val" id="valMagnesium">-- mg</span></div>
+                <div class="med-metric-box"><span class="med-metric-lbl">鉀 (血壓)</span><span class="med-metric-val" id="valPotassium">-- mg</span></div>
+                <div class="med-metric-box"><span class="med-metric-lbl">鋅 (免疫)</span><span class="med-metric-val" id="valZinc">-- mg</span></div>
+                <div class="med-metric-box"><span class="med-metric-lbl">維他命 C</span><span class="med-metric-val" id="valVitC">-- mg</span></div>
               </div>
             </div>
-          </div>
+          </details>
 
           <details style="margin:10px 0;background:var(--bg);padding:10px 12px;border-radius:10px;font-size:13px">
             <summary style="font-weight:700;cursor:pointer;color:var(--teal)">🔍 判斷理由 + 官方測試建議</summary>
@@ -649,7 +641,7 @@
           強化舌肌、軟顎與喉部上提力量，增強食團推送力量並預防退化嗆咳。建議坐直挺胸、放鬆肩膀進行。
         </p>
 
-        <!-- 訓練 1: 假聲抬喉用力吞嚥法 (Mendelsohn Maneuver) -->
+        <!-- 訓練 1: 假聲抬喉用力吞嚥法 -->
         <div class="swallow-exercise-card">
           <div style="font-weight:900;font-size:16px;color:var(--teal);margin-bottom:4px">
             1. 📖 假聲抬喉用力吞嚥法（Mendelsohn Maneuver）動作解析
@@ -658,90 +650,66 @@
             此動作常應用於言語治療與吞嚥復康，目的是增強喉部上提肌群力量，並延長食道入口（環咽肌）開放時間。
           </p>
           <div class="exercise-img-wrap">
-            <img src="https://firebasestorage.googleapis.com/v0/b/lohascaregutmicrobiomefoodsafe.firebasestorage.app/o/images%2FGemini_Generated_Image_dhvhgkdhvhgkdhvh.jpeg?alt=media" alt="假聲抬喉用力吞嚥法示範圖" class="exercise-img" onerror="this.style.display='none'">
+            <img src="https://firebasestorage.googleapis.com/v0/b/lohascaregutmicrobiomefoodsafe.firebasestorage.app/o/images%2FGemini_Generated_Image_dhvhgkdhvhgkdhvh.jpeg?alt=media" alt="假聲抬喉用力吞嚥法示範圖" class="exercise-img" onerror="handleImgError(this, '抬喉上提示範圖')">
           </div>
           <div class="exercise-steps">
-            <div class="step-item">
-              <span class="step-pill">步驟 1</span>
-              <div><strong>準備與觸摸定位：</strong>保持坐姿挺直，用食指與拇指輕輕扶在頸部兩側的「喉核」（甲狀軟骨）位置，感受吞嚥時的正常升降軌跡。</div>
-            </div>
-            <div class="step-item">
-              <span class="step-pill">步驟 2</span>
-              <div><strong>吞嚥並用力上提：</strong>吞口水時，利用喉嚨肌肉力量將喉核向上提拉到最高點（有如發出極高尖假聲時的喉部緊縮感）。</div>
-            </div>
-            <div class="step-item">
-              <span class="step-pill">步驟 3</span>
-              <div><strong>頂峰緊縮維持 3 秒：</strong>在喉核升至最高位置時，喉部肌肉用力夾緊「鎖定」，不要讓喉核掉下來，在心裡默數「1、2、3」（維持 3 秒）。</div>
-            </div>
-            <div class="step-item">
-              <span class="step-pill">步驟 4</span>
-              <div><strong>緩慢放鬆與重複：</strong>3 秒後慢慢放鬆喉部肌肉，讓喉核自然降回初始位置。每次練習重複 5 次。</div>
-            </div>
+            <div class="step-item"><span class="step-pill">步驟 1</span><div><strong>準備與觸摸定位：</strong>保持坐姿挺直，用食指與拇指輕輕扶在頸部兩側的「喉核」（甲狀軟骨）位置。</div></div>
+            <div class="step-item"><span class="step-pill">步驟 2</span><div><strong>吞嚥並用力上提：</strong>吞口水時，利用喉嚨肌肉力量將喉核向上提拉到最高點（有如發出極高尖假聲時的喉部緊縮感）。</div></div>
+            <div class="step-item"><span class="step-pill">步驟 3</span><div><strong>頂峰緊縮維持 3 秒：</strong>在喉核升至最高位置時，喉部肌肉用力夾緊「鎖定」，在心裡默數「1、2、3」。</div></div>
+            <div class="step-item"><span class="step-pill">步驟 4</span><div><strong>緩慢放鬆與重複：</strong>3 秒後慢慢放鬆喉部肌肉，讓喉核自然降回初始位置。每次練習重複 5 次。</div></div>
           </div>
-          <button class="chip" onclick="startExerciseWithTimer('假聲抬喉用力吞嚥法', 3, 5, '用力抬喉，夾緊鎖定！')" style="margin-top:10px;width:100%">⏱️ 啟動大字視覺倒數（3秒 × 5次）</button>
+          <div class="mistake-box">
+            ⚠️ <strong>常見做錯提示：</strong>切忌下巴向前死伸或縮頸聳肩！必須保持頸椎垂直，純粹靠喉嚨內部肌肉將喉核上提夾緊。
+          </div>
+          <button class="chip" onclick="startExerciseWithTimer('假聲抬喉用力吞嚥法', 3, 5, '用力抬喉，夾緊鎖定！')" style="margin-top:10px;width:100%">⏱️ 啟動圓形倒數計時（3秒 × 5次）</button>
         </div>
 
-        <!-- 訓練 2: 舌肌抗阻訓練 (Tongue-to-Palate Resistance) -->
+        <!-- 訓練 2: 舌肌抗阻訓練 -->
         <div class="swallow-exercise-card">
           <div style="font-weight:900;font-size:16px;color:var(--teal);margin-bottom:4px">
             2. 📖 舌肌抗阻訓練（Tongue-to-Palate Resistance）動作解析
           </div>
           <p style="font-size:12.5px;color:var(--text2);line-height:1.45;margin-bottom:10px">
-            此動作是言語治療與口腔吞嚥復康中常見的阻力訓練（Lingual Resistance Exercise），主要鍛鍊舌骨舌肌、頦舌肌等舌部本體肌群，有助於增強食團推送力量、防止吞嚥時食物殘留，並改善口腔期吞嚥控制。
+            鍛鍊舌骨舌肌、頦舌肌等舌部本體肌群，增強食團推送力量、防止吞嚥後食物殘留在口腔，改善口腔期控制。
           </p>
           <div class="exercise-img-wrap">
-            <img src="https://firebasestorage.googleapis.com/v0/b/lohascaregutmicrobiomefoodsafe.firebasestorage.app/o/images%2FGemini_Generated_Image_19r79g19r79g19r7.jpeg?alt=media" alt="舌肌抗阻訓練示範圖" class="exercise-img" onerror="this.style.display='none'">
+            <img src="https://firebasestorage.googleapis.com/v0/b/lohascaregutmicrobiomefoodsafe.firebasestorage.app/o/images%2FGemini_Generated_Image_19r79g19r79g19r7.jpeg?alt=media" alt="舌肌抗阻訓練示範圖" class="exercise-img" onerror="handleImgError(this, '舌肌頂顎示範圖')">
           </div>
           <div class="exercise-steps">
-            <div class="step-item">
-              <span class="step-pill">步驟 1</span>
-              <div><strong>舌尖定位（就位準備）：</strong>嘴部微張或微閉，將舌尖準確放置於上門牙牙齦後方凹凸不平的「硬顎區」（切牙乳頭後方），不要推擠門牙。</div>
-            </div>
-            <div class="step-item">
-              <span class="step-pill">步驟 2</span>
-              <div><strong>用力向上頂實（維持 5 秒）：</strong>舌體主動發力，舌面與舌尖同時向上緊貼硬顎，施加向上對抗的阻力（如要把上顎往上推頂）。保持力量不鬆懈，平穩呼吸，在心中默數或計時 5 秒（感受舌根與舌體肌群的持續發力緊繃感）。</div>
-            </div>
-            <div class="step-item">
-              <span class="step-pill">步驟 3</span>
-              <div><strong>緩慢放鬆與重複：</strong>5 秒後慢慢解除力量，讓舌頭降回口腔底部完全放鬆休息 2～3 秒。每組練習重複 5 次，每日可按治療師建議進行 2～3 組。</div>
-            </div>
+            <div class="step-item"><span class="step-pill">步驟 1</span><div><strong>舌尖定位：</strong>嘴部微張，舌尖準確放置於上門牙後方凹凸不平的「硬顎區」，切勿推擠門牙。</div></div>
+            <div class="step-item"><span class="step-pill">步驟 2</span><div><strong>用力向上頂實 5 秒：</strong>舌體發力，舌面與舌尖同時向上緊貼硬顎施加對抗阻力，平穩呼吸計時 5 秒。</div></div>
+            <div class="step-item"><span class="step-pill">步驟 3</span><div><strong>緩慢放鬆與重複：</strong>5 秒後放鬆休息 2 秒，每組重複 5 次。</div></div>
           </div>
-          <button class="chip" onclick="startExerciseWithTimer('舌肌抗阻訓練', 5, 5, '舌尖頂實上顎，用力對抗！')" style="margin-top:10px;width:100%">⏱️ 啟動大字視覺倒數（5秒 × 5次）</button>
+          <div class="mistake-box">
+            ⚠️ <strong>常見做錯提示：</strong>千祈唔好用舌尖向外死頂門牙（會推歪牙齒）！正確係舌面向上「貼平吸實」硬顎天花板。
+          </div>
+          <button class="chip" onclick="startExerciseWithTimer('舌肌抗阻訓練', 5, 5, '舌尖頂實上顎，用力對抗！')" style="margin-top:10px;width:100%">⏱️ 啟動圓形倒數計時（5秒 × 5次）</button>
         </div>
 
-        <!-- 訓練 3: 咳嗽發聲練軟顎 (發「K」音 / 顎咽閉鎖訓練) -->
+        <!-- 訓練 3: 咳嗽發聲練軟顎 -->
         <div class="swallow-exercise-card">
           <div style="font-weight:900;font-size:16px;color:var(--teal);margin-bottom:4px">
             3. 📖 咳嗽發聲練軟顎（發「K」音 / 顎咽閉鎖訓練）動作解析
           </div>
           <p style="font-size:12.5px;color:var(--text2);line-height:1.45;margin-bottom:10px">
-            此動作常應用於言語治療與咽腔復康（Velopharyngeal & Vocal Cord Strengthening），透過發出清脆有力的舌根塞音「K（格 / Ka）」，刺激軟顎主動向後上方抬升封閉鼻咽腔，並鍛鍊聲門內收閉鎖肌群與咳嗽反射。
+            刺激軟顎向上閉鎖鼻咽腔，鍛鍊聲門內收閉鎖與強效咳嗽反射，防止液體逆流或食物落入氣管。
           </p>
           <div class="exercise-img-wrap">
-            <img src="https://firebasestorage.googleapis.com/v0/b/lohascaregutmicrobiomefoodsafe.firebasestorage.app/o/images%2FGemini_Generated_Image_2hn8hw2hn8hw2hn8.jpeg?alt=media" alt="咳嗽發聲練軟顎示範圖" class="exercise-img" onerror="this.style.display='none'">
+            <img src="https://firebasestorage.googleapis.com/v0/b/lohascaregutmicrobiomefoodsafe.firebasestorage.app/o/images%2FGemini_Generated_Image_2hn8hw2hn8hw2hn8.jpeg?alt=media" alt="咳嗽發聲練軟顎示範圖" class="exercise-img" onerror="handleImgError(this, '發聲練軟顎示範圖')">
           </div>
           <div class="exercise-steps">
-            <div class="step-item">
-              <span class="step-pill">步驟 1</span>
-              <div><strong>端正坐姿與腹式吸氣：</strong>身體挺直坐穩，雙肩放鬆，用鼻慢慢深吸一口氣儲蓄腹腔氣流。</div>
-            </div>
-            <div class="step-item">
-              <span class="step-pill">步驟 2</span>
-              <div><strong>舌根抬升發清脆爆破音：</strong>利用舌根後部用力緊貼軟顎阻截氣流，隨後短促、清晰而大聲地爆破發出「格（Ka）」或「K」音。</div>
-            </div>
-            <div class="step-item">
-              <span class="step-pill">步驟 3</span>
-              <div><strong>結合自主強效防禦咳嗽：</strong>每次清晰發音後，可緊接進行一次短促有力的清喉嚨或單次深咳，喚醒聲門保護性閉鎖反射。</div>
-            </div>
-            <div class="step-item">
-              <span class="step-pill">步驟 4</span>
-              <div><strong>規律重複與節奏休息：</strong>連續清脆發「格」音 10 次為一組，每次間隔 1 秒自然呼吸。</div>
-            </div>
+            <div class="step-item"><span class="step-pill">步驟 1</span><div><strong>腹式吸氣：</strong>身體挺直，用鼻慢吸一口氣儲蓄腹腔氣流。</div></div>
+            <div class="step-item"><span class="step-pill">步驟 2</span><div><strong>舌根抬升發爆破音：</strong>舌根緊貼軟顎，隨後短促大聲爆破發出「格（Ka）」音。</div></div>
+            <div class="step-item"><span class="step-pill">步驟 3</span><div><strong>自主防禦咳嗽：</strong>發音後緊接一次短促有力清喉嚨或深咳，喚醒聲門閉鎖。</div></div>
+            <div class="step-item"><span class="step-pill">步驟 4</span><div><strong>重複練習：</strong>連續發「格」音 10 次為一組。</div></div>
           </div>
-          <button class="chip" onclick="startExerciseWithTimer('咳嗽發聲練軟顎', 1, 10, '大聲爆破發「格！」音！')" style="margin-top:10px;width:100%">⏱️ 啟動節奏倒數（10次連發）</button>
+          <div class="mistake-box">
+            ⚠️ <strong>常見做錯提示：</strong>切忌用喉嚨乾扯尖叫（會整傷聲帶）！力量應來自橫膈膜呼氣，爆破點在舌根與喉嚨深處。
+          </div>
+          <button class="chip" onclick="startExerciseWithTimer('咳嗽發聲練軟顎', 1, 10, '大聲爆破發「格！」音！')" style="margin-top:10px;width:100%">⏱️ 啟動節奏計時（10次連發）</button>
         </div>
 
-        <button class="btn btn-wa" style="margin-top:12px" id="btnCheckInExercise">✅ 今日已完成吞嚥肌鍛鍊（打卡）</button>
+        <button class="btn btn-wa" style="margin-top:12px" id="btnCheckInExercise">✅ 今日已完成吞嚥肌鍛鍊（手動確認）</button>
       </div>
     </div>
 
@@ -795,27 +763,59 @@
       </div>
     </div>
 
-    <!-- 視覺計時器 Overlay -->
+    <!-- SVG 圓形進度環視覺計時器 Modal -->
     <div class="timer-overlay" id="timerModal">
       <div class="timer-card">
-        <div style="font-size:13px;font-weight:800;color:var(--teal)" id="timerExerciseTitle">吞嚥肌鍛鍊</div>
+        <div style="font-size:13.5px;font-weight:800;color:var(--teal)" id="timerExerciseTitle">吞嚥肌鍛鍊</div>
         <div class="timer-action-hint" id="timerActionHint">準備中...</div>
-        <div class="timer-circle-wrap">
+        <div class="timer-svg-wrap">
+          <svg class="timer-svg" width="140" height="140">
+            <circle cx="70" cy="70" r="58" stroke="rgba(13,148,136,0.18)" stroke-width="9" fill="none" />
+            <circle id="timerCircleProgress" cx="70" cy="70" r="58" stroke="var(--teal)" stroke-width="9" fill="none"
+              stroke-dasharray="364.4" stroke-dashoffset="0" stroke-linecap="round" />
+          </svg>
           <div class="timer-number" id="timerSeconds">3</div>
         </div>
-        <div style="font-size:14px;font-weight:700;color:var(--text2)" id="timerRepsIndicator">第 1 / 5 次</div>
-        <button class="btn btn-ghost" style="margin-top:16px" onclick="cancelExerciseTimer()">取消</button>
+        <div style="font-size:14px;font-weight:800;color:var(--text2)" id="timerRepsIndicator">第 1 / 5 次</div>
+        <button class="btn btn-ghost" style="margin-top:14px" onclick="cancelExerciseTimer()">取消鍛鍊</button>
       </div>
     </div>
 
-    <!-- 醫生/家屬專業報告 Modal -->
+    <!-- 今日 3 大任務全滿慶祝彈窗 -->
+    <div class="modal-backdrop" id="celebrateModal">
+      <div class="modal-box" style="text-align:center">
+        <div style="font-size:52px;margin-bottom:8px">🎉</div>
+        <h2 style="color:var(--teal);margin-bottom:6px">好嘢！今日照護任務全數完成！</h2>
+        <p style="font-size:14px;color:var(--text2);margin-bottom:16px;line-height:1.5">
+          驗餐防嗆、吞嚥肌鍛鍊同腸道自我檢視全部達標！長者食得安樂，喉部有力，微生態更健康！
+        </p>
+        <button class="btn btn-primary" onclick="document.getElementById('celebrateModal').style.display='none'">明白，繼續保持！</button>
+      </div>
+    </div>
+
+    <!-- 「⋯ 更多」收納選單 Modal (解決頂部 Chip 過多痛點) -->
+    <div class="modal-backdrop" id="moreModal">
+      <div class="modal-box">
+        <h3 style="margin-bottom:12px;color:var(--teal)">⚙️ 照護設定與專業工具</h3>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <button class="btn btn-outline" onclick="openContactModal()">📞 家人緊急聯絡設定</button>
+          <button class="btn btn-outline" onclick="openDoctorModal()">📋 匯出醫生 / 言語治療師報告</button>
+          <button class="btn btn-outline" onclick="toggleLanguageManual()">🌐 外傭語言切換 (Bahasa / English)</button>
+          <button class="btn btn-ghost" style="margin-top:8px" onclick="document.getElementById('moreModal').style.display='none'">關閉選單</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 醫生/言語治療師週報 Modal -->
     <div class="modal-backdrop" id="doctorReportModal">
       <div class="modal-box">
-        <h3 style="margin-bottom:8px">📋 長者照護與吞嚥週報</h3>
-        <p style="font-size:13px;color:var(--text2);margin-bottom:10px">可一鍵複製文字或轉發 WhatsApp 給言語治療師或家屬。</p>
-        <textarea id="doctorReportText" style="width:100%;height:180px;border-radius:12px;border:1.5px solid rgba(0,0,0,0.12);padding:10px;font-size:13px;line-height:1.45;background:var(--bg);color:var(--text)" readonly></textarea>
+        <h3 style="margin-bottom:6px">📋 長者吞嚥與腸道健康週報</h3>
+        <div style="display:flex;gap:6px;margin-bottom:8px">
+          <label style="font-size:12px;font-weight:700"><input type="checkbox" id="includeMealDetailCheck" onchange="generateDoctorReportText()"> 包含最近一餐分析詳情</label>
+        </div>
+        <textarea id="doctorReportText" style="width:100%;height:180px;border-radius:12px;border:1.5px solid rgba(0,0,0,0.12);padding:10px;font-size:12.5px;line-height:1.45;background:var(--bg);color:var(--text)" readonly></textarea>
         <div style="display:flex;gap:8px;margin-top:12px">
-          <button class="btn btn-primary" onclick="copyDoctorReport()">📋 複製報告</button>
+          <button class="btn btn-primary" onclick="copyDoctorReport()">📋 複製報告文字</button>
           <a id="btnSendWaReport" href="#" class="btn btn-wa" style="text-decoration:none">💬 WhatsApp 傳送</a>
         </div>
         <button class="btn btn-ghost" style="margin-top:8px" onclick="document.getElementById('doctorReportModal').style.display='none'">關閉</button>
@@ -1008,6 +1008,16 @@
       setTimeout(() => el.classList.remove('show'), 2600);
     }
 
+    function handleImgError(imgEl, label) {
+      imgEl.onerror = null;
+      imgEl.parentElement.innerHTML = `
+        <div style="padding:24px 10px;text-align:center;color:var(--text2);font-size:12.5px;line-height:1.4">
+          <div style="font-size:32px;margin-bottom:4px">🖼️</div>
+          <strong>${label}</strong><br>
+          （請參照下方文字分步指導操作）
+        </div>`;
+    }
+
     function switchTab(target) {
       document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
       const activeBtn = document.querySelector(`.tab[data-tab="${target}"]`);
@@ -1021,13 +1031,41 @@
       if (target === 'quickRef') renderRefTable();
     }
 
-    // ========== 1. 運動閉環：大字視覺倒數計時器 ==========
+    // ========== 今日護理任務 3 部曲與完成度管理 ==========
+    function checkDailyTaskCompletion() {
+      const today = new Date().toDateString();
+      const mealDone = localStorage.getItem('task_meal_' + today) === '1';
+      const swallowDone = localStorage.getItem('task_swallow_' + today) === '1';
+      const quizDone = localStorage.getItem('task_quiz_' + today) === '1';
+
+      let count = 0;
+      if (mealDone) { count++; document.getElementById('taskBtnMeal').classList.add('done'); document.getElementById('taskBtnMeal').textContent = '📸 1. 驗餐 ✅'; }
+      if (swallowDone) { count++; document.getElementById('taskBtnSwallow').classList.add('done'); document.getElementById('taskBtnSwallow').textContent = '👅 2. 吞嚥操 ✅'; }
+      if (quizDone) { count++; document.getElementById('taskBtnQuiz').classList.add('done'); document.getElementById('taskBtnQuiz').textContent = '🦠 3. 查腸道 ✅'; }
+
+      const percent = Math.round((count / 3) * 100);
+      document.getElementById('todayTaskProgressBar').style.width = percent + '%';
+      document.getElementById('todayTaskCount').textContent = `${count} / 3 完成`;
+
+      // 全部 3 項完成觸發祝賀
+      if (count === 3 && localStorage.getItem('celebrated_' + today) !== '1') {
+        localStorage.setItem('celebrated_' + today, '1');
+        setTimeout(() => {
+          document.getElementById('celebrateModal').style.display = 'flex';
+          speakCantonese('好嘢！今日三項照護任務全部做齊晒！健康又安心！');
+        }, 600);
+      }
+    }
+
+    // ========== 1. 運動層面：SVG 圓形進度環倒數計時 ==========
     function startExerciseWithTimer(name, holdSec, reps, hint) {
       const modal = document.getElementById('timerModal');
       const titleEl = document.getElementById('timerExerciseTitle');
       const hintEl = document.getElementById('timerActionHint');
       const numEl = document.getElementById('timerSeconds');
       const repEl = document.getElementById('timerRepsIndicator');
+      const circleEl = document.getElementById('timerCircleProgress');
+      const circumference = 2 * Math.PI * 58; // ~364.4
 
       titleEl.textContent = name;
       hintEl.textContent = hint;
@@ -1038,11 +1076,18 @@
 
       speakCantonese(`開始鍛鍊${name}。第 1 次，預備！`);
 
+      function updateCircleProgress(remain, total) {
+        const fraction = remain / total;
+        const offset = circumference * (1 - fraction);
+        circleEl.style.strokeDashoffset = offset;
+      }
+
       function runTimer() {
         repEl.textContent = `第 ${currentRep} / ${reps} 次`;
         numEl.textContent = currentSec;
+        updateCircleProgress(currentSec, holdSec);
 
-        if (navigator.vibrate) navigator.vibrate(80);
+        if (navigator.vibrate) navigator.vibrate(60);
 
         if (currentSec > 0) {
           timerTimeout = setTimeout(() => {
@@ -1050,21 +1095,21 @@
             runTimer();
           }, 1000);
         } else {
-          // 本次完成
+          // 本次次數結束
           if (currentRep < reps) {
             currentRep++;
             currentSec = holdSec;
             speakCantonese(`好，放鬆兩秒。第 ${currentRep} 次，開始！`);
             timerTimeout = setTimeout(runTimer, 2000);
           } else {
-            // 全部完成，寫入完成日誌
+            // 全部組數完成
             modal.style.display = 'none';
             speakCantonese(`做得好！${name}順利完成 ${reps} 次，今日進步咗好多！`);
             recordExerciseDone(name);
           }
         }
       }
-      timerTimeout = setTimeout(runTimer, 1500);
+      timerTimeout = setTimeout(runTimer, 1400);
     }
 
     function cancelExerciseTimer() {
@@ -1075,15 +1120,15 @@
 
     function recordExerciseDone(name) {
       let records = JSON.parse(localStorage.getItem('lohas_exercise_history') || '[]');
-      const today = new Date().toISOString().split('T')[0];
-      records.unshift({ name, date: today, timestamp: Date.now() });
+      const todayDate = new Date().toDateString();
+      const todayISO = new Date().toISOString().split('T')[0];
+      records.unshift({ name, date: todayISO, timestamp: Date.now() });
       localStorage.setItem('lohas_exercise_history', JSON.stringify(records.slice(0, 30)));
+      localStorage.setItem('task_swallow_' + todayDate, '1');
 
-      // 更新任務標籤狀態
-      document.getElementById('taskBtnSwallow').classList.add('done');
-      document.getElementById('taskBtnSwallow').textContent = '👅 2. 吞嚥操 ✅';
       updateWeeklyCompliance();
-      showToast('🎉 運動已記錄至日誌');
+      checkDailyTaskCompletion();
+      showToast('🎉 吞嚥鍛鍊已完成並記入日誌！');
     }
 
     function updateWeeklyCompliance() {
@@ -1097,43 +1142,89 @@
         }
       }
       const rate = Math.round((activeDays.size / 7) * 100);
-      document.getElementById('weeklyComplianceText').textContent = `本週完成率: ${rate}% (${activeDays.size}/7 日)`;
+      document.getElementById('weeklyComplianceText').textContent = `本週打卡率: ${rate}% (${activeDays.size}/7 日)`;
       return { rate, days: activeDays.size };
     }
 
-    // ========== 2. 專業報告匯出 (給言語治療師/醫生) ==========
-    document.getElementById('btnExportDoctor').onclick = () => {
+    // ========== 2. 更多選單與報告管理 ==========
+    document.getElementById('btnMoreMenu').onclick = () => {
+      document.getElementById('moreModal').style.display = 'flex';
+    };
+
+    function openContactModal() {
+      document.getElementById('moreModal').style.display = 'none';
+      const phone = localStorage.getItem('emergency_contact') || '';
+      document.getElementById('contactPhone').value = phone;
+      const callBtn = document.getElementById('callContactBtn');
+      if (phone) {
+        callBtn.href = `tel:${phone}`;
+        callBtn.style.display = 'block';
+        callBtn.textContent = `📞 立即致電 ${phone}`;
+      } else {
+        callBtn.style.display = 'none';
+      }
+      document.getElementById('contactModal').style.display = 'flex';
+    }
+
+    function openDoctorModal() {
+      document.getElementById('moreModal').style.display = 'none';
+      generateDoctorReportText();
+      document.getElementById('doctorReportModal').style.display = 'flex';
+    }
+
+    function toggleLanguageManual() {
+      document.getElementById('moreModal').style.display = 'none';
+      helperLang = (helperLang === 'ID') ? 'EN' : 'ID';
+      localStorage.setItem('lohas_helper_lang', helperLang);
+      const lp = HELPER_TRANSLATIONS[helperLang];
+      document.getElementById('labelTargetLevel').textContent = (helperLang === 'ID') ? '照護對象目標餐質 (Target Level):' : 'Care Target IDDSI Level:';
+      document.getElementById('labelUploadPrompt').textContent = lp.uploadPrompt;
+      document.getElementById('labelUploadSub').textContent = lp.uploadSub;
+      showToast(lp.langSwitched);
+      if (lastResultData) renderMealResult(lastResultData);
+    }
+
+    function generateDoctorReportText() {
       const p = document.getElementById('userPrescription').value;
       const gutScore = localStorage.getItem('last_gut_score') || '未評估';
       const history = JSON.parse(localStorage.getItem('lohas_meal_logs') || '[]');
       const compliance = updateWeeklyCompliance();
+      const withDetail = document.getElementById('includeMealDetailCheck').checked;
       const lastMeal = history[0] ? `${history[0].name} (${history[0].isDual ? '雙重質地高危' : '安全'})` : '無紀錄';
 
-      const report = 
-`【Lohascare GutSafe 樂活食得安 · 長者照護週報】
+      let report = 
+`【Lohascare GutSafe 樂活食得安 · 專業照護週報】
 =============================
-目標吞嚥處方：${p}
-最新餐膳紀錄：${lastMeal}
-本週吞嚥肌訓練率：${compliance.rate}% (近7日完成 ${compliance.days} 天)
-腸道微生態健康分數：${gutScore} 分
+照護處方：${p}
+最新餐膳：${lastMeal}
+吞嚥操完成率：${compliance.rate}% (近7日達成 ${compliance.days} 天)
+腸道微生態分數：${gutScore} 分
 緊急聯絡電話：${localStorage.getItem('emergency_contact') || '未設定'}
-生成時間：${new Date().toLocaleDateString('zh-HK')}
-註：本數據由居家照顧者輔助檢測產出，供言語治療師／醫生覆診質地參考。`;
+產生日誌時間：${new Date().toLocaleDateString('zh-HK')}`;
 
+      if (withDetail && lastResultData) {
+        report += `
+-----------------------------
+【最新驗餐視覺初篩詳情】
+食物品名：${lastResultData.food || '未辨識'}
+判斷等級：IDDSI Level ${lastResultData.iddsi_number || 7}
+嗆咳風險：${lastResultData.is_dual_texture ? '⚠️ 又湯又渣高危雙重質地' : '✅ 單一質地符合處方'}
+質地理由：${lastResultData.visual_reason || '表面濕潤無顆粒'}`;
+      }
+
+      report += `\n=============================\n註：本數據供言語治療師與醫生覆診參考，非正式醫療器械診斷。`;
       document.getElementById('doctorReportText').value = report;
       document.getElementById('btnSendWaReport').href = `https://wa.me/?text=${encodeURIComponent(report)}`;
-      document.getElementById('doctorReportModal').style.display = 'flex';
-    };
+    }
 
     function copyDoctorReport() {
       const txt = document.getElementById('doctorReportText');
       txt.select();
       navigator.clipboard.writeText(txt.value).then(() => {
-        showToast('已複製報告，可直接貼上傳送');
+        showToast('已複製報告文字，可直接貼上傳送');
       });
     }
 
-    // ========== 3. 離線營養支援與個人化飲食引擎 ==========
     function getOfflineNutritionData(foodName) {
       const matched = HK_FOOD_KB.find(item => foodName.includes(item.name) || item.name.includes(foodName));
       if (matched && matched.nutrients) return matched.nutrients;
@@ -1153,25 +1244,13 @@
       callBtn.style.display = 'block';
       callBtn.textContent = `📞 立即致電 ${phone}`;
     }
-    document.getElementById('btnEmergencyContact').onclick = () => {
-      const phone = localStorage.getItem('emergency_contact') || '';
-      document.getElementById('contactPhone').value = phone;
-      const callBtn = document.getElementById('callContactBtn');
-      if (phone) {
-        callBtn.href = `tel:${phone}`;
-        callBtn.style.display = 'block';
-        callBtn.textContent = `📞 立即致電 ${phone}`;
-      } else {
-        callBtn.style.display = 'none';
-      }
-      document.getElementById('contactModal').style.display = 'flex';
-    };
 
-    // ========== 4. 影像上傳與掃描動畫 ==========
+    // ========== 3. 影相分析與進度條預估 ==========
     const mealInput = document.getElementById('mealInput');
     const imagePreview = document.getElementById('imagePreview');
     const btnAnalyzeMeal = document.getElementById('btnAnalyzeMeal');
     const scanLaserLine = document.getElementById('scanLaserLine');
+    const scanCountdownPill = document.getElementById('scanCountdownPill');
 
     mealInput.addEventListener('change', async (e) => {
       const file = e.target.files[0];
@@ -1195,7 +1274,17 @@
     btnAnalyzeMeal.addEventListener('click', async () => {
       if (!selectedImageBase64) return;
       btnAnalyzeMeal.disabled = true;
-      scanLaserLine.style.display = 'block'; // 啟動掃描光波
+      scanLaserLine.style.display = 'block';
+      scanCountdownPill.style.display = 'block';
+
+      let remainSec = 4;
+      scanCountdownPill.textContent = `⏳ 分析中... 預計仲有 ${remainSec} 秒`;
+      const cdInterval = setInterval(() => {
+        if (remainSec > 1) {
+          remainSec--;
+          scanCountdownPill.textContent = `⏳ 分析中... 預計仲有 ${remainSec} 秒`;
+        }
+      }, 1000);
 
       let msgIdx = 0;
       btnAnalyzeMeal.textContent = WAITING_MESSAGES[0];
@@ -1222,7 +1311,6 @@
           data = await resp.json();
           if (!resp.ok) throw new Error();
         } catch (offlineErr) {
-          // 離線降級防線：自動啟用本地資料庫
           showToast('⚠️ 網絡離線，已啟用離線安全資料庫');
           data = {
             food: "茶餐廳家常飯餸 (離線檢測)",
@@ -1239,19 +1327,22 @@
 
         lastResultData = data;
         renderMealResult(data);
-        document.getElementById('taskBtnMeal').classList.add('done');
-        document.getElementById('taskBtnMeal').textContent = '📸 1. 驗餐 ✅';
+        const todayDate = new Date().toDateString();
+        localStorage.setItem('task_meal_' + todayDate, '1');
+        checkDailyTaskCompletion();
       } catch (err) {
         alert("驗餐遇到問題: " + err.message);
       } finally {
         clearInterval(waitInterval);
+        clearInterval(cdInterval);
         scanLaserLine.style.display = 'none';
+        scanCountdownPill.style.display = 'none';
         btnAnalyzeMeal.disabled = false;
         btnAnalyzeMeal.textContent = '開始 AI 吞嚥與安全分析';
       }
     });
 
-    // ========== 5. 渲染結果與進階飲食微生態聯動 ==========
+    // ========== 4. 渲染結果與可打勾 Checklist ==========
     function renderMealResult(data) {
       if (!data) return;
       const card = document.getElementById('mealReportCard');
@@ -1296,6 +1387,31 @@
         tHelper.textContent = `✅ ${langPack.safeTitle}: ${langPack.safeDesc}`;
       }
 
+      // 生成可勾選執行清單 (Checklist)
+      const checklistContainer = document.getElementById('actionChecklistItems');
+      checklistContainer.innerHTML = '';
+      const primaryGuidance = getDynamicMatrixGuidance(foodName, num, targetNum, isDual, data.is_drink, helperLang);
+      
+      const todoItems = [];
+      todoItems.push({ text: primaryGuidance.zh, sub: primaryGuidance.helper });
+      if (/(骨|魚|翼|排|肉|牛|豬|雞|海鮮)/.test(foodName)) {
+        todoItems.push({ text: '🍗 檢查並徹底挑乾淨碎骨與硬刺', sub: langPack.actions.DEBONE });
+      }
+      todoItems.push({ text: '🪑 提醒長者坐姿挺直90度、吞完一啖先食下一啖', sub: 'Makan dalam posisi tegak dan perlahan-lahan.' });
+
+      todoItems.forEach((item, idx) => {
+        const itemEl = document.createElement('div');
+        itemEl.className = 'checklist-item';
+        itemEl.innerHTML = `<span>⬜</span> <div><div>${item.text}</div><div style="font-size:11.5px;opacity:0.8;font-weight:600">👉 ${item.sub}</div></div>`;
+        itemEl.onclick = () => {
+          const isDone = itemEl.classList.toggle('checked');
+          itemEl.querySelector('span').textContent = isDone ? '✅' : '⬜';
+          if (navigator.vibrate) navigator.vibrate(40);
+        };
+        checklistContainer.appendChild(itemEl);
+      });
+
+      // 敏感標籤
       const allergenBox = document.getElementById('resAllergenBox');
       allergenBox.innerHTML = '';
       if (Array.isArray(data.allergen_tags) && data.allergen_tags.length > 0) {
@@ -1309,6 +1425,13 @@
       document.getElementById('resIddsiLevel').className = `iddsi-badge level-${num}`;
       document.getElementById('resConfidence').textContent = `信心度 ${confPercent}%`;
 
+      const safetyTip = document.getElementById('resSafetyTip');
+      if (confPercent < 85 || num > targetNum || isDual) {
+        safetyTip.style.display = 'block';
+      } else {
+        safetyTip.style.display = 'none';
+      }
+
       document.getElementById('resVisualReason').textContent = data.visual_reason || "質地結構分析完成。";
       document.getElementById('resVisualReasonHelper').textContent = isID ? "Analisis: Tekstur dan struktur makanan telah diverifikasi." : "Visual Reason: Texture verified by IDDSI standards.";
       document.getElementById('resOfficialTest').textContent = data.recommended_official_test || "餐叉指壓測試 (Fork Pressure Test)";
@@ -1320,34 +1443,6 @@
         document.getElementById('resSafetyWarningHelper').textContent = `🇮🇩/🇵🇭 ${langPack.dualWarning}`;
       } else {
         dualBanner.style.display = 'none';
-      }
-
-      const primaryBox = document.getElementById('resPrimaryAction');
-      primaryBox.innerHTML = '';
-      const primaryGuidance = getDynamicMatrixGuidance(foodName, num, targetNum, isDual, data.is_drink, helperLang);
-      primaryBox.innerHTML = `
-        <div class="action-chip" style="border-width:2px;">
-          <span>${primaryGuidance.zh}</span>
-          <span class="helper-sub">👉 ${primaryGuidance.helper}</span>
-        </div>`;
-
-      // 智能飲食微生態聯動建議
-      const gutScore = parseInt(localStorage.getItem('last_gut_score') || '0', 10);
-      if (gutScore > 15) {
-        primaryBox.innerHTML += `
-          <div class="action-chip" style="background:#eff6ff;border-color:#3b82f6;color:#1e40af">
-            <span>🥗 微生態健康提醒：最近腸道好菌偏少，呢餐記得拌入半碗熟軟碎菜，補充足夠水溶性膳食纖維！</span>
-          </div>`;
-      }
-
-      const chipBox = document.getElementById('resActionChips');
-      chipBox.innerHTML = '';
-      if (/(骨|魚|翼|排|肉|牛|豬|雞|海鮮)/.test(foodName)) {
-        chipBox.innerHTML += `
-          <div class="action-chip">
-            <span>🍗 檢查並徹底挑乾淨碎骨與硬刺</span>
-            <span class="helper-sub">👉 ${langPack.actions.DEBONE}</span>
-          </div>`;
       }
 
       // 營養儀表板
@@ -1382,7 +1477,7 @@
       card.scrollIntoView({ behavior: 'smooth' });
     }
 
-    // ========== 6. 核心工具代碼 ==========
+    // ========== 5. 核心工具代碼 ==========
     const rulerBox = document.getElementById('rulerBox');
     const previewWrap = document.getElementById('previewWrap');
     const rulerControlPanel = document.getElementById('rulerControlPanel');
@@ -1593,8 +1688,9 @@
       document.getElementById('exerciseBox').innerHTML = exHtml;
       localStorage.setItem('last_gut_score', score);
       
-      document.getElementById('taskBtnQuiz').classList.add('done');
-      document.getElementById('taskBtnQuiz').textContent = '🦠 3. 腸道評估 ✅';
+      const todayDate = new Date().toDateString();
+      localStorage.setItem('task_quiz_' + todayDate, '1');
+      checkDailyTaskCompletion();
 
       card.scrollIntoView({ behavior: 'smooth' });
       if (voiceOn) speakCantonese(spokenMsg);
@@ -1734,6 +1830,7 @@
     document.getElementById('btnShowForkGuide').onclick = () => document.getElementById('forkModal').style.display = 'flex';
     document.getElementById('btnEmergency').onclick = () => document.getElementById('emergencyModal').style.display = 'flex';
     document.getElementById('btnEmergencyFloat').onclick = () => document.getElementById('emergencyModal').style.display = 'flex';
+    
     document.getElementById('btnElderly').onclick = () => {
       elderlyMode = !elderlyMode;
       document.body.classList.toggle('elderly', elderlyMode);
@@ -1741,23 +1838,12 @@
       document.getElementById('btnElderly').classList.toggle('active', elderlyMode);
       showToast(elderlyMode ? '已放大字體' : '已轉返正常字體');
     };
+    
     document.getElementById('btnVoice').onclick = () => {
       voiceOn = !voiceOn;
       localStorage.setItem('lohas_voice', voiceOn ? '1' : '0');
       document.getElementById('btnVoice').classList.toggle('voice-on', voiceOn);
       showToast(voiceOn ? '語音播報已開啟' : '語音已關閉');
-    };
-
-    document.getElementById('btnLangToggle').onclick = () => {
-      helperLang = (helperLang === 'ID') ? 'EN' : 'ID';
-      localStorage.setItem('lohas_helper_lang', helperLang);
-      const lp = HELPER_TRANSLATIONS[helperLang];
-      document.getElementById('btnLangToggle').textContent = lp.toggleBtn;
-      document.getElementById('labelTargetLevel').textContent = (helperLang === 'ID') ? '照護對象目標餐質 (Target Level):' : 'Care Target IDDSI Level:';
-      document.getElementById('labelUploadPrompt').textContent = lp.uploadPrompt;
-      document.getElementById('labelUploadSub').textContent = lp.uploadSub;
-      showToast(lp.langSwitched);
-      if (lastResultData) renderMealResult(lastResultData);
     };
 
     if ('serviceWorker' in navigator) {
@@ -1776,6 +1862,7 @@
     if (voiceOn) document.getElementById('btnVoice').classList.add('voice-on');
     renderQuiz();
     updateWeeklyCompliance();
+    checkDailyTaskCompletion();
     checkContinuousMemory();
     renderRefTable();
   </script>
