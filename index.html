@@ -25,7 +25,7 @@
       --iddsi-3: #fed430; --iddsi-2: #ee629c; --iddsi-1: #626366; --iddsi-0: #f8fafc;
     }
 
-    /* iPad 平板端自適應放大 */
+    /* iPad 平板端（768px 以上）自適應放大 */
     @media (min-width: 768px) {
       :root {
         --app-max-w: 720px;
@@ -34,10 +34,11 @@
       }
       .traffic-card { padding: 20px !important; }
       .traffic-icon { font-size: 42px !important; }
-      .swallow-exercise-card { padding: 16px 18px !important; }
+      .swallow-exercise-card { padding: 18px 20px !important; }
+      .exercise-img { max-height: 280px !important; }
     }
 
-    /* 小螢幕 iPhone 緊湊模式 */
+    /* 小螢幕 iPhone（例如 iPhone SE / Mini）緊湊模式 */
     @media (max-width: 374px) {
       :root {
         --font-base: 15px;
@@ -63,11 +64,13 @@
       #userPrescription { background: #1c1c1e !important; color: #f5f5f7 !important; border-color: #3a3a3c !important; }
       .safety-tip { background: #0c1e3d !important; border-color: #3b82f6 !important; color: #93c5fd !important; }
       
-      /* 營養儀表板深色適配 */
       .med-metric-box { background: #2c2c2e !important; }
       .med-metric-val { color: #ffffff !important; }
       .med-metric-lbl { color: #a1a1a6 !important; }
       .med-group-title { color: #d1d5db !important; }
+
+      .step-item { background: rgba(255,255,255,0.06) !important; color: #e5e7eb !important; }
+      .exercise-img-wrap { background: #111827 !important; }
     }
 
     body.elderly { --font-base: 20px; --font-title: 26px; }
@@ -122,7 +125,7 @@
       background: var(--card); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow);
       animation: cardIn .25s ease both;
     }
-    @keyframes cardIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    @keyframes cardIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; border-color: transparent; } }
 
     .traffic-card {
       border-radius: 16px; padding: 16px; color: #fff; margin-bottom: 14px;
@@ -236,6 +239,30 @@
       font-size: 15px; font-weight: 800; color: #111827; line-height: 1.2;
     }
 
+    /* 👅 吞嚥肌運動動作解析樣式 */
+    .swallow-exercise-card {
+      background: var(--bg); border-left: 4.5px solid var(--teal); padding: 14px 15px;
+      border-radius: 12px; margin-bottom: 14px;
+    }
+    .exercise-img-wrap {
+      width: 100%; border-radius: 12px; overflow: hidden; margin: 8px 0 12px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08); background: #000;
+    }
+    .exercise-img {
+      width: 100%; max-height: 220px; object-fit: cover; display: block;
+    }
+    .exercise-steps {
+      display: flex; flex-direction: column; gap: 8px; margin: 8px 0;
+    }
+    .step-item {
+      display: flex; gap: 8px; align-items: flex-start; font-size: 13px; line-height: 1.45;
+      background: rgba(0,0,0,0.02); padding: 8px 10px; border-radius: 8px;
+    }
+    .step-pill {
+      background: var(--teal); color: #fff; font-size: 11px; font-weight: 800;
+      padding: 2px 6px; border-radius: 6px; white-space: nowrap; flex-shrink: 0; margin-top: 1px;
+    }
+
     .q-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
     .q-num {
       width: 34px; height: 34px; background: linear-gradient(135deg, var(--teal), var(--teal-dark));
@@ -277,10 +304,6 @@
       margin-top: 10px; font-size: 13.5px; line-height: 1.5; color: #5b21b6;
     }
 
-    .swallow-exercise-card {
-      background: var(--bg); border-left: 4.5px solid var(--teal); padding: 12px 14px;
-      border-radius: 10px; margin-bottom: 10px;
-    }
     .streak-badge {
       display: inline-flex; align-items: center; gap: 4px; background: #fef3c7; color: #b45309;
       font-weight: 800; font-size: 12px; padding: 4px 8px; border-radius: 8px; margin-bottom: 8px;
@@ -474,7 +497,7 @@
 
           <div class="action-chips" id="resActionChips"></div>
 
-          <!-- 📊 保留完整營養素醫療儀表板 (每份估算) -->
+          <!-- 📊 完整營養素醫療儀表板 (每份估算) -->
           <div class="med-dashboard-wrap">
             <div class="med-dashboard-title">📊 完整營養素醫療儀表板 (每份估算)</div>
             
@@ -586,32 +609,110 @@
       </div>
     </div>
 
-    <!-- 分頁 3: 吞嚥肌操 -->
+    <!-- 分頁 3: 吞嚥肌操 (含三大動作深度臨床解析與示範圖) -->
     <div id="tabSwallow" style="display:none">
       <div class="card">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
           <h3>👅 言語治療師 · 吞嚥肌每日訓練</h3>
           <span class="streak-badge" id="exerciseStreakBadge">🔥 連續打卡 0 日</span>
         </div>
-        <p style="font-size:13px;color:var(--text2);margin-bottom:12px">
-          強化舌肌、軟顎與喉部上提力量，每日兩分鐘，預防退化嗆咳。建議坐直、放鬆肩膀進行。
+        <p style="font-size:13px;color:var(--text2);margin-bottom:14px">
+          強化舌肌、軟顎與喉部上提力量，增強食團推送力量並預防退化嗆咳。建議坐直挺胸、放鬆肩膀進行。
         </p>
+
+        <!-- 訓練 1: 假聲抬喉用力吞嚥法 (Mendelsohn Maneuver) -->
         <div class="swallow-exercise-card">
-          <div style="font-weight:800;font-size:15px;color:var(--teal)">1. 假聲抬喉用力吞嚥法 (Mendelsohn)</div>
-          <div style="font-size:13px;color:var(--text);margin:4px 0">吞口水時，用喉嚨肌肉將「喉核」向上提住 3 秒，先慢慢放鬆。重複 5 次。</div>
-          <button class="chip" onclick="startExerciseVoice('抬喉用力吞嚥法', 3, 5)">🔊 語音逐步帶我做</button>
+          <div style="font-weight:900;font-size:16px;color:var(--teal);margin-bottom:4px">
+            1. 📖 假聲抬喉用力吞嚥法（Mendelsohn Maneuver）動作解析
+          </div>
+          <p style="font-size:12.5px;color:var(--text2);line-height:1.45;margin-bottom:10px">
+            此動作常應用於言語治療與吞嚥復康，目的是增強喉部上提肌群力量，並延長食道入口（環咽肌）開放時間。
+          </p>
+          <div class="exercise-img-wrap">
+            <img src="https://firebasestorage.googleapis.com/v0/b/lohascaregutmicrobiomefoodsafe.firebasestorage.app/o/images%2FGemini_Generated_Image_dhvhgkdhvhgkdhvh.jpeg?alt=media" alt="假聲抬喉用力吞嚥法示範圖" class="exercise-img" onerror="this.style.display='none'">
+          </div>
+          <div class="exercise-steps">
+            <div class="step-item">
+              <span class="step-pill">步驟 1</span>
+              <div><strong>準備與觸摸定位：</strong>保持坐姿挺直，用食指與拇指輕輕扶在頸部兩側的「喉核」（甲狀軟骨）位置，感受吞嚥時的正常升降軌跡。</div>
+            </div>
+            <div class="step-item">
+              <span class="step-pill">步驟 2</span>
+              <div><strong>吞嚥並用力上提：</strong>吞口水時，利用喉嚨肌肉力量將喉核向上提拉到最高點（有如發出極高尖假聲時的喉部緊縮感）。</div>
+            </div>
+            <div class="step-item">
+              <span class="step-pill">步驟 3</span>
+              <div><strong>頂峰緊縮維持 3 秒：</strong>在喉核升至最高位置時，喉部肌肉用力夾緊「鎖定」，不要讓喉核掉下來，在心裡默數「1、2、3」（維持 3 秒）。</div>
+            </div>
+            <div class="step-item">
+              <span class="step-pill">步驟 4</span>
+              <div><strong>緩慢放鬆與重複：</strong>3 秒後慢慢放鬆喉部肌肉，讓喉核自然降回初始位置。每次練習重複 5 次。</div>
+            </div>
+          </div>
+          <button class="chip" onclick="startExerciseVoice('假聲抬喉用力吞嚥法', 3, 5)" style="margin-top:10px;width:100%">🔊 語音逐步帶我做（維持3秒 × 5次）</button>
         </div>
+
+        <!-- 訓練 2: 舌肌抗阻訓練 (Tongue-to-Palate Resistance) -->
         <div class="swallow-exercise-card">
-          <div style="font-weight:800;font-size:15px;color:var(--teal)">2. 舌頭有力頂上顎 (舌肌抗阻)</div>
-          <div style="font-size:13px;color:var(--text);margin:4px 0">將舌尖用力頂住上牙齦後方硬顎，用力頂實 5 秒。重複 5 次。</div>
-          <button class="chip" onclick="startExerciseVoice('舌頭頂上顎', 5, 5)">🔊 語音逐步帶我做</button>
+          <div style="font-weight:900;font-size:16px;color:var(--teal);margin-bottom:4px">
+            2. 📖 舌肌抗阻訓練（Tongue-to-Palate Resistance）動作解析
+          </div>
+          <p style="font-size:12.5px;color:var(--text2);line-height:1.45;margin-bottom:10px">
+            此動作是言語治療與口腔吞嚥復康中常見的阻力訓練（Lingual Resistance Exercise），主要鍛鍊舌骨舌肌、頦舌肌等舌部本體肌群，有助於增強食團推送力量、防止吞嚥時食物殘留，並改善口腔期吞嚥控制。
+          </p>
+          <div class="exercise-img-wrap">
+            <img src="https://firebasestorage.googleapis.com/v0/b/lohascaregutmicrobiomefoodsafe.firebasestorage.app/o/images%2FGemini_Generated_Image_19r79g19r79g19r7.jpeg?alt=media" alt="舌肌抗阻訓練示範圖" class="exercise-img" onerror="this.style.display='none'">
+          </div>
+          <div class="exercise-steps">
+            <div class="step-item">
+              <span class="step-pill">步驟 1</span>
+              <div><strong>舌尖定位（就位準備）：</strong>嘴部微張或微閉，將舌尖準確放置於上門牙牙齦後方凹凸不平的「硬顎區」（切牙乳頭後方），不要推擠門牙。</div>
+            </div>
+            <div class="step-item">
+              <span class="step-pill">步驟 2</span>
+              <div><strong>用力向上頂實（維持 5 秒）：</strong>舌體主動發力，舌面與舌尖同時向上緊貼硬顎，施加向上對抗的阻力（如要把上顎往上推頂）。保持力量不鬆懈，平穩呼吸，在心中默數或計時 5 秒（感受舌根與舌體肌群的持續發力緊繃感）。</div>
+            </div>
+            <div class="step-item">
+              <span class="step-pill">步驟 3</span>
+              <div><strong>緩慢放鬆與重複：</strong>5 秒後慢慢解除力量，讓舌頭降回口腔底部完全放鬆休息 2～3 秒。每組練習重複 5 次，每日可按治療師建議進行 2～3 組。</div>
+            </div>
+          </div>
+          <button class="chip" onclick="startExerciseVoice('舌肌抗阻訓練', 5, 5)" style="margin-top:10px;width:100%">🔊 語音逐步帶我做（頂實5秒 × 5次）</button>
         </div>
+
+        <!-- 訓練 3: 咳嗽發聲練軟顎 (發「K」音 / 顎咽閉鎖訓練) -->
         <div class="swallow-exercise-card">
-          <div style="font-weight:800;font-size:15px;color:var(--teal)">3. 咳嗽發聲練軟顎 (發「K」音)</div>
-          <div style="font-size:13px;color:var(--text);margin:4px 0">連續大聲發出「格、格、格」聲音 10 次，強化咽喉閉鎖肌群。</div>
-          <button class="chip" onclick="startExerciseVoice('發格音練軟顎', 1, 10)">🔊 語音逐步帶我做</button>
+          <div style="font-weight:900;font-size:16px;color:var(--teal);margin-bottom:4px">
+            3. 📖 咳嗽發聲練軟顎（發「K」音 / 顎咽閉鎖訓練）動作解析
+          </div>
+          <p style="font-size:12.5px;color:var(--text2);line-height:1.45;margin-bottom:10px">
+            此動作常應用於言語治療與咽腔復康（Velopharyngeal & Vocal Cord Strengthening），透過發出清脆有力的舌根塞音「K（格 / Ka）」，刺激軟顎主動向後上方抬升封閉鼻咽腔，並鍛鍊聲門內收閉鎖肌群與咳嗽反射，有助防止液體逆流至鼻腔，並加強氣道防禦保護機制，防止食物碎屑誤吸入氣管。
+          </p>
+          <div class="exercise-img-wrap">
+            <img src="https://firebasestorage.googleapis.com/v0/b/lohascaregutmicrobiomefoodsafe.firebasestorage.app/o/images%2FGemini_Generated_Image_2hn8hw2hn8hw2hn8.jpeg?alt=media" alt="咳嗽發聲練軟顎示範圖" class="exercise-img" onerror="this.style.display='none'">
+          </div>
+          <div class="exercise-steps">
+            <div class="step-item">
+              <span class="step-pill">步驟 1</span>
+              <div><strong>端正坐姿與腹式吸氣：</strong>身體挺直坐穩，雙肩放鬆，用鼻慢慢深吸一口氣儲蓄腹腔氣流，為有力發聲做好準備。</div>
+            </div>
+            <div class="step-item">
+              <span class="step-pill">步驟 2</span>
+              <div><strong>舌根抬升發清脆爆破音：</strong>利用舌根後部用力緊貼軟顎阻截氣流，隨後短促、清晰而大聲地爆破發出「格（Ka）」或「K」音，感受舌根與軟顎瞬間向上閉合。</div>
+            </div>
+            <div class="step-item">
+              <span class="step-pill">步驟 3</span>
+              <div><strong>結合自主強效防禦咳嗽：</strong>每次清晰發音後，可緊接進行一次短促有力的清喉嚨或單次深咳，喚醒聲帶與咽部肌群的強力保護性閉鎖反射。</div>
+            </div>
+            <div class="step-item">
+              <span class="step-pill">步驟 4</span>
+              <div><strong>規律重複與節奏休息：</strong>連續清脆發「格」音 10 次為一組，每次發音間隔 1～2 秒自然呼吸放鬆，每日可進行 2～3 組。</div>
+            </div>
+          </div>
+          <button class="chip" onclick="startExerciseVoice('咳嗽發聲練軟顎', 1, 10)" style="margin-top:10px;width:100%">🔊 語音逐步帶我做（連續發格音 × 10次）</button>
         </div>
-        <button class="btn btn-wa" style="margin-top:10px" id="btnCheckInExercise">✅ 今日已完成吞嚥肌鍛鍊（打卡）</button>
+
+        <button class="btn btn-wa" style="margin-top:12px" id="btnCheckInExercise">✅ 今日已完成吞嚥肌鍛鍊（打卡）</button>
       </div>
     </div>
 
