@@ -2,14 +2,14 @@
 <html lang="zh-HK">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
   <meta name="theme-color" content="#0d9488">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="樂活食得安">
-  <meta name="description" content="樂活食得安 - 腸道微生態、情緒安康與 IDDSI 動態吞嚥安全系統。家庭照顧者初篩參考，非醫療診斷。">
+  <meta name="apple-mobile-web-app-title" content="Lohascare GutSafe 樂活食得安">
+  <meta name="description" content="Lohascare GutSafe 樂活食得安 - 腸道微生態、情緒安康與 IDDSI 動態吞嚥安全系統。家庭照顧者初篩參考，非醫療診斷。">
   <link rel="manifest" href="./manifest.json">
-  <title>樂活食得安 | 腸道微生態 · 情緒安康 · 吞嚥安全</title>
+  <title>Lohascare GutSafe 樂活食得安 | 腸道微生態 · 情緒安康 · 吞嚥安全</title>
   <style>
     :root {
       --bg: #f4f4f7; --card: #ffffff; --card-glass: rgba(255,255,255,0.94);
@@ -17,10 +17,36 @@
       --green: #16a34a; --wa: #25D366; --wa-bubble: #dcf8c6; --blue: #007aff;
       --orange: #f59e0b; --red: #dc2626;
       --shadow: 0 8px 30px -6px rgba(0,0,0,0.08); --radius: 20px; --radius-sm: 14px;
-      --font-base: 17px; --font-title: 22px;
+      --font-base: 16.5px; --font-title: 22px;
+      --app-max-w: 480px;
+
+      /* IDDSI 國際官方標準色碼 */
       --iddsi-7: #000000; --iddsi-6: #2c5697; --iddsi-5: #ea7125; --iddsi-4: #65a143;
       --iddsi-3: #fed430; --iddsi-2: #ee629c; --iddsi-1: #626366; --iddsi-0: #f8fafc;
     }
+
+    /* iPad 平板端自適應放大 */
+    @media (min-width: 768px) {
+      :root {
+        --app-max-w: 720px;
+        --font-base: 18px;
+        --font-title: 25px;
+      }
+      .traffic-card { padding: 20px !important; }
+      .traffic-icon { font-size: 42px !important; }
+      .swallow-exercise-card { padding: 16px 18px !important; }
+    }
+
+    /* 小螢幕 iPhone 緊湊模式 */
+    @media (max-width: 374px) {
+      :root {
+        --font-base: 15px;
+        --font-title: 20px;
+      }
+      .tabs .tab { min-width: 52px; font-size: 11.5px; padding: 7px 1px; }
+      .header-actions .chip { font-size: 11px; padding: 4px 7px; }
+    }
+
     @media (prefers-color-scheme: dark) {
       :root {
         --bg: #000; --card: #1c1c1e; --card-glass: rgba(28,28,30,0.94);
@@ -31,39 +57,34 @@
       .danger-banner strong { color: #fca5a5 !important; }
       .danger-banner p { color: #fecaca !important; }
       .memory-alert { background: #0c1e3d !important; border-color: #3b82f6 !important; color: #93c5fd !important; }
-      .iddsi-badge.level-0 {
-        background: #1e293b !important;
-        color: #f1f5f9 !important;
-        border-color: #475569 !important;
-      }
+      .iddsi-badge.level-0 { background: #1e293b !important; color: #f1f5f9 !important; border-color: #475569 !important; }
       .traffic-card { background: #1f2937 !important; }
-      .mind-card {
-        background: #2e1065 !important;
-        border-color: #7c3aed !important;
-        color: #ddd6fe !important;
-      }
-      #userPrescription {
-        background: #1c1c1e !important;
-        color: #f5f5f7 !important;
-        border-color: #3a3a3c !important;
-      }
-      .safety-tip {
-        background: #0c1e3d !important;
-        border-color: #3b82f6 !important;
-        color: #93c5fd !important;
-      }
+      .mind-card { background: #2e1065 !important; border-color: #7c3aed !important; color: #ddd6fe !important; }
+      #userPrescription { background: #1c1c1e !important; color: #f5f5f7 !important; border-color: #3a3a3c !important; }
+      .safety-tip { background: #0c1e3d !important; border-color: #3b82f6 !important; color: #93c5fd !important; }
+      
+      /* 營養儀表板深色適配 */
+      .med-metric-box { background: #2c2c2e !important; }
+      .med-metric-val { color: #ffffff !important; }
+      .med-metric-lbl { color: #a1a1a6 !important; }
+      .med-group-title { color: #d1d5db !important; }
     }
+
     body.elderly { --font-base: 20px; --font-title: 26px; }
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang HK", "Noto Sans HK", "Helvetica Neue", sans-serif;
       background: var(--bg); color: var(--text); min-height: 100vh; min-height: 100dvh;
       display: flex; justify-content: center;
-      padding: calc(8px + env(safe-area-inset-top)) 14px calc(86px + env(safe-area-inset-bottom));
+      padding-top: calc(8px + env(safe-area-inset-top));
+      padding-bottom: calc(90px + env(safe-area-inset-bottom));
+      padding-left: calc(14px + env(safe-area-inset-left));
+      padding-right: calc(14px + env(safe-area-inset-right));
       line-height: 1.55; font-size: var(--font-base);
+      overflow-x: hidden;
     }
-    .app { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 12px; position: relative; }
+    .app { width: 100%; max-width: var(--app-max-w); display: flex; flex-direction: column; gap: 12px; position: relative; transition: max-width .2s ease; }
 
     .disclaimer-banner {
       font-size: 11.5px; color: var(--text2); background: rgba(0,0,0,0.05);
@@ -71,7 +92,7 @@
       border: 1px solid rgba(0,0,0,0.06);
     }
     .header {
-      position: sticky; top: 6px; z-index: 50; background: var(--card-glass);
+      position: sticky; top: calc(4px + env(safe-area-inset-top)); z-index: 50; background: var(--card-glass);
       backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%);
       border-radius: var(--radius); padding: 12px 14px; box-shadow: var(--shadow);
       border: 1px solid rgba(255,255,255,0.2);
@@ -91,9 +112,9 @@
     h1 { font-size: var(--font-title); font-weight: 800; letter-spacing: -.3px; margin-bottom: 2px; }
     .sub { font-size: 13px; color: var(--text2); }
     
-    .tabs { display: flex; gap: 4px; margin-bottom: 2px; flex-wrap: wrap; }
+    .tabs { display: flex; gap: 5px; margin-bottom: 2px; flex-wrap: wrap; }
     .tab {
-      flex: 1; min-width: 64px; text-align: center; padding: 9px 2px; border-radius: 11px; font-size: 12.5px; font-weight: 700;
+      flex: 1; min-width: 62px; text-align: center; padding: 9px 4px; border-radius: 11px; font-size: 13px; font-weight: 700;
       background: var(--card); color: var(--text2); cursor: pointer; border: 1.5px solid transparent; min-height: 42px;
     }
     .tab.active { background: var(--teal); color: #fff; }
@@ -128,6 +149,15 @@
     .btn-ghost { background: var(--bg); color: var(--text); }
     .btn-danger { background: #dc2626; color: #fff; }
 
+    #previewWrap {
+      position: relative; margin-top: 10px; border-radius: 14px; overflow: hidden; background: #000;
+      width: 100%; max-height: clamp(260px, 45vh, 460px);
+      display: none; justify-content: center; align-items: center;
+    }
+    #imagePreview {
+      width: 100%; height: 100%; max-height: clamp(260px, 45vh, 460px); object-fit: contain; display: block;
+    }
+
     #rulerBox {
       position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
       border: 2.5px dashed #22c55e; background: rgba(34, 197, 94, 0.22);
@@ -145,7 +175,7 @@
     }
     .ruler-btn-group { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
     .ruler-chip {
-      padding: 5px 12px; font-size: 12px; font-weight: 800; border-radius: 20px;
+      padding: 6px 14px; font-size: 12.5px; font-weight: 800; border-radius: 20px;
       border: 1.5px solid var(--teal); background: var(--card); color: var(--teal); cursor: pointer;
     }
     .ruler-chip.active { background: var(--teal); color: #fff; }
@@ -178,6 +208,32 @@
     .allergen-badge {
       display: inline-block; padding: 4px 8px; border-radius: 6px; font-size: 11.5px;
       font-weight: 800; background: #fee2e2; color: #b91c1c; border: 1px solid #f87171; margin-right: 4px; margin-bottom: 4px;
+    }
+
+    /* 📊 完整營養素醫療儀表板專用樣式 */
+    .med-dashboard-wrap {
+      background: var(--card); border-radius: 14px; padding: 14px; margin: 12px 0;
+      border: 1px solid rgba(0,0,0,0.06); box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    }
+    .med-dashboard-title {
+      font-size: 15px; font-weight: 900; color: var(--teal); margin-bottom: 12px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .med-group-title {
+      font-size: 13px; font-weight: 800; color: #4b5563; margin: 12px 0 6px;
+    }
+    .med-metric-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; margin-bottom: 6px;
+    }
+    .med-metric-box {
+      background: #f3f4f6; border-radius: 10px; padding: 10px 4px; text-align: center;
+      display: flex; flex-direction: column; justify-content: center; min-height: 58px;
+    }
+    .med-metric-lbl {
+      font-size: 11.5px; color: #6b7280; font-weight: 600; margin-bottom: 3px; line-height: 1.2;
+    }
+    .med-metric-val {
+      font-size: 15px; font-weight: 800; color: #111827; line-height: 1.2;
     }
 
     .q-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
@@ -237,23 +293,29 @@
     }
 
     #btnEmergencyFloat {
-      position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; border-radius: 50%;
-      background: #dc2626; color: #fff; font-size: 26px; border: none;
+      position: fixed;
+      bottom: calc(20px + env(safe-area-inset-bottom));
+      right: calc(20px + env(safe-area-inset-right));
+      width: 62px; height: 62px; border-radius: 50%;
+      background: #dc2626; color: #fff; font-size: 27px; border: none;
       box-shadow: 0 4px 18px rgba(220,38,38,.5); z-index: 99; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
+      transition: transform .15s ease;
     }
+    #btnEmergencyFloat:active { transform: scale(0.92); }
 
     .modal-backdrop {
       position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 999;
-      display: none; align-items: center; justify-content: center; padding: 16px;
+      display: none; align-items: center; justify-content: center;
+      padding: calc(16px + env(safe-area-inset-top)) calc(16px + env(safe-area-inset-right)) calc(16px + env(safe-area-inset-bottom)) calc(16px + env(safe-area-inset-left));
     }
     .modal-box {
-      background: var(--card); border-radius: 20px; padding: 20px; max-width: 440px; width: 100%;
+      background: var(--card); border-radius: 20px; padding: 22px; max-width: min(480px, 92vw); width: 100%;
       max-height: 85vh; overflow-y: auto; box-shadow: var(--shadow);
     }
 
     .toast {
-      position: fixed; bottom: calc(20px + env(safe-area-inset-bottom)); left: 50%;
+      position: fixed; bottom: calc(25px + env(safe-area-inset-bottom)); left: 50%;
       transform: translateX(-50%) translateY(80px); background: #1c1c1e; color: #fff;
       padding: 12px 20px; border-radius: 14px; font-size: 14px; font-weight: 600;
       z-index: 100; opacity: 0; transition: .3s; pointer-events: none; max-width: 90%; text-align: center;
@@ -263,6 +325,10 @@
     .safety-tip {
       background: #eff6ff; border: 1px solid #93c5fd; border-radius: 10px; padding: 10px 12px;
       font-size: 13px; color: #1e40af; margin: 8px 0; line-height: 1.4;
+    }
+
+    .footer {
+      text-align: center; font-size: 12px; color: var(--text2); padding: 16px 0 28px; line-height: 1.6;
     }
   </style>
 </head>
@@ -276,7 +342,7 @@
 
     <header class="header">
       <div class="brand">
-        <span class="logo">🌿 樂活食得安 · Lohascare</span>
+        <span class="logo">🌿 Lohascare GutSafe 樂活食得安</span>
         <div class="header-actions">
           <button class="chip danger" id="btnEmergency">🚨 哽親急救</button>
           <button class="chip" id="btnEmergencyContact">📞 家人</button>
@@ -347,8 +413,8 @@
           <input type="file" id="mealInput" accept="image/*" capture="environment" style="display:none">
         </div>
 
-        <div id="previewWrap" style="display:none;position:relative;margin-top:10px;border-radius:12px;overflow:hidden;background:#000">
-          <img id="imagePreview" style="width:100%;max-height:280px;object-fit:contain;display:block" alt="餐食預覽">
+        <div id="previewWrap">
+          <img id="imagePreview" alt="餐食預覽">
           <div id="rulerBox" style="width:100px;height:100px;">
             <span class="ruler-tag" id="rulerTagText">📏 15mm 一口量 (Bite-sized)</span>
             <span style="font-size:10px;color:#fff;opacity:0.85;margin-top:2px;pointer-events:none">👈 按住可拖曳對位 👉</span>
@@ -408,6 +474,95 @@
 
           <div class="action-chips" id="resActionChips"></div>
 
+          <!-- 📊 保留完整營養素醫療儀表板 (每份估算) -->
+          <div class="med-dashboard-wrap">
+            <div class="med-dashboard-title">📊 完整營養素醫療儀表板 (每份估算)</div>
+            
+            <div class="med-group-title">熱量與基礎指標</div>
+            <div class="med-metric-grid">
+              <div class="med-metric-box">
+                <span class="med-metric-lbl">總重量</span>
+                <span class="med-metric-val" id="valGrams">-- g</span>
+              </div>
+              <div class="med-metric-box">
+                <span class="med-metric-lbl">熱量</span>
+                <span class="med-metric-val" id="valCalories">-- kcal</span>
+              </div>
+              <div class="med-metric-box">
+                <span class="med-metric-lbl">水份含量</span>
+                <span class="med-metric-val" id="valWater">-- ml</span>
+              </div>
+              <div class="med-metric-box">
+                <span class="med-metric-lbl">蛋白質</span>
+                <span class="med-metric-val" id="valProtein">-- g</span>
+              </div>
+              <div class="med-metric-box">
+                <span class="med-metric-lbl">碳水化合物</span>
+                <span class="med-metric-val" id="valCarbs">-- g</span>
+              </div>
+              <div class="med-metric-box">
+                <span class="med-metric-lbl">總脂肪</span>
+                <span class="med-metric-val" id="valFat">-- g</span>
+              </div>
+            </div>
+
+            <div class="med-group-title">心血管與腸道防護 (脂肪/糖/纖維)</div>
+            <div class="med-metric-grid">
+              <div class="med-metric-box">
+                <span class="med-metric-lbl">膳食纖維</span>
+                <span class="med-metric-val" id="valFiber">-- g</span>
+              </div>
+              <div class="med-metric-box">
+                <span class="med-metric-lbl">糖份</span>
+                <span class="med-metric-val" id="valSugar">-- g</span>
+              </div>
+              <div class="med-metric-box">
+                <span class="med-metric-lbl">膽固醇</span>
+                <span class="med-metric-val" id="valCholesterol">-- mg</span>
+              </div>
+              <div class="med-metric-box">
+                <span class="med-metric-lbl">飽和脂肪</span>
+                <span class="med-metric-val" id="valSatFat">-- g</span>
+              </div>
+              <div class="med-metric-box">
+                <span class="med-metric-lbl">反式脂肪</span>
+                <span class="med-metric-val" id="valTransFat">-- g</span>
+              </div>
+              <div class="med-metric-box">
+                <span class="med-metric-lbl">鈉 (鹽份)</span>
+                <span class="med-metric-val" id="valSodium">-- mg</span>
+              </div>
+            </div>
+
+            <div class="med-group-title">長者骨骼與電解質微量元素</div>
+            <div class="med-metric-grid">
+              <div class="med-metric-box">
+                <span class="med-metric-lbl">鈣 (骨骼)</span>
+                <span class="med-metric-val" id="valCalcium">-- mg</span>
+              </div>
+              <div class="med-metric-box">
+                <span class="med-metric-lbl">鐵 (補血)</span>
+                <span class="med-metric-val" id="valIron">-- mg</span>
+              </div>
+              <div class="med-metric-box">
+                <span class="med-metric-lbl">鎂 (舒緩)</span>
+                <span class="med-metric-val" id="valMagnesium">-- mg</span>
+              </div>
+              <div class="med-metric-box">
+                <span class="med-metric-lbl">鉀 (血壓)</span>
+                <span class="med-metric-val" id="valPotassium">-- mg</span>
+              </div>
+              <div class="med-metric-box">
+                <span class="med-metric-lbl">鋅 (免疫)</span>
+                <span class="med-metric-val" id="valZinc">-- mg</span>
+              </div>
+              <div class="med-metric-box">
+                <span class="med-metric-lbl">維他命 C</span>
+                <span class="med-metric-val" id="valVitC">-- mg</span>
+              </div>
+            </div>
+          </div>
+
           <details style="margin:10px 0;background:var(--bg);padding:10px 12px;border-radius:10px;font-size:13px">
             <summary style="font-weight:700;cursor:pointer;color:var(--teal)">🔍 判斷理由 + 官方測試建議</summary>
             <div style="margin-top:8px;line-height:1.5">
@@ -417,11 +572,6 @@
                 <button class="chip" onclick="document.getElementById('forkModal').style.display='flex'" style="padding:2px 8px;min-height:26px;font-size:11.5px;margin-left:6px">點做？</button>
               </div>
             </div>
-          </details>
-
-          <details style="margin:8px 0;background:var(--bg);padding:8px 12px;border-radius:10px;font-size:13px">
-            <summary style="font-weight:700;cursor:pointer;color:var(--teal)">📊 微量營養素明細 (可收起)</summary>
-            <div id="resNutrientGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px;text-align:center;font-size:12.5px"></div>
           </details>
 
           <div style="margin-top:14px;border-top:1px dashed rgba(0,0,0,0.12);padding-top:12px">
@@ -542,6 +692,11 @@
     </div>
 
     <div class="toast" id="toast"></div>
+
+    <div class="footer">
+      © Lohascare GutSafe 樂活食得安 · 香港樂齡生活關懷團隊<br>
+      🔒 本機私隱保護 · 非醫療診斷證明 · 有持續不適請遵醫囑
+    </div>
   </div>
 
   <script>
@@ -1016,7 +1171,7 @@
         showToast('正在優化相片尺寸...');
         selectedImageBase64 = await compressImage(file);
         imagePreview.src = selectedImageBase64;
-        previewWrap.style.display = 'block';
+        previewWrap.style.display = 'flex';
         rulerControlPanel.style.display = 'flex';
         btnAnalyzeMeal.style.display = 'block';
         document.getElementById('mealReportCard').style.display = 'none';
@@ -1067,6 +1222,7 @@
       if (!data) return;
       const card = document.getElementById('mealReportCard');
       card.style.display = 'block';
+
       const langPack = HELPER_TRANSLATIONS[helperLang];
       const foodName = data.food || "茶餐廳餐膳";
       let num = data.iddsi_number ?? 7;
@@ -1166,15 +1322,28 @@
           </div>`;
       }
 
+      // 📊 渲染完整營養素醫療儀表板 (每份估算)
       const n = data.nutrients || {};
-      document.getElementById('resNutrientGrid').innerHTML = `
-        <div><span>熱量</span><strong>${n.calories ?? '—'} kcal</strong></div>
-        <div><span>蛋白質</span><strong>${n.protein_g ?? '—'} g</strong></div>
-        <div><span>鈉鹽</span><strong>${n.sodium_mg ?? '—'} mg</strong></div>
-        <div><span>脂肪</span><strong>${n.fat_g ?? '—'} g</strong></div>
-        <div><span>碳水</span><strong>${n.carbs_g ?? '—'} g</strong></div>
-        <div><span>水分</span><strong>${n.water_ml ?? '—'} ml</strong></div>
-      `;
+      document.getElementById('valGrams').textContent = `${n.grams ?? '--'} g`;
+      document.getElementById('valCalories').textContent = `${n.calories ?? '--'} kcal`;
+      document.getElementById('valWater').textContent = `${n.water_ml ?? '--'} ml`;
+      document.getElementById('valProtein').textContent = `${n.protein_g ?? '--'} g`;
+      document.getElementById('valCarbs').textContent = `${n.carbs_g ?? '--'} g`;
+      document.getElementById('valFat').textContent = `${n.fat_g ?? '--'} g`;
+
+      document.getElementById('valFiber').textContent = `${n.fiber_g ?? '--'} g`;
+      document.getElementById('valSugar').textContent = `${n.sugar_g ?? '--'} g`;
+      document.getElementById('valCholesterol').textContent = `${n.cholesterol_mg ?? '--'} mg`;
+      document.getElementById('valSatFat').textContent = `${n.saturated_fat_g ?? '--'} g`;
+      document.getElementById('valTransFat').textContent = `${n.trans_fat_g ?? '--'} g`;
+      document.getElementById('valSodium').textContent = `${n.sodium_mg ?? '--'} mg`;
+
+      document.getElementById('valCalcium').textContent = `${n.calcium_mg ?? '--'} mg`;
+      document.getElementById('valIron').textContent = `${n.iron_mg ?? '--'} mg`;
+      document.getElementById('valMagnesium').textContent = `${n.magnesium_mg ?? '--'} mg`;
+      document.getElementById('valPotassium').textContent = `${n.potassium_mg ?? '--'} mg`;
+      document.getElementById('valZinc').textContent = `${n.zinc_mg ?? '--'} mg`;
+      document.getElementById('valVitC').textContent = `${n.vitamin_c_mg ?? '--'} mg`;
 
       let rawAdvice = data.spoken_advice || "老友，食飯千祈唔好急，慢慢嚼碎先好吞呀！";
       rawAdvice = rawAdvice.replace(/老友記/g, "老友");
@@ -1350,7 +1519,6 @@
       if (lastResultData) renderMealResult(lastResultData);
     };
 
-    // PWA Service Worker 註冊
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
@@ -1359,7 +1527,6 @@
       });
     }
 
-    // Init
     if (elderlyMode) {
       document.body.classList.add('elderly');
       document.getElementById('btnElderly').classList.add('active');
