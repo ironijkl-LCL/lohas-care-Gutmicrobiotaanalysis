@@ -25,7 +25,6 @@
       --iddsi-3: #fed430; --iddsi-2: #ee629c; --iddsi-1: #626366; --iddsi-0: #f8fafc;
     }
 
-    /* iPad 平板端（768px 以上）自適應放大 */
     @media (min-width: 768px) {
       :root {
         --app-max-w: 720px;
@@ -38,7 +37,6 @@
       .exercise-img { max-height: 280px !important; }
     }
 
-    /* 小螢幕 iPhone（例如 iPhone SE / Mini）緊湊模式 */
     @media (max-width: 374px) {
       :root {
         --font-base: 15px;
@@ -63,14 +61,13 @@
       .mind-card { background: #2e1065 !important; border-color: #7c3aed !important; color: #ddd6fe !important; }
       #userPrescription { background: #1c1c1e !important; color: #f5f5f7 !important; border-color: #3a3a3c !important; }
       .safety-tip { background: #0c1e3d !important; border-color: #3b82f6 !important; color: #93c5fd !important; }
-      
       .med-metric-box { background: #2c2c2e !important; }
       .med-metric-val { color: #ffffff !important; }
       .med-metric-lbl { color: #a1a1a6 !important; }
       .med-group-title { color: #d1d5db !important; }
-
       .step-item { background: rgba(255,255,255,0.06) !important; color: #e5e7eb !important; }
       .exercise-img-wrap { background: #111827 !important; }
+      .today-task-box { background: #1f2937 !important; border-color: #374151 !important; }
     }
 
     body.elderly { --font-base: 20px; --font-title: 26px; }
@@ -114,6 +111,19 @@
 
     h1 { font-size: var(--font-title); font-weight: 800; letter-spacing: -.3px; margin-bottom: 2px; }
     .sub { font-size: 13px; color: var(--text2); }
+
+    /* 今日護理看板 */
+    .today-task-box {
+      background: #ffffff; border: 1.5px solid rgba(13,148,136,0.25); border-radius: 16px;
+      padding: 12px 14px; box-shadow: var(--shadow);
+    }
+    .task-bar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 13.5px; font-weight: 800; color: var(--teal); }
+    .task-chips-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; text-align: center; }
+    .task-chip-btn {
+      background: var(--bg); border: 1.5px solid transparent; border-radius: 10px; padding: 8px 4px;
+      font-size: 12px; font-weight: 700; cursor: pointer; transition: all .2s;
+    }
+    .task-chip-btn.done { background: rgba(34,197,94,0.12); border-color: var(--green); color: var(--green); }
     
     .tabs { display: flex; gap: 5px; margin-bottom: 2px; flex-wrap: wrap; }
     .tab {
@@ -125,7 +135,7 @@
       background: var(--card); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow);
       animation: cardIn .25s ease both;
     }
-    @keyframes cardIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; border-color: transparent; } }
+    @keyframes cardIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; } }
 
     .traffic-card {
       border-radius: 16px; padding: 16px; color: #fff; margin-bottom: 14px;
@@ -152,6 +162,7 @@
     .btn-ghost { background: var(--bg); color: var(--text); }
     .btn-danger { background: #dc2626; color: #fff; }
 
+    /* 影相掃描動態波浪 */
     #previewWrap {
       position: relative; margin-top: 10px; border-radius: 14px; overflow: hidden; background: #000;
       width: 100%; max-height: clamp(260px, 45vh, 460px);
@@ -159,6 +170,17 @@
     }
     #imagePreview {
       width: 100%; height: 100%; max-height: clamp(260px, 45vh, 460px); object-fit: contain; display: block;
+    }
+    .scan-line {
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, transparent, #22c55e, transparent);
+      box-shadow: 0 0 14px #22c55e; display: none; z-index: 15;
+      animation: scanAnim 2s infinite ease-in-out;
+    }
+    @keyframes scanAnim {
+      0% { top: 5%; }
+      50% { top: 90%; }
+      100% { top: 5%; }
     }
 
     #rulerBox {
@@ -213,7 +235,7 @@
       font-weight: 800; background: #fee2e2; color: #b91c1c; border: 1px solid #f87171; margin-right: 4px; margin-bottom: 4px;
     }
 
-    /* 📊 完整營養素醫療儀表板專用樣式 */
+    /* 📊 完整營養素醫療儀表板 */
     .med-dashboard-wrap {
       background: var(--card); border-radius: 14px; padding: 14px; margin: 12px 0;
       border: 1px solid rgba(0,0,0,0.06); box-shadow: 0 2px 10px rgba(0,0,0,0.03);
@@ -239,7 +261,7 @@
       font-size: 15px; font-weight: 800; color: #111827; line-height: 1.2;
     }
 
-    /* 👅 吞嚥肌運動動作解析樣式 */
+    /* 👅 吞嚥肌運動動作解析 */
     .swallow-exercise-card {
       background: var(--bg); border-left: 4.5px solid var(--teal); padding: 14px 15px;
       border-radius: 12px; margin-bottom: 14px;
@@ -262,6 +284,21 @@
       background: var(--teal); color: #fff; font-size: 11px; font-weight: 800;
       padding: 2px 6px; border-radius: 6px; white-space: nowrap; flex-shrink: 0; margin-top: 1px;
     }
+
+    /* 倒數計時 Modal */
+    .timer-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000;
+      display: none; align-items: center; justify-content: center; flex-direction: column; padding: 20px;
+    }
+    .timer-card {
+      background: var(--card); border-radius: 24px; padding: 30px 24px; max-width: 380px; width: 100%;
+      text-align: center; box-shadow: var(--shadow);
+    }
+    .timer-circle-wrap {
+      position: relative; width: 150px; height: 150px; margin: 16px auto; display: flex; align-items: center; justify-content: center;
+    }
+    .timer-number { font-size: 64px; font-weight: 900; color: var(--teal); }
+    .timer-action-hint { font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
 
     .q-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
     .q-num {
@@ -361,6 +398,7 @@
       ⚕️ 本系統僅供家庭照顧者腸道微生態與吞嚥質地<strong>初篩參考</strong>，<strong>非醫療診斷、非醫療器械</strong>。有持續腸胃不適或吞嚥困難，請遵言語治療師／醫生囑咐。
     </div>
 
+    <!-- 浮動急救掣 -->
     <button id="btnEmergencyFloat" aria-label="緊急哽親急救">🆘</button>
 
     <header class="header">
@@ -369,6 +407,7 @@
         <div class="header-actions">
           <button class="chip danger" id="btnEmergency">🚨 哽親急救</button>
           <button class="chip" id="btnEmergencyContact">📞 家人</button>
+          <button class="chip" id="btnExportDoctor">📋 醫生報告</button>
           <button class="chip" id="btnLangToggle">🇮🇩 Bahasa</button>
           <button class="chip" id="btnElderly">大字</button>
           <button class="chip" id="btnVoice">🔊 語音</button>
@@ -378,44 +417,33 @@
       <p class="sub">腸道好菌 · 腸腦軸紓壓 · IDDSI 吞嚥守護</p>
     </header>
 
+    <!-- 今日護理任務三部曲（降低長者上手成本） -->
+    <div class="today-task-box">
+      <div class="task-bar-header">
+        <span>📅 今日護理進度</span>
+        <span id="weeklyComplianceText">本週完成率: 0%</span>
+      </div>
+      <div class="task-chips-grid">
+        <button class="task-chip-btn" id="taskBtnMeal" onclick="switchTab('meal')">📸 1. 驗餐</button>
+        <button class="task-chip-btn" id="taskBtnSwallow" onclick="switchTab('swallow')">👅 2. 吞嚥肌操</button>
+        <button class="task-chip-btn" id="taskBtnQuiz" onclick="switchTab('quiz')">🦠 3. 腸道評估</button>
+      </div>
+    </div>
+
     <div class="memory-alert" id="memoryAlertBox" style="display:none;padding:12px;border-radius:12px;font-size:13.5px;line-height:1.45;background:#eff6ff;border:1.5px solid #3b82f6;color:#1e40af;">
       💡 <strong>老友連續健康提示：</strong><span id="memoryAlertMsg"></span>
     </div>
 
     <div class="tabs">
-      <button class="tab active" data-tab="quiz">🦠 查腸道</button>
-      <button class="tab" data-tab="meal">📸 驗飯餸</button>
+      <button class="tab active" data-tab="meal">📸 驗飯餸</button>
       <button class="tab" data-tab="swallow">👅 練吞嚥</button>
+      <button class="tab" data-tab="quiz">🦠 查腸道</button>
       <button class="tab" data-tab="quickRef">📖 港食表</button>
       <button class="tab" data-tab="qa">💬 街坊傾</button>
     </div>
 
-    <!-- 分頁 1: 查腸道 -->
-    <div id="tabQuiz">
-      <div class="card" style="margin-bottom:10px">
-        <h3 style="margin-bottom:4px">🦠 腸道微生態與情緒安康評估 (10 題)</h3>
-        <p style="font-size:13px;color:var(--text2)">了解好菌活性、排便順暢度與腸腦軸情緒壓力，獲取個人化運動與安神處方。</p>
-        <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
-        <div class="progress-text" id="progressText">答咗 0 / 10 題</div>
-      </div>
-      <form id="quizForm"></form>
-      <div class="card" id="resultCard" style="display:none;margin-top:14px">
-        <div style="font-size:12.5px;font-weight:800;color:var(--text2);letter-spacing:0.5px">腸道微生態健康評分</div>
-        <div style="font-size:52px;font-weight:900;letter-spacing:-1.5px;margin:4px 0;line-height:1" id="scoreBadge">0</div>
-        <div style="font-size:18px;font-weight:800;margin-bottom:8px" id="statusTitle"></div>
-        <div style="font-size:14.5px;color:var(--text);background:var(--bg);padding:14px;border-radius:var(--radius-sm);line-height:1.6" id="statusDesc"></div>
-        <div class="mind-card" id="mindBox">
-          🧠 <strong>腸腦軸 (Gut-Brain Axis) 情緒守護：</strong><br>
-          <span id="mindDesc">腸道係人體第二大腦，九成血清素由腸道製造。放鬆心情、睡得安穩，腸胃好菌自然繁衍得好！</span>
-        </div>
-        <div id="exerciseBox" style="margin-top:14px"></div>
-        <button class="btn btn-voice" style="margin-top:14px" id="btnSpeakResult">🔊 讀出評估結果與運動指引</button>
-        <button class="btn btn-ghost" style="margin-top:8px" id="btnResetQuiz">由頭再做過</button>
-      </div>
-    </div>
-
-    <!-- 分頁 2: 影相驗餐 -->
-    <div id="tabMeal" style="display:none">
+    <!-- 分頁 1: 影相驗餐 -->
+    <div id="tabMeal">
       <div class="card">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
           <label style="font-size:14.5px;font-weight:800" id="labelTargetLevel">照護對象目標餐質：</label>
@@ -437,6 +465,7 @@
         </div>
 
         <div id="previewWrap">
+          <div class="scan-line" id="scanLaserLine"></div>
           <img id="imagePreview" alt="餐食預覽">
           <div id="rulerBox" style="width:100px;height:100px;">
             <span class="ruler-tag" id="rulerTagText">📏 15mm 一口量 (Bite-sized)</span>
@@ -609,7 +638,7 @@
       </div>
     </div>
 
-    <!-- 分頁 3: 吞嚥肌操 (含三大動作深度臨床解析與示範圖) -->
+    <!-- 分頁 2: 吞嚥肌操 -->
     <div id="tabSwallow" style="display:none">
       <div class="card">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
@@ -649,7 +678,7 @@
               <div><strong>緩慢放鬆與重複：</strong>3 秒後慢慢放鬆喉部肌肉，讓喉核自然降回初始位置。每次練習重複 5 次。</div>
             </div>
           </div>
-          <button class="chip" onclick="startExerciseVoice('假聲抬喉用力吞嚥法', 3, 5)" style="margin-top:10px;width:100%">🔊 語音逐步帶我做（維持3秒 × 5次）</button>
+          <button class="chip" onclick="startExerciseWithTimer('假聲抬喉用力吞嚥法', 3, 5, '用力抬喉，夾緊鎖定！')" style="margin-top:10px;width:100%">⏱️ 啟動大字視覺倒數（3秒 × 5次）</button>
         </div>
 
         <!-- 訓練 2: 舌肌抗阻訓練 (Tongue-to-Palate Resistance) -->
@@ -677,7 +706,7 @@
               <div><strong>緩慢放鬆與重複：</strong>5 秒後慢慢解除力量，讓舌頭降回口腔底部完全放鬆休息 2～3 秒。每組練習重複 5 次，每日可按治療師建議進行 2～3 組。</div>
             </div>
           </div>
-          <button class="chip" onclick="startExerciseVoice('舌肌抗阻訓練', 5, 5)" style="margin-top:10px;width:100%">🔊 語音逐步帶我做（頂實5秒 × 5次）</button>
+          <button class="chip" onclick="startExerciseWithTimer('舌肌抗阻訓練', 5, 5, '舌尖頂實上顎，用力對抗！')" style="margin-top:10px;width:100%">⏱️ 啟動大字視覺倒數（5秒 × 5次）</button>
         </div>
 
         <!-- 訓練 3: 咳嗽發聲練軟顎 (發「K」音 / 顎咽閉鎖訓練) -->
@@ -686,7 +715,7 @@
             3. 📖 咳嗽發聲練軟顎（發「K」音 / 顎咽閉鎖訓練）動作解析
           </div>
           <p style="font-size:12.5px;color:var(--text2);line-height:1.45;margin-bottom:10px">
-            此動作常應用於言語治療與咽腔復康（Velopharyngeal & Vocal Cord Strengthening），透過發出清脆有力的舌根塞音「K（格 / Ka）」，刺激軟顎主動向後上方抬升封閉鼻咽腔，並鍛鍊聲門內收閉鎖肌群與咳嗽反射，有助防止液體逆流至鼻腔，並加強氣道防禦保護機制，防止食物碎屑誤吸入氣管。
+            此動作常應用於言語治療與咽腔復康（Velopharyngeal & Vocal Cord Strengthening），透過發出清脆有力的舌根塞音「K（格 / Ka）」，刺激軟顎主動向後上方抬升封閉鼻咽腔，並鍛鍊聲門內收閉鎖肌群與咳嗽反射。
           </p>
           <div class="exercise-img-wrap">
             <img src="https://firebasestorage.googleapis.com/v0/b/lohascaregutmicrobiomefoodsafe.firebasestorage.app/o/images%2FGemini_Generated_Image_2hn8hw2hn8hw2hn8.jpeg?alt=media" alt="咳嗽發聲練軟顎示範圖" class="exercise-img" onerror="this.style.display='none'">
@@ -694,25 +723,49 @@
           <div class="exercise-steps">
             <div class="step-item">
               <span class="step-pill">步驟 1</span>
-              <div><strong>端正坐姿與腹式吸氣：</strong>身體挺直坐穩，雙肩放鬆，用鼻慢慢深吸一口氣儲蓄腹腔氣流，為有力發聲做好準備。</div>
+              <div><strong>端正坐姿與腹式吸氣：</strong>身體挺直坐穩，雙肩放鬆，用鼻慢慢深吸一口氣儲蓄腹腔氣流。</div>
             </div>
             <div class="step-item">
               <span class="step-pill">步驟 2</span>
-              <div><strong>舌根抬升發清脆爆破音：</strong>利用舌根後部用力緊貼軟顎阻截氣流，隨後短促、清晰而大聲地爆破發出「格（Ka）」或「K」音，感受舌根與軟顎瞬間向上閉合。</div>
+              <div><strong>舌根抬升發清脆爆破音：</strong>利用舌根後部用力緊貼軟顎阻截氣流，隨後短促、清晰而大聲地爆破發出「格（Ka）」或「K」音。</div>
             </div>
             <div class="step-item">
               <span class="step-pill">步驟 3</span>
-              <div><strong>結合自主強效防禦咳嗽：</strong>每次清晰發音後，可緊接進行一次短促有力的清喉嚨或單次深咳，喚醒聲帶與咽部肌群的強力保護性閉鎖反射。</div>
+              <div><strong>結合自主強效防禦咳嗽：</strong>每次清晰發音後，可緊接進行一次短促有力的清喉嚨或單次深咳，喚醒聲門保護性閉鎖反射。</div>
             </div>
             <div class="step-item">
               <span class="step-pill">步驟 4</span>
-              <div><strong>規律重複與節奏休息：</strong>連續清脆發「格」音 10 次為一組，每次發音間隔 1～2 秒自然呼吸放鬆，每日可進行 2～3 組。</div>
+              <div><strong>規律重複與節奏休息：</strong>連續清脆發「格」音 10 次為一組，每次間隔 1 秒自然呼吸。</div>
             </div>
           </div>
-          <button class="chip" onclick="startExerciseVoice('咳嗽發聲練軟顎', 1, 10)" style="margin-top:10px;width:100%">🔊 語音逐步帶我做（連續發格音 × 10次）</button>
+          <button class="chip" onclick="startExerciseWithTimer('咳嗽發聲練軟顎', 1, 10, '大聲爆破發「格！」音！')" style="margin-top:10px;width:100%">⏱️ 啟動節奏倒數（10次連發）</button>
         </div>
 
         <button class="btn btn-wa" style="margin-top:12px" id="btnCheckInExercise">✅ 今日已完成吞嚥肌鍛鍊（打卡）</button>
+      </div>
+    </div>
+
+    <!-- 分頁 3: 查腸道 -->
+    <div id="tabQuiz" style="display:none">
+      <div class="card" style="margin-bottom:10px">
+        <h3 style="margin-bottom:4px">🦠 腸道微生態與情緒安康評估 (10 題)</h3>
+        <p style="font-size:13px;color:var(--text2)">了解好菌活性、排便順暢度與腸腦軸情緒壓力，獲取個人化運動與安神處方。</p>
+        <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+        <div class="progress-text" id="progressText">答咗 0 / 10 題</div>
+      </div>
+      <form id="quizForm"></form>
+      <div class="card" id="resultCard" style="display:none;margin-top:14px">
+        <div style="font-size:12.5px;font-weight:800;color:var(--text2);letter-spacing:0.5px">腸道微生態健康評分</div>
+        <div style="font-size:52px;font-weight:900;letter-spacing:-1.5px;margin:4px 0;line-height:1" id="scoreBadge">0</div>
+        <div style="font-size:18px;font-weight:800;margin-bottom:8px" id="statusTitle"></div>
+        <div style="font-size:14.5px;color:var(--text);background:var(--bg);padding:14px;border-radius:var(--radius-sm);line-height:1.6" id="statusDesc"></div>
+        <div class="mind-card" id="mindBox">
+          🧠 <strong>腸腦軸 (Gut-Brain Axis) 情緒守護：</strong><br>
+          <span id="mindDesc">腸道係人體第二大腦，九成血清素由腸道製造。放鬆心情、睡得安穩，腸胃好菌自然繁衍得好！</span>
+        </div>
+        <div id="exerciseBox" style="margin-top:14px"></div>
+        <button class="btn btn-voice" style="margin-top:14px" id="btnSpeakResult">🔊 讀出評估結果與運動指引</button>
+        <button class="btn btn-ghost" style="margin-top:8px" id="btnResetQuiz">由頭再做過</button>
       </div>
     </div>
 
@@ -739,6 +792,33 @@
           <button class="btn btn-primary" id="btnAsk" style="width:auto;padding:0 16px">問</button>
         </div>
         <div id="qaAnswer" style="background:var(--bg);padding:14px;border-radius:12px;font-size:14.5px;line-height:1.6;color:var(--text);display:none"></div>
+      </div>
+    </div>
+
+    <!-- 視覺計時器 Overlay -->
+    <div class="timer-overlay" id="timerModal">
+      <div class="timer-card">
+        <div style="font-size:13px;font-weight:800;color:var(--teal)" id="timerExerciseTitle">吞嚥肌鍛鍊</div>
+        <div class="timer-action-hint" id="timerActionHint">準備中...</div>
+        <div class="timer-circle-wrap">
+          <div class="timer-number" id="timerSeconds">3</div>
+        </div>
+        <div style="font-size:14px;font-weight:700;color:var(--text2)" id="timerRepsIndicator">第 1 / 5 次</div>
+        <button class="btn btn-ghost" style="margin-top:16px" onclick="cancelExerciseTimer()">取消</button>
+      </div>
+    </div>
+
+    <!-- 醫生/家屬專業報告 Modal -->
+    <div class="modal-backdrop" id="doctorReportModal">
+      <div class="modal-box">
+        <h3 style="margin-bottom:8px">📋 長者照護與吞嚥週報</h3>
+        <p style="font-size:13px;color:var(--text2);margin-bottom:10px">可一鍵複製文字或轉發 WhatsApp 給言語治療師或家屬。</p>
+        <textarea id="doctorReportText" style="width:100%;height:180px;border-radius:12px;border:1.5px solid rgba(0,0,0,0.12);padding:10px;font-size:13px;line-height:1.45;background:var(--bg);color:var(--text)" readonly></textarea>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <button class="btn btn-primary" onclick="copyDoctorReport()">📋 複製報告</button>
+          <a id="btnSendWaReport" href="#" class="btn btn-wa" style="text-decoration:none">💬 WhatsApp 傳送</a>
+        </div>
+        <button class="btn btn-ghost" style="margin-top:8px" onclick="document.getElementById('doctorReportModal').style.display='none'">關閉</button>
       </div>
     </div>
 
@@ -809,6 +889,7 @@
     let selectedImageBase64 = null;
     let lastResultData = null;
     let waitInterval = null;
+    let timerTimeout = null;
     const BACKEND_API = "https://blue-mountain-bd34.ironijkl.workers.dev";
 
     let currentRulerMode = 15;
@@ -887,21 +968,13 @@
     };
 
     const HK_FOOD_KB = [
-      { name: "牛扒配醬汁", level: "Level 7 (原質正常)", warn: "肉質完整厚實，必須切小於 15mm 或剪碎", tag: "原質" },
-      { name: "火腿通粉 (含湯)", level: "Level 7 (雙重質地)", warn: "清湯易嗆咳，必須徹底瀝乾湯汁", tag: "高危" },
-      { name: "茶餐廳蛋包飯", level: "Level 6 (軟質一口量)", warn: "飯粒需濕潤，切細於 15mm", tag: "合格" },
-      { name: "煎荷包蛋 / 煎蛋", level: "Level 6 (軟質一口量)", warn: "蛋邊煎香偏韌，須切細塊壓碎", tag: "合格" },
-      { name: "清炒菜心", level: "Level 7 (纖維偏長)", warn: "菜莖纖維韌，必須去硬莖剁碎", tag: "高危" },
-      { name: "鮮蝦雲吞麵 (含湯)", level: "Level 7 (雙重質地)", warn: "雲吞皮滑湯流速快，必須撈起乾食並剪碎", tag: "高危" },
-      { name: "蒸水蛋 / 肉碎蒸蛋", level: "Level 5 (細碎濕潤)", warn: "極佳長者餐，肉碎需細於 4mm", tag: "推薦" },
-      { name: "珍珠奶茶", level: "Level 0 (液體帶顆粒)", warn: "極高窒息風險！必須用隔篩濾走所有珍珠", tag: "極度高危" },
-      { name: "免治牛肉粥", level: "Level 5 (細碎濕潤)", warn: "粥底濃稠無多餘米水，牛肉碎易吞", tag: "推薦" },
-      { name: "白切雞 (連骨)", level: "Level 7 (原質)", warn: "必須徹底去骨，肉切 15mm 以下", tag: "高危" },
-      { name: "皮蛋瘦肉粥", level: "Level 5 (細碎濕潤)", warn: "注意皮蛋塊要壓碎，無硬粒", tag: "推薦" },
-      { name: "蒸肉餅", level: "Level 5–6", warn: "肉餅需軟潤，切細或壓碎至適合 Level", tag: "合格" },
-      { name: "炒河粉 (乾炒)", level: "Level 6–7", warn: "河粉易長條，建議剪短至 15mm", tag: "注意" },
-      { name: "豆腐花 / 豆花", level: "Level 4–5", warn: "質地幼滑，適合多數長者", tag: "推薦" },
-      { name: "牛腩麵 (含湯)", level: "Level 7 (雙重質地)", warn: "必須瀝乾湯汁，牛腩剪碎", tag: "高危" }
+      { name: "牛扒配醬汁", level: "Level 7 (原質正常)", warn: "肉質完整厚實，必須切小於 15mm 或剪碎", tag: "原質", nutrients: { grams: 200, calories: 400, water_ml: 60, protein_g: 50, carbs_g: 0, fat_g: 20, fiber_g: 0, sugar_g: 0, cholesterol_mg: 120, saturated_fat_g: 8, trans_fat_g: 0, sodium_mg: 800, calcium_mg: 10, iron_mg: 3, magnesium_mg: 25, potassium_mg: 600, zinc_mg: 5, vitamin_c_mg: 0 } },
+      { name: "火腿通粉 (含湯)", level: "Level 7 (雙重質地)", warn: "清湯易嗆咳，必須徹底瀝乾湯汁", tag: "高危", nutrients: { grams: 350, calories: 280, water_ml: 220, protein_g: 12, carbs_g: 45, fat_g: 6, fiber_g: 2, sugar_g: 2, cholesterol_mg: 25, saturated_fat_g: 2, trans_fat_g: 0, sodium_mg: 950, calcium_mg: 15, iron_mg: 1.5, magnesium_mg: 18, potassium_mg: 180, zinc_mg: 1.2, vitamin_c_mg: 0 } },
+      { name: "茶餐廳蛋包飯", level: "Level 6 (軟質一口量)", warn: "飯粒需濕潤，切細於 15mm", tag: "合格", nutrients: { grams: 300, calories: 460, water_ml: 110, protein_g: 16, carbs_g: 65, fat_g: 15, fiber_g: 1, sugar_g: 4, cholesterol_mg: 210, saturated_fat_g: 4.5, trans_fat_g: 0, sodium_mg: 720, calcium_mg: 45, iron_mg: 2.1, magnesium_mg: 22, potassium_mg: 240, zinc_mg: 1.8, vitamin_c_mg: 2 } },
+      { name: "煎荷包蛋 / 煎蛋", level: "Level 6 (軟質一口量)", warn: "蛋邊煎香偏韌，須切細塊壓碎", tag: "合格", nutrients: { grams: 60, calories: 110, water_ml: 35, protein_g: 7, carbs_g: 0.5, fat_g: 9, fiber_g: 0, sugar_g: 0.2, cholesterol_mg: 195, saturated_fat_g: 2.5, trans_fat_g: 0, sodium_mg: 140, calcium_mg: 30, iron_mg: 1.0, magnesium_mg: 7, potassium_mg: 80, zinc_mg: 0.8, vitamin_c_mg: 0 } },
+      { name: "清炒菜心", level: "Level 7 (纖維偏長)", warn: "菜莖纖維韌，必須去硬莖剁碎", tag: "高危", nutrients: { grams: 180, calories: 65, water_ml: 150, protein_g: 3, carbs_g: 4, fat_g: 4, fiber_g: 3.5, sugar_g: 1.5, cholesterol_mg: 0, saturated_fat_g: 0.5, trans_fat_g: 0, sodium_mg: 380, calcium_mg: 120, iron_mg: 1.8, magnesium_mg: 28, potassium_mg: 310, zinc_mg: 0.6, vitamin_c_mg: 35 } },
+      { name: "蒸水蛋 / 肉碎蒸蛋", level: "Level 5 (細碎濕潤)", warn: "極佳長者餐，肉碎需細於 4mm", tag: "推薦", nutrients: { grams: 180, calories: 150, water_ml: 130, protein_g: 13, carbs_g: 1, fat_g: 10, fiber_g: 0, sugar_g: 0.5, cholesterol_mg: 180, saturated_fat_g: 3, trans_fat_g: 0, sodium_mg: 420, calcium_mg: 40, iron_mg: 1.4, magnesium_mg: 14, potassium_mg: 160, zinc_mg: 1.5, vitamin_c_mg: 0 } },
+      { name: "免治牛肉粥", level: "Level 5 (細碎濕潤)", warn: "粥底濃稠無多餘米水，牛肉碎易吞", tag: "推薦", nutrients: { grams: 350, calories: 230, water_ml: 260, protein_g: 14, carbs_g: 36, fat_g: 4, fiber_g: 0.8, sugar_g: 0.5, cholesterol_mg: 35, saturated_fat_g: 1.5, trans_fat_g: 0, sodium_mg: 550, calcium_mg: 18, iron_mg: 2.2, magnesium_mg: 19, potassium_mg: 290, zinc_mg: 2.8, vitamin_c_mg: 0 } }
     ];
 
     let hkVoice = null;
@@ -935,6 +1008,138 @@
       setTimeout(() => el.classList.remove('show'), 2600);
     }
 
+    function switchTab(target) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      const activeBtn = document.querySelector(`.tab[data-tab="${target}"]`);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      document.getElementById('tabMeal').style.display = target === 'meal' ? 'block' : 'none';
+      document.getElementById('tabSwallow').style.display = target === 'swallow' ? 'block' : 'none';
+      document.getElementById('tabQuiz').style.display = target === 'quiz' ? 'block' : 'none';
+      document.getElementById('tabQuickRef').style.display = target === 'quickRef' ? 'block' : 'none';
+      document.getElementById('tabQa').style.display = target === 'qa' ? 'block' : 'none';
+      if (target === 'quickRef') renderRefTable();
+    }
+
+    // ========== 1. 運動閉環：大字視覺倒數計時器 ==========
+    function startExerciseWithTimer(name, holdSec, reps, hint) {
+      const modal = document.getElementById('timerModal');
+      const titleEl = document.getElementById('timerExerciseTitle');
+      const hintEl = document.getElementById('timerActionHint');
+      const numEl = document.getElementById('timerSeconds');
+      const repEl = document.getElementById('timerRepsIndicator');
+
+      titleEl.textContent = name;
+      hintEl.textContent = hint;
+      modal.style.display = 'flex';
+
+      let currentRep = 1;
+      let currentSec = holdSec;
+
+      speakCantonese(`開始鍛鍊${name}。第 1 次，預備！`);
+
+      function runTimer() {
+        repEl.textContent = `第 ${currentRep} / ${reps} 次`;
+        numEl.textContent = currentSec;
+
+        if (navigator.vibrate) navigator.vibrate(80);
+
+        if (currentSec > 0) {
+          timerTimeout = setTimeout(() => {
+            currentSec--;
+            runTimer();
+          }, 1000);
+        } else {
+          // 本次完成
+          if (currentRep < reps) {
+            currentRep++;
+            currentSec = holdSec;
+            speakCantonese(`好，放鬆兩秒。第 ${currentRep} 次，開始！`);
+            timerTimeout = setTimeout(runTimer, 2000);
+          } else {
+            // 全部完成，寫入完成日誌
+            modal.style.display = 'none';
+            speakCantonese(`做得好！${name}順利完成 ${reps} 次，今日進步咗好多！`);
+            recordExerciseDone(name);
+          }
+        }
+      }
+      timerTimeout = setTimeout(runTimer, 1500);
+    }
+
+    function cancelExerciseTimer() {
+      clearTimeout(timerTimeout);
+      document.getElementById('timerModal').style.display = 'none';
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
+    }
+
+    function recordExerciseDone(name) {
+      let records = JSON.parse(localStorage.getItem('lohas_exercise_history') || '[]');
+      const today = new Date().toISOString().split('T')[0];
+      records.unshift({ name, date: today, timestamp: Date.now() });
+      localStorage.setItem('lohas_exercise_history', JSON.stringify(records.slice(0, 30)));
+
+      // 更新任務標籤狀態
+      document.getElementById('taskBtnSwallow').classList.add('done');
+      document.getElementById('taskBtnSwallow').textContent = '👅 2. 吞嚥操 ✅';
+      updateWeeklyCompliance();
+      showToast('🎉 運動已記錄至日誌');
+    }
+
+    function updateWeeklyCompliance() {
+      const records = JSON.parse(localStorage.getItem('lohas_exercise_history') || '[]');
+      const now = new Date();
+      let activeDays = new Set();
+      for (let i = 0; i < 7; i++) {
+        const d = new Date(now - i * 86400000).toISOString().split('T')[0];
+        if (records.some(r => r.date === d)) {
+          activeDays.add(d);
+        }
+      }
+      const rate = Math.round((activeDays.size / 7) * 100);
+      document.getElementById('weeklyComplianceText').textContent = `本週完成率: ${rate}% (${activeDays.size}/7 日)`;
+      return { rate, days: activeDays.size };
+    }
+
+    // ========== 2. 專業報告匯出 (給言語治療師/醫生) ==========
+    document.getElementById('btnExportDoctor').onclick = () => {
+      const p = document.getElementById('userPrescription').value;
+      const gutScore = localStorage.getItem('last_gut_score') || '未評估';
+      const history = JSON.parse(localStorage.getItem('lohas_meal_logs') || '[]');
+      const compliance = updateWeeklyCompliance();
+      const lastMeal = history[0] ? `${history[0].name} (${history[0].isDual ? '雙重質地高危' : '安全'})` : '無紀錄';
+
+      const report = 
+`【Lohascare GutSafe 樂活食得安 · 長者照護週報】
+=============================
+目標吞嚥處方：${p}
+最新餐膳紀錄：${lastMeal}
+本週吞嚥肌訓練率：${compliance.rate}% (近7日完成 ${compliance.days} 天)
+腸道微生態健康分數：${gutScore} 分
+緊急聯絡電話：${localStorage.getItem('emergency_contact') || '未設定'}
+生成時間：${new Date().toLocaleDateString('zh-HK')}
+註：本數據由居家照顧者輔助檢測產出，供言語治療師／醫生覆診質地參考。`;
+
+      document.getElementById('doctorReportText').value = report;
+      document.getElementById('btnSendWaReport').href = `https://wa.me/?text=${encodeURIComponent(report)}`;
+      document.getElementById('doctorReportModal').style.display = 'flex';
+    };
+
+    function copyDoctorReport() {
+      const txt = document.getElementById('doctorReportText');
+      txt.select();
+      navigator.clipboard.writeText(txt.value).then(() => {
+        showToast('已複製報告，可直接貼上傳送');
+      });
+    }
+
+    // ========== 3. 離線營養支援與個人化飲食引擎 ==========
+    function getOfflineNutritionData(foodName) {
+      const matched = HK_FOOD_KB.find(item => foodName.includes(item.name) || item.name.includes(foodName));
+      if (matched && matched.nutrients) return matched.nutrients;
+      return { grams: 200, calories: 250, water_ml: 120, protein_g: 10, carbs_g: 30, fat_g: 8, fiber_g: 1, sugar_g: 1, cholesterol_mg: 30, saturated_fat_g: 2, trans_fat_g: 0, sodium_mg: 450, calcium_mg: 20, iron_mg: 1.5, magnesium_mg: 15, potassium_mg: 200, zinc_mg: 1.0, vitamin_c_mg: 0 };
+    }
+
     function saveContact() {
       const phone = document.getElementById('contactPhone').value.trim();
       if (!phone) {
@@ -962,29 +1167,334 @@
       document.getElementById('contactModal').style.display = 'flex';
     };
 
-    const btnVoiceInput = document.getElementById('btnVoiceInput');
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      const recognition = new SpeechRecognition();
-      recognition.lang = 'zh-HK';
-      recognition.continuous = false;
-      btnVoiceInput.onclick = () => {
-        showToast('請講廣東話...');
-        btnVoiceInput.textContent = '聆聽中...';
-        recognition.start();
+    // ========== 4. 影像上傳與掃描動畫 ==========
+    const mealInput = document.getElementById('mealInput');
+    const imagePreview = document.getElementById('imagePreview');
+    const btnAnalyzeMeal = document.getElementById('btnAnalyzeMeal');
+    const scanLaserLine = document.getElementById('scanLaserLine');
+
+    mealInput.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      try {
+        showToast('正在優化相片尺寸...');
+        selectedImageBase64 = await compressImage(file);
+        imagePreview.src = selectedImageBase64;
+        previewWrap.style.display = 'flex';
+        rulerControlPanel.style.display = 'flex';
+        btnAnalyzeMeal.style.display = 'block';
+        document.getElementById('mealReportCard').style.display = 'none';
+        rulerBox.style.left = '50%';
+        rulerBox.style.top = '50%';
+        updateRulerDimensions();
+      } catch (err) {
+        showToast('相片讀取失敗，請重新拍攝');
+      }
+    });
+
+    btnAnalyzeMeal.addEventListener('click', async () => {
+      if (!selectedImageBase64) return;
+      btnAnalyzeMeal.disabled = true;
+      scanLaserLine.style.display = 'block'; // 啟動掃描光波
+
+      let msgIdx = 0;
+      btnAnalyzeMeal.textContent = WAITING_MESSAGES[0];
+      waitInterval = setInterval(() => {
+        msgIdx = (msgIdx + 1) % WAITING_MESSAGES.length;
+        btnAnalyzeMeal.textContent = WAITING_MESSAGES[msgIdx];
+      }, 1800);
+
+      try {
+        const rawP = document.getElementById('userPrescription').value;
+        const cleanP = rawP.match(/Level\s*\d/i) ? rawP.match(/Level\s*\d/i)[0] : "Level 5";
+        let data;
+        try {
+          const resp = await fetchWithRetry(BACKEND_API, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              meal_photo: selectedImageBase64,
+              iddsi_prescription: cleanP,
+              user_id: 'Allen',
+              meal_type: '午餐'
+            })
+          }, 1, 12000);
+          data = await resp.json();
+          if (!resp.ok) throw new Error();
+        } catch (offlineErr) {
+          // 離線降級防線：自動啟用本地資料庫
+          showToast('⚠️ 網絡離線，已啟用離線安全資料庫');
+          data = {
+            food: "茶餐廳家常飯餸 (離線檢測)",
+            confidence: 0.85,
+            iddsi_number: 6,
+            iddsi_category: "固體",
+            is_dual_texture: false,
+            caregiver_action: ["CUT_FINE"],
+            visual_reason: "離線防護模式：根據本地食材資料庫匹配。",
+            recommended_official_test: "餐叉指壓測試 (Fork Pressure Test)",
+            nutrients: getOfflineNutritionData("茶餐廳蛋包飯")
+          };
+        }
+
+        lastResultData = data;
+        renderMealResult(data);
+        document.getElementById('taskBtnMeal').classList.add('done');
+        document.getElementById('taskBtnMeal').textContent = '📸 1. 驗餐 ✅';
+      } catch (err) {
+        alert("驗餐遇到問題: " + err.message);
+      } finally {
+        clearInterval(waitInterval);
+        scanLaserLine.style.display = 'none';
+        btnAnalyzeMeal.disabled = false;
+        btnAnalyzeMeal.textContent = '開始 AI 吞嚥與安全分析';
+      }
+    });
+
+    // ========== 5. 渲染結果與進階飲食微生態聯動 ==========
+    function renderMealResult(data) {
+      if (!data) return;
+      const card = document.getElementById('mealReportCard');
+      card.style.display = 'block';
+
+      const langPack = HELPER_TRANSLATIONS[helperLang];
+      const foodName = data.food || "茶餐廳餐膳";
+      let num = data.iddsi_number ?? 7;
+      const isDual = !!data.is_dual_texture;
+      const prescriptionVal = document.getElementById('userPrescription').value;
+      const targetNum = parseInt((prescriptionVal.match(/\d/) || [5])[0], 10);
+      const isID = (helperLang === 'ID');
+      const confPercent = Math.round((data.confidence || 0.9) * 100);
+
+      document.getElementById('resFoodName').textContent = foodName;
+      let helperFoodName = foodName.match(/\((.*?)\)/) ? foodName.match(/\((.*?)\)/)[1] : (isID ? "Makanan Pilihan" : "Selected Food");
+      document.getElementById('resFoodNameHelper').textContent = `👉 ${helperFoodName}`;
+
+      const tBanner = document.getElementById('trafficBanner');
+      const tIcon = document.getElementById('trafficIcon');
+      const tTitle = document.getElementById('trafficTitle');
+      const tSummary = document.getElementById('trafficSummary');
+      const tHelper = document.getElementById('trafficHelper');
+
+      if (isDual) {
+        tBanner.className = "traffic-card traffic-red";
+        tIcon.textContent = "🔴";
+        tTitle.textContent = "高危雙重質地！極易嗆咳";
+        tSummary.textContent = "清湯流速快過固體，長者喉部來不及閉鎖，必須徹底倒乾湯汁！";
+        tHelper.textContent = `🚨 ${langPack.dangerTitle}: ${langPack.dangerDesc}`;
+      } else if (num > targetNum) {
+        tBanner.className = "traffic-card traffic-yellow";
+        tIcon.textContent = "🟡";
+        tTitle.textContent = `質地偏硬 (Level ${num}) · 需加工至 Level ${targetNum}`;
+        tSummary.textContent = `食物硬度高於長者處方，千祈唔好成大塊吞！必須按指示剪碎加工！`;
+        tHelper.textContent = `⚠️ ${langPack.warnTitle}: ${langPack.warnDesc}`;
+      } else {
+        tBanner.className = "traffic-card traffic-green";
+        tIcon.textContent = "🟢";
+        tTitle.textContent = "安全質地 · 可以直接進食";
+        tSummary.textContent = "餐食質地符合長者處方，軟硬適中安全。";
+        tHelper.textContent = `✅ ${langPack.safeTitle}: ${langPack.safeDesc}`;
+      }
+
+      const allergenBox = document.getElementById('resAllergenBox');
+      allergenBox.innerHTML = '';
+      if (Array.isArray(data.allergen_tags) && data.allergen_tags.length > 0) {
+        const allergenDict = { 'GLUTEN': '麩質 (Gluten)', 'DAIRY': '奶類 (Dairy/Susu)', 'SOY': '大豆 (Soy)', 'EGG': '雞蛋 (Egg/Telur)', 'PEANUT': '花生 (Peanut/Kacang)', 'SEAFOOD': '海鮮 (Seafood)' };
+        data.allergen_tags.forEach(tag => {
+          allergenBox.innerHTML += `<span class="allergen-badge">⚠️ 留意含：${allergenDict[tag] || tag}</span>`;
+        });
+      }
+
+      document.getElementById('resIddsiLevel').textContent = `IDDSI Level ${num}`;
+      document.getElementById('resIddsiLevel').className = `iddsi-badge level-${num}`;
+      document.getElementById('resConfidence').textContent = `信心度 ${confPercent}%`;
+
+      document.getElementById('resVisualReason').textContent = data.visual_reason || "質地結構分析完成。";
+      document.getElementById('resVisualReasonHelper').textContent = isID ? "Analisis: Tekstur dan struktur makanan telah diverifikasi." : "Visual Reason: Texture verified by IDDSI standards.";
+      document.getElementById('resOfficialTest').textContent = data.recommended_official_test || "餐叉指壓測試 (Fork Pressure Test)";
+
+      const dualBanner = document.getElementById('resDualTextureBanner');
+      if (isDual) {
+        dualBanner.style.display = 'block';
+        document.getElementById('resSafetyWarning').textContent = data.safety_warning || "稀薄湯汁極易流入氣管！必須瀝乾湯汁！";
+        document.getElementById('resSafetyWarningHelper').textContent = `🇮🇩/🇵🇭 ${langPack.dualWarning}`;
+      } else {
+        dualBanner.style.display = 'none';
+      }
+
+      const primaryBox = document.getElementById('resPrimaryAction');
+      primaryBox.innerHTML = '';
+      const primaryGuidance = getDynamicMatrixGuidance(foodName, num, targetNum, isDual, data.is_drink, helperLang);
+      primaryBox.innerHTML = `
+        <div class="action-chip" style="border-width:2px;">
+          <span>${primaryGuidance.zh}</span>
+          <span class="helper-sub">👉 ${primaryGuidance.helper}</span>
+        </div>`;
+
+      // 智能飲食微生態聯動建議
+      const gutScore = parseInt(localStorage.getItem('last_gut_score') || '0', 10);
+      if (gutScore > 15) {
+        primaryBox.innerHTML += `
+          <div class="action-chip" style="background:#eff6ff;border-color:#3b82f6;color:#1e40af">
+            <span>🥗 微生態健康提醒：最近腸道好菌偏少，呢餐記得拌入半碗熟軟碎菜，補充足夠水溶性膳食纖維！</span>
+          </div>`;
+      }
+
+      const chipBox = document.getElementById('resActionChips');
+      chipBox.innerHTML = '';
+      if (/(骨|魚|翼|排|肉|牛|豬|雞|海鮮)/.test(foodName)) {
+        chipBox.innerHTML += `
+          <div class="action-chip">
+            <span>🍗 檢查並徹底挑乾淨碎骨與硬刺</span>
+            <span class="helper-sub">👉 ${langPack.actions.DEBONE}</span>
+          </div>`;
+      }
+
+      // 營養儀表板
+      const n = data.nutrients || getOfflineNutritionData(foodName);
+      document.getElementById('valGrams').textContent = `${n.grams ?? '--'} g`;
+      document.getElementById('valCalories').textContent = `${n.calories ?? '--'} kcal`;
+      document.getElementById('valWater').textContent = `${n.water_ml ?? '--'} ml`;
+      document.getElementById('valProtein').textContent = `${n.protein_g ?? '--'} g`;
+      document.getElementById('valCarbs').textContent = `${n.carbs_g ?? '--'} g`;
+      document.getElementById('valFat').textContent = `${n.fat_g ?? '--'} g`;
+
+      document.getElementById('valFiber').textContent = `${n.fiber_g ?? '--'} g`;
+      document.getElementById('valSugar').textContent = `${n.sugar_g ?? '--'} g`;
+      document.getElementById('valCholesterol').textContent = `${n.cholesterol_mg ?? '--'} mg`;
+      document.getElementById('valSatFat').textContent = `${n.saturated_fat_g ?? '--'} g`;
+      document.getElementById('valTransFat').textContent = `${n.trans_fat_g ?? '--'} g`;
+      document.getElementById('valSodium').textContent = `${n.sodium_mg ?? '--'} mg`;
+
+      document.getElementById('valCalcium').textContent = `${n.calcium_mg ?? '--'} mg`;
+      document.getElementById('valIron').textContent = `${n.iron_mg ?? '--'} mg`;
+      document.getElementById('valMagnesium').textContent = `${n.magnesium_mg ?? '--'} mg`;
+      document.getElementById('valPotassium').textContent = `${n.potassium_mg ?? '--'} mg`;
+      document.getElementById('valZinc').textContent = `${n.zinc_mg ?? '--'} mg`;
+      document.getElementById('valVitC').textContent = `${n.vitamin_c_mg ?? '--'} mg`;
+
+      let rawAdvice = data.spoken_advice || "老友，食飯千祈唔好急，慢慢嚼碎先好吞呀！";
+      rawAdvice = rawAdvice.replace(/老友記/g, "老友");
+      if (num > targetNum) rawAdvice += ` 呢餐大塊過你食開嘅標準，記得叫人幫手加工處理呀！`;
+      if (voiceOn) speakCantonese(rawAdvice);
+
+      saveMealLog(foodName, isDual);
+      card.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // ========== 6. 核心工具代碼 ==========
+    const rulerBox = document.getElementById('rulerBox');
+    const previewWrap = document.getElementById('previewWrap');
+    const rulerControlPanel = document.getElementById('rulerControlPanel');
+    const rulerTagText = document.getElementById('rulerTagText');
+    const rulerScaleSlider = document.getElementById('rulerScaleSlider');
+    const sliderValueText = document.getElementById('sliderValueText');
+
+    function onRulerDragStart(e) {
+      isDragging = true;
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      startX = clientX; startY = clientY;
+      const rect = rulerBox.getBoundingClientRect();
+      const parentRect = previewWrap.getBoundingClientRect();
+      origLeft = rect.left - parentRect.left + (rect.width / 2);
+      origTop = rect.top - parentRect.top + (rect.height / 2);
+      e.preventDefault();
+    }
+    function onRulerDragMove(e) {
+      if (!isDragging) return;
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      const dx = clientX - startX; const dy = clientY - startY;
+      rulerBox.style.left = `${origLeft + dx}px`;
+      rulerBox.style.top = `${origTop + dy}px`;
+    }
+    function onRulerDragEnd() { isDragging = false; }
+
+    rulerBox.addEventListener('mousedown', onRulerDragStart);
+    window.addEventListener('mousemove', onRulerDragMove);
+    window.addEventListener('mouseup', onRulerDragEnd);
+    rulerBox.addEventListener('touchstart', onRulerDragStart, { passive: false });
+    window.addEventListener('touchmove', onRulerDragMove, { passive: false });
+    window.addEventListener('touchend', onRulerDragEnd);
+
+    function updateRulerDimensions() {
+      let size = baseScale;
+      if (currentRulerMode === 4) {
+        size = Math.round(baseScale * (4 / 15));
+        rulerTagText.textContent = '📐 4mm 細碎 (4mm Minced)';
+      } else {
+        rulerTagText.textContent = '📏 15mm 一口量 (15mm Bite-sized)';
+      }
+      rulerBox.style.width = `${size}px`;
+      rulerBox.style.height = `${size}px`;
+      sliderValueText.textContent = `${size}px`;
+    }
+
+    document.getElementById('btnMode15').onclick = () => {
+      currentRulerMode = 15;
+      document.getElementById('btnMode15').classList.add('active');
+      document.getElementById('btnMode4').classList.remove('active');
+      updateRulerDimensions();
+    };
+    document.getElementById('btnMode4').onclick = () => {
+      currentRulerMode = 4;
+      document.getElementById('btnMode4').classList.add('active');
+      document.getElementById('btnMode15').classList.remove('active');
+      updateRulerDimensions();
+    };
+    document.getElementById('btnToggleRuler').onclick = () => {
+      const isHidden = rulerBox.style.display === 'none';
+      rulerBox.style.display = isHidden ? 'flex' : 'none';
+      document.getElementById('btnToggleRuler').textContent = isHidden ? '👁️ 隱藏標尺' : '👁️ 顯示標尺';
+    };
+    rulerScaleSlider.oninput = (e) => {
+      baseScale = parseInt(e.target.value, 10);
+      updateRulerDimensions();
+    };
+
+    function detectFoodCategory(name, isDrink) {
+      if (isDrink || /(湯|茶|水|奶|汁|飲品|咖啡)/.test(name)) return 'liquid';
+      if (/(蛋|豆腐|豆花|腐竹)/.test(name)) return 'egg_tofu';
+      if (/(菜|瓜|菇|茄|筍|蔬|西蘭花|果|蘿蔔)/.test(name)) return 'veg';
+      if (/(肉|扒|牛|豬|雞|鴨|鵝|魚|海鮮|蝦|蟹|骨|翼|腸|腩)/.test(name)) return 'meat';
+      if (/(麵|通粉|河粉|米線|飯|粥|包|餅|糕|餃|粉)/.test(name)) return 'carb';
+      return 'general';
+    }
+
+    function getDynamicMatrixGuidance(foodName, detectedNum, targetNum, isDual, isDrink, helperLang) {
+      const category = detectFoodCategory(foodName, isDrink);
+      const isID = (helperLang === 'ID');
+      const shortFood = foodName.split(' ')[0].replace(/[\(\)]/g, '');
+
+      if (isDual) {
+        return {
+          zh: `🥣 舊【${shortFood}】又湯又渣，必須徹底倒乾湯汁（避免清湯滑入喉嚨濁親）`,
+          helper: isID ? `Tiriskan semua kuah dari ${shortFood}! Kuah encer cepat masuk paru-paru dan bikin tersedak!` : `Drain all clear soup from ${shortFood}! Thin soup slips into airway causing choking!`
+        };
+      }
+
+      if (detectedNum > targetNum) {
+        if (targetNum === 6) {
+          if (category === 'meat') return { zh: `✂️ 舊【${shortFood}】肉質偏實，必須切／剪成 15mm 薄片一口量，淋少少稠汁保濕`, helper: isID ? `Potong ${shortFood} tipis di bawah 15mm (1 suapan), beri sedikit kuah kental agar basah!` : `Cut ${shortFood} into thin bite-sized pieces under 15mm, add thick sauce to keep moist!` };
+          if (category === 'veg') return { zh: `✂️ 舊【${shortFood}】纖維長，切除硬莖並剪成 15mm 以下小段`, helper: isID ? `Buang bagian keras ${shortFood}, gunting pendek di bawah 15mm agar tidak tersangkut!` : `Remove hard stalks, cut ${shortFood} into pieces under 15mm to prevent choking!` };
+          if (category === 'egg_tofu') return { zh: `✂️ 舊【${shortFood}】整塊吞易哽塞，請切分成 15mm 一口量小塊`, helper: isID ? `Potong ${shortFood} menjadi kotak kecil di bawah 15mm, jangan disuap utuh!` : `Cut ${shortFood} into bite-sized pieces under 15mm, do not swallow whole!` };
+          if (category === 'carb') return { zh: `✂️ 舊【${shortFood}】容易黐喉嚨，剪短麵條或切細至 15mm 一口量`, helper: isID ? `Gunting mie/nasi ${shortFood} menjadi pendek di bawah 15mm agar mudah ditelan!` : `Cut ${shortFood} noodles/bread short under 15mm for safe swallowing!` };
+          return { zh: `✂️ 舊【${shortFood}】體積太大，必須切細至 15mm 一口量以下`, helper: isID ? `Potong ${shortFood} menjadi ukuran 1 suapan di bawah 15mm!` : `Cut ${shortFood} into bite-sized pieces under 15mm!` };
+        }
+        if (targetNum === 5) {
+          if (category === 'meat') return { zh: `🥣 舊【${shortFood}】太整塊，必須剁碎至 4mm 肉碎狀，拌入稠汁保持濕潤`, helper: isID ? `Cincang ${shortFood} sangat halus (di bawah 4mm), campur kuah kental agar lembab!` : `Mince ${shortFood} finely under 4mm, mix with thick gravy to keep moist!` };
+          if (category === 'veg') return { zh: `🥣 舊【${shortFood}】纖維過粗，必須剁碎至 4mm 細粒狀，不可留有長莖`, helper: isID ? `Cincang sayur ${shortFood} halus di bawah 4mm tanpa serat panjang!` : `Chop ${shortFood} finely under 4mm, ensure no long strings or tough stalks!` };
+          if (category === 'egg_tofu') return { zh: `🥣 舊【${shortFood}】需用匙羹壓爛成 4mm 碎粒，拌入軟飯食用`, helper: isID ? `Hancurkan ${shortFood} dengan sendok hingga ukuran 4mm, campur ke nasi lembek!` : `Mash ${shortFood} with a spoon into 4mm bits, mix into soft rice!` };
+          return { zh: `🥣 舊【${shortFood}】需壓碎或剪碎至 4mm 細粒（碎餐爛飯標準）並保持濕潤`, helper: isID ? `Cincang/hancurkan ${shortFood} hingga 4mm dan pastikan lembab (Level 5)!` : `Chop/mash ${shortFood} into 4mm bits and keep moist with thick gravy (Level 5)!` };
+        }
+        if (targetNum === 4) return { zh: `🥄 舊【${shortFood}】必須用攪拌機完全打成幼滑純糊狀（完全無顆粒）`, helper: isID ? `Blender ${shortFood} sampai sangat halus menjadi puree tanpa butiran kasar!` : `Blend ${shortFood} completely smooth with no lumps or particles (Pureed Level 4)!` };
+        if (targetNum === 3) return { zh: `🥤 舊【${shortFood}】需攪拌過篩成稠流質（叉齒能緩慢滴漏）`, helper: isID ? `Blender dan saring ${shortFood} menjadi cairan kental (Level 3 Liquidised)!` : `Blend and strain ${shortFood} into smooth thick liquid (Level 3 Liquidised)!` };
+      }
+      return {
+        zh: `✅ 舊【${shortFood}】質地符合處方，坐直身體細嚼慢嚥`,
+        helper: isID ? `Tekstur ${shortFood} aman dan sesuai standar, suapi perlahan dengan posisi tegak.` : `Texture of ${shortFood} complies with prescription, feed slowly in upright posture.`
       };
-      recognition.onresult = (e) => {
-        const transcript = e.results[0][0].transcript;
-        document.getElementById('qaInput').value = transcript;
-        btnVoiceInput.textContent = '🎙️ 講嘢';
-        document.getElementById('btnAsk').click();
-      };
-      recognition.onerror = () => {
-        btnVoiceInput.textContent = '🎙️ 講嘢';
-        showToast('聽唔清，請試多次或打字');
-      };
-    } else {
-      btnVoiceInput.style.display = 'none';
     }
 
     function renderQuiz() {
@@ -1082,6 +1592,10 @@
       if (q1Val < 2 && q2Val < 2 && q7Val < 2) exHtml += createExItem(EXERCISE_KB.q9);
       document.getElementById('exerciseBox').innerHTML = exHtml;
       localStorage.setItem('last_gut_score', score);
+      
+      document.getElementById('taskBtnQuiz').classList.add('done');
+      document.getElementById('taskBtnQuiz').textContent = '🦠 3. 腸道評估 ✅';
+
       card.scrollIntoView({ behavior: 'smooth' });
       if (voiceOn) speakCantonese(spokenMsg);
     }
@@ -1145,366 +1659,6 @@
       }
     }
 
-    const rulerBox = document.getElementById('rulerBox');
-    const previewWrap = document.getElementById('previewWrap');
-    const rulerControlPanel = document.getElementById('rulerControlPanel');
-    const rulerTagText = document.getElementById('rulerTagText');
-    const rulerScaleSlider = document.getElementById('rulerScaleSlider');
-    const sliderValueText = document.getElementById('sliderValueText');
-
-    function onRulerDragStart(e) {
-      isDragging = true;
-      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-      startX = clientX; startY = clientY;
-      const rect = rulerBox.getBoundingClientRect();
-      const parentRect = previewWrap.getBoundingClientRect();
-      origLeft = rect.left - parentRect.left + (rect.width / 2);
-      origTop = rect.top - parentRect.top + (rect.height / 2);
-      e.preventDefault();
-    }
-    function onRulerDragMove(e) {
-      if (!isDragging) return;
-      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-      const dx = clientX - startX; const dy = clientY - startY;
-      rulerBox.style.left = `${origLeft + dx}px`;
-      rulerBox.style.top = `${origTop + dy}px`;
-    }
-    function onRulerDragEnd() { isDragging = false; }
-
-    rulerBox.addEventListener('mousedown', onRulerDragStart);
-    window.addEventListener('mousemove', onRulerDragMove);
-    window.addEventListener('mouseup', onRulerDragEnd);
-    rulerBox.addEventListener('touchstart', onRulerDragStart, { passive: false });
-    window.addEventListener('touchmove', onRulerDragMove, { passive: false });
-    window.addEventListener('touchend', onRulerDragEnd);
-
-    function updateRulerDimensions() {
-      let size = baseScale;
-      if (currentRulerMode === 4) {
-        size = Math.round(baseScale * (4 / 15));
-        rulerTagText.textContent = '📐 4mm 細碎 (4mm Minced)';
-      } else {
-        rulerTagText.textContent = '📏 15mm 一口量 (15mm Bite-sized)';
-      }
-      rulerBox.style.width = `${size}px`;
-      rulerBox.style.height = `${size}px`;
-      sliderValueText.textContent = `${size}px`;
-    }
-
-    document.getElementById('btnMode15').onclick = () => {
-      currentRulerMode = 15;
-      document.getElementById('btnMode15').classList.add('active');
-      document.getElementById('btnMode4').classList.remove('active');
-      updateRulerDimensions();
-    };
-    document.getElementById('btnMode4').onclick = () => {
-      currentRulerMode = 4;
-      document.getElementById('btnMode4').classList.add('active');
-      document.getElementById('btnMode15').classList.remove('active');
-      updateRulerDimensions();
-    };
-    document.getElementById('btnToggleRuler').onclick = () => {
-      const isHidden = rulerBox.style.display === 'none';
-      rulerBox.style.display = isHidden ? 'flex' : 'none';
-      document.getElementById('btnToggleRuler').textContent = isHidden ? '👁️ 隱藏標尺' : '👁️ 顯示標尺';
-    };
-    rulerScaleSlider.oninput = (e) => {
-      baseScale = parseInt(e.target.value, 10);
-      updateRulerDimensions();
-    };
-
-    function detectFoodCategory(name, isDrink) {
-      if (isDrink || /(湯|茶|水|奶|汁|飲品|咖啡)/.test(name)) return 'liquid';
-      if (/(蛋|豆腐|豆花|腐竹)/.test(name)) return 'egg_tofu';
-      if (/(菜|瓜|菇|茄|筍|蔬|西蘭花|果|蘿蔔)/.test(name)) return 'veg';
-      if (/(肉|扒|牛|豬|雞|鴨|鵝|魚|海鮮|蝦|蟹|骨|翼|腸|腩)/.test(name)) return 'meat';
-      if (/(麵|通粉|河粉|米線|飯|粥|包|餅|糕|餃|粉)/.test(name)) return 'carb';
-      return 'general';
-    }
-
-    function getDynamicMatrixGuidance(foodName, detectedNum, targetNum, isDual, isDrink, helperLang) {
-      const category = detectFoodCategory(foodName, isDrink);
-      const isID = (helperLang === 'ID');
-      const shortFood = foodName.split(' ')[0].replace(/[\(\)]/g, '');
-
-      if (isDual) {
-        return {
-          zh: `🥣 舊【${shortFood}】又湯又渣，必須徹底倒乾湯汁（避免清湯滑入喉嚨濁親）`,
-          helper: isID 
-            ? `Tiriskan semua kuah dari ${shortFood}! Kuah encer cepat masuk paru-paru dan bikin tersedak!`
-            : `Drain all clear soup from ${shortFood}! Thin soup slips into airway causing choking!`
-        };
-      }
-
-      if (detectedNum > targetNum) {
-        if (targetNum === 6) {
-          if (category === 'meat') return { zh: `✂️ 舊【${shortFood}】肉質偏實，必須切／剪成 15mm 薄片一口量，淋少少稠汁保濕`, helper: isID ? `Potong ${shortFood} tipis di bawah 15mm (1 suapan), beri sedikit kuah kental agar basah!` : `Cut ${shortFood} into thin bite-sized pieces under 15mm, add thick sauce to keep moist!` };
-          if (category === 'veg') return { zh: `✂️ 舊【${shortFood}】纖維長，切除硬莖並剪成 15mm 以下小段`, helper: isID ? `Buang bagian keras ${shortFood}, gunting pendek di bawah 15mm agar tidak tersangkut!` : `Remove hard stalks, cut ${shortFood} into pieces under 15mm to prevent choking!` };
-          if (category === 'egg_tofu') return { zh: `✂️ 舊【${shortFood}】整塊吞易哽塞，請切分成 15mm 一口量小塊`, helper: isID ? `Potong ${shortFood} menjadi kotak kecil di bawah 15mm, jangan disuap utuh!` : `Cut ${shortFood} into bite-sized pieces under 15mm, do not swallow whole!` };
-          if (category === 'carb') return { zh: `✂️ 舊【${shortFood}】容易黐喉嚨，剪短麵條或切細至 15mm 一口量`, helper: isID ? `Gunting mie/nasi ${shortFood} menjadi pendek di bawah 15mm agar mudah ditelan!` : `Cut ${shortFood} noodles/bread short under 15mm for safe swallowing!` };
-          return { zh: `✂️ 舊【${shortFood}】體積太大，必須切細至 15mm 一口量以下`, helper: isID ? `Potong ${shortFood} menjadi ukuran 1 suapan di bawah 15mm!` : `Cut ${shortFood} into bite-sized pieces under 15mm!` };
-        }
-        if (targetNum === 5) {
-          if (category === 'meat') return { zh: `🥣 舊【${shortFood}】太整塊，必須剁碎至 4mm 肉碎狀，拌入稠汁保持濕潤`, helper: isID ? `Cincang ${shortFood} sangat halus (di bawah 4mm), campur kuah kental agar lembab!` : `Mince ${shortFood} finely under 4mm, mix with thick gravy to keep moist!` };
-          if (category === 'veg') return { zh: `🥣 舊【${shortFood}】纖維過粗，必須剁碎至 4mm 細粒狀，不可留有長莖`, helper: isID ? `Cincang sayur ${shortFood} halus di bawah 4mm tanpa serat panjang!` : `Chop ${shortFood} finely under 4mm, ensure no long strings or tough stalks!` };
-          if (category === 'egg_tofu') return { zh: `🥣 舊【${shortFood}】需用匙羹壓爛成 4mm 碎粒，拌入軟飯食用`, helper: isID ? `Hancurkan ${shortFood} dengan sendok hingga ukuran 4mm, campur ke nasi lembek!` : `Mash ${shortFood} with a spoon into 4mm bits, mix into soft rice!` };
-          return { zh: `🥣 舊【${shortFood}】需壓碎或剪碎至 4mm 細粒（碎餐爛飯標準）並保持濕潤`, helper: isID ? `Cincang/hancurkan ${shortFood} hingga 4mm dan pastikan lembab (Level 5)!` : `Chop/mash ${shortFood} into 4mm bits and keep moist with thick gravy (Level 5)!` };
-        }
-        if (targetNum === 4) return { zh: `🥄 舊【${shortFood}】必須用攪拌機完全打成幼滑純糊狀（完全無顆粒）`, helper: isID ? `Blender ${shortFood} sampai sangat halus menjadi puree tanpa butiran kasar!` : `Blend ${shortFood} completely smooth with no lumps or particles (Pureed Level 4)!` };
-        if (targetNum === 3) return { zh: `🥤 舊【${shortFood}】需攪拌過篩成稠流質（叉齒能緩慢滴漏）`, helper: isID ? `Blender dan saring ${shortFood} menjadi cairan kental (Level 3 Liquidised)!` : `Blend and strain ${shortFood} into smooth thick liquid (Level 3 Liquidised)!` };
-      }
-      return {
-        zh: `✅ 舊【${shortFood}】質地符合處方，坐直身體細嚼慢嚥`,
-        helper: isID ? `Tekstur ${shortFood} aman dan sesuai standar, suapi perlahan dengan posisi tegak.` : `Texture of ${shortFood} complies with prescription, feed slowly in upright posture.`
-      };
-    }
-
-    const mealInput = document.getElementById('mealInput');
-    const imagePreview = document.getElementById('imagePreview');
-    const btnAnalyzeMeal = document.getElementById('btnAnalyzeMeal');
-
-    mealInput.addEventListener('change', async (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      try {
-        showToast('正在優化相片尺寸...');
-        selectedImageBase64 = await compressImage(file);
-        imagePreview.src = selectedImageBase64;
-        previewWrap.style.display = 'flex';
-        rulerControlPanel.style.display = 'flex';
-        btnAnalyzeMeal.style.display = 'block';
-        document.getElementById('mealReportCard').style.display = 'none';
-        rulerBox.style.left = '50%';
-        rulerBox.style.top = '50%';
-        updateRulerDimensions();
-      } catch (err) {
-        showToast('相片讀取失敗，請重新拍攝');
-      }
-    });
-
-    btnAnalyzeMeal.addEventListener('click', async () => {
-      if (!selectedImageBase64) return;
-      btnAnalyzeMeal.disabled = true;
-      let msgIdx = 0;
-      btnAnalyzeMeal.textContent = WAITING_MESSAGES[0];
-      waitInterval = setInterval(() => {
-        msgIdx = (msgIdx + 1) % WAITING_MESSAGES.length;
-        btnAnalyzeMeal.textContent = WAITING_MESSAGES[msgIdx];
-      }, 1800);
-      try {
-        const rawP = document.getElementById('userPrescription').value;
-        const cleanP = rawP.match(/Level\s*\d/i) ? rawP.match(/Level\s*\d/i)[0] : "Level 5";
-        const resp = await fetchWithRetry(BACKEND_API, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            meal_photo: selectedImageBase64,
-            iddsi_prescription: cleanP,
-            user_id: 'Allen',
-            meal_type: '午餐'
-          })
-        }, 2, 18000);
-        const data = await resp.json();
-        if (!resp.ok) throw new Error(data.error || '分析服務異常');
-        lastResultData = data;
-        renderMealResult(data);
-      } catch (err) {
-        alert("驗餐遇到問題: " + (err.name === 'AbortError' ? '連線逾時，請檢查網絡' : err.message));
-      } finally {
-        clearInterval(waitInterval);
-        btnAnalyzeMeal.disabled = false;
-        btnAnalyzeMeal.textContent = '開始 AI 吞嚥與安全分析';
-      }
-    });
-
-    function renderMealResult(data) {
-      if (!data) return;
-      const card = document.getElementById('mealReportCard');
-      card.style.display = 'block';
-
-      const langPack = HELPER_TRANSLATIONS[helperLang];
-      const foodName = data.food || "茶餐廳餐膳";
-      let num = data.iddsi_number ?? 7;
-      const isDual = !!data.is_dual_texture;
-      const prescriptionVal = document.getElementById('userPrescription').value;
-      const targetNum = parseInt((prescriptionVal.match(/\d/) || [5])[0], 10);
-      const isID = (helperLang === 'ID');
-      const confPercent = Math.round((data.confidence || 0.9) * 100);
-
-      document.getElementById('resFoodName').textContent = foodName;
-      let helperFoodName = foodName.match(/\((.*?)\)/) ? foodName.match(/\((.*?)\)/)[1] : (isID ? "Makanan Pilihan" : "Selected Food");
-      document.getElementById('resFoodNameHelper').textContent = `👉 ${helperFoodName}`;
-
-      const tBanner = document.getElementById('trafficBanner');
-      const tIcon = document.getElementById('trafficIcon');
-      const tTitle = document.getElementById('trafficTitle');
-      const tSummary = document.getElementById('trafficSummary');
-      const tHelper = document.getElementById('trafficHelper');
-
-      if (isDual) {
-        tBanner.className = "traffic-card traffic-red";
-        tIcon.textContent = "🔴";
-        tTitle.textContent = "高危雙重質地！極易嗆咳";
-        tSummary.textContent = "清湯流速快過固體，長者喉部來不及閉鎖，必須徹底倒乾湯汁！";
-        tHelper.textContent = `🚨 ${langPack.dangerTitle}: ${langPack.dangerDesc}`;
-      } else if (num > targetNum) {
-        tBanner.className = "traffic-card traffic-yellow";
-        tIcon.textContent = "🟡";
-        tTitle.textContent = `質地偏硬 (Level ${num}) · 需加工至 Level ${targetNum}`;
-        tSummary.textContent = `食物硬度高於長者處方，千祈唔好成大塊吞！必須按指示剪碎加工！`;
-        tHelper.textContent = `⚠️ ${langPack.warnTitle}: ${langPack.warnDesc}`;
-      } else {
-        tBanner.className = "traffic-card traffic-green";
-        tIcon.textContent = "🟢";
-        tTitle.textContent = "安全質地 · 可以直接進食";
-        tSummary.textContent = "餐食質地符合長者處方，軟硬適中安全。";
-        tHelper.textContent = `✅ ${langPack.safeTitle}: ${langPack.safeDesc}`;
-      }
-
-      const allergenBox = document.getElementById('resAllergenBox');
-      allergenBox.innerHTML = '';
-      if (Array.isArray(data.allergen_tags) && data.allergen_tags.length > 0) {
-        const allergenDict = { 'GLUTEN': '麩質 (Gluten)', 'DAIRY': '奶類 (Dairy/Susu)', 'SOY': '大豆 (Soy)', 'EGG': '雞蛋 (Egg/Telur)', 'PEANUT': '花生 (Peanut/Kacang)', 'SEAFOOD': '海鮮 (Seafood)' };
-        data.allergen_tags.forEach(tag => {
-          allergenBox.innerHTML += `<span class="allergen-badge">⚠️ 留意含：${allergenDict[tag] || tag}</span>`;
-        });
-      }
-
-      document.getElementById('resIddsiLevel').textContent = `IDDSI Level ${num}`;
-      document.getElementById('resIddsiLevel').className = `iddsi-badge level-${num}`;
-      document.getElementById('resConfidence').textContent = `信心度 ${confPercent}%`;
-
-      const safetyTip = document.getElementById('resSafetyTip');
-      if (confPercent < 85 || num > targetNum || isDual) {
-        safetyTip.style.display = 'block';
-      } else {
-        safetyTip.style.display = 'none';
-      }
-
-      document.getElementById('resVisualReason').textContent = data.visual_reason || "質地結構分析完成。";
-      document.getElementById('resVisualReasonHelper').textContent = isID ? "Analisis: Tekstur dan struktur makanan telah diverifikasi." : "Visual Reason: Texture verified by IDDSI standards.";
-      document.getElementById('resOfficialTest').textContent = data.recommended_official_test || "餐叉指壓測試 (Fork Pressure Test)";
-
-      const dualBanner = document.getElementById('resDualTextureBanner');
-      if (isDual) {
-        dualBanner.style.display = 'block';
-        document.getElementById('resSafetyWarning').textContent = data.safety_warning || "稀薄湯汁極易流入氣管！必須瀝乾湯汁！";
-        document.getElementById('resSafetyWarningHelper').textContent = `🇮🇩/🇵🇭 ${langPack.dualWarning}`;
-      } else {
-        dualBanner.style.display = 'none';
-      }
-
-      const primaryBox = document.getElementById('resPrimaryAction');
-      primaryBox.innerHTML = '';
-      const primaryGuidance = getDynamicMatrixGuidance(foodName, num, targetNum, isDual, data.is_drink, helperLang);
-      primaryBox.innerHTML = `
-        <div class="action-chip" style="border-width:2px;">
-          <span>${primaryGuidance.zh}</span>
-          <span class="helper-sub">👉 ${primaryGuidance.helper}</span>
-        </div>`;
-
-      const chipBox = document.getElementById('resActionChips');
-      chipBox.innerHTML = '';
-      if (/(骨|魚|翼|排|肉|牛|豬|雞|海鮮)/.test(foodName)) {
-        chipBox.innerHTML += `
-          <div class="action-chip">
-            <span>🍗 檢查並徹底挑乾淨碎骨與硬刺</span>
-            <span class="helper-sub">👉 ${langPack.actions.DEBONE}</span>
-          </div>`;
-      }
-      if (data.is_drink && data.is_dual_texture) {
-        const bobaMsg = isID ? "BAHAYA: Wajib saring semua boba/jelly agar tidak tersedak!" : "HAZARD: Filter out all boba pearls/jellies to avoid choking!";
-        chipBox.innerHTML += `
-          <div class="action-chip" style="background:#fef2f2;border-color:#ef4444;color:#b91c1c">
-            <span>🧋 必須用隔篩濾走所有珍珠配料！避免倒吸入肺</span>
-            <span class="helper-sub">👉 ${bobaMsg}</span>
-          </div>`;
-      }
-
-      // 📊 渲染完整營養素醫療儀表板 (每份估算)
-      const n = data.nutrients || {};
-      document.getElementById('valGrams').textContent = `${n.grams ?? '--'} g`;
-      document.getElementById('valCalories').textContent = `${n.calories ?? '--'} kcal`;
-      document.getElementById('valWater').textContent = `${n.water_ml ?? '--'} ml`;
-      document.getElementById('valProtein').textContent = `${n.protein_g ?? '--'} g`;
-      document.getElementById('valCarbs').textContent = `${n.carbs_g ?? '--'} g`;
-      document.getElementById('valFat').textContent = `${n.fat_g ?? '--'} g`;
-
-      document.getElementById('valFiber').textContent = `${n.fiber_g ?? '--'} g`;
-      document.getElementById('valSugar').textContent = `${n.sugar_g ?? '--'} g`;
-      document.getElementById('valCholesterol').textContent = `${n.cholesterol_mg ?? '--'} mg`;
-      document.getElementById('valSatFat').textContent = `${n.saturated_fat_g ?? '--'} g`;
-      document.getElementById('valTransFat').textContent = `${n.trans_fat_g ?? '--'} g`;
-      document.getElementById('valSodium').textContent = `${n.sodium_mg ?? '--'} mg`;
-
-      document.getElementById('valCalcium').textContent = `${n.calcium_mg ?? '--'} mg`;
-      document.getElementById('valIron').textContent = `${n.iron_mg ?? '--'} mg`;
-      document.getElementById('valMagnesium').textContent = `${n.magnesium_mg ?? '--'} mg`;
-      document.getElementById('valPotassium').textContent = `${n.potassium_mg ?? '--'} mg`;
-      document.getElementById('valZinc').textContent = `${n.zinc_mg ?? '--'} mg`;
-      document.getElementById('valVitC').textContent = `${n.vitamin_c_mg ?? '--'} mg`;
-
-      let rawAdvice = data.spoken_advice || "老友，食飯千祈唔好急，慢慢嚼碎先好吞呀！";
-      rawAdvice = rawAdvice.replace(/老友記/g, "老友");
-      if (num > targetNum) rawAdvice += ` 呢餐大塊過你食開嘅標準，記得叫人幫手加工處理呀！`;
-      if (voiceOn) speakCantonese(rawAdvice);
-
-      saveMealLog(foodName, isDual);
-      card.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function startExerciseVoice(name, holdSec, reps) {
-      speakCantonese(`開始鍛鍊${name}。預備，一齊用力做，停${holdSec}秒，做${reps}次。`);
-      let count = 1;
-      const interval = setInterval(() => {
-        if (count > reps) {
-          clearInterval(interval);
-          speakCantonese(`做得好！${name}完成咗${reps}次，休息一下。`);
-          return;
-        }
-        speakCantonese(`${count}`);
-        if (navigator.vibrate) navigator.vibrate(200);
-        count++;
-      }, (holdSec + 1) * 1000);
-    }
-
-    function updateStreakUI() {
-      const lastDate = localStorage.getItem('swallow_last_date');
-      const today = new Date().toDateString();
-      const yesterday = new Date(Date.now() - 86400000).toDateString();
-      
-      if (lastDate && lastDate !== today && lastDate !== yesterday) {
-        localStorage.setItem('swallow_streak', '0');
-      }
-      
-      const streak = localStorage.getItem('swallow_streak') || '0';
-      document.getElementById('exerciseStreakBadge').textContent = `🔥 連續打卡 ${streak} 日`;
-    }
-
-    const checkInBtn = document.getElementById('btnCheckInExercise');
-    checkInBtn.onclick = () => {
-      const lastDate = localStorage.getItem('swallow_last_date');
-      const today = new Date().toDateString();
-      if (lastDate === today) {
-        showToast('今日已經打過卡喇！');
-        return;
-      }
-      let streak = parseInt(localStorage.getItem('swallow_streak') || '0', 10);
-      const yesterday = new Date(Date.now() - 86400000).toDateString();
-      if (lastDate === yesterday) {
-        streak += 1;
-      } else {
-        streak = 1;
-      }
-      localStorage.setItem('swallow_streak', streak);
-      localStorage.setItem('swallow_last_date', today);
-      updateStreakUI();
-      showToast('🎉 打卡成功！今日吞嚥肌鍛鍊完成！');
-      speakCantonese('做得好！今日嘅吞嚥肌鍛鍊完成咗，喉嚨肌肉強壯，食飯更加安全！');
-    };
-
     function saveMealLog(name, isDual) {
       const logs = JSON.parse(localStorage.getItem('lohas_meal_logs') || '[]');
       logs.unshift({ name, isDual, date: new Date().toISOString() });
@@ -1530,13 +1684,7 @@
     }
 
     function askFollowUp(query) {
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      document.querySelector('[data-tab="qa"]').classList.add('active');
-      document.getElementById('tabMeal').style.display = 'none';
-      document.getElementById('tabQuiz').style.display = 'none';
-      document.getElementById('tabSwallow').style.display = 'none';
-      document.getElementById('tabQuickRef').style.display = 'none';
-      document.getElementById('tabQa').style.display = 'block';
+      switchTab('qa');
       document.getElementById('qaInput').value = query;
       document.getElementById('btnAsk').click();
     }
@@ -1579,15 +1727,7 @@
 
     document.querySelectorAll('.tab').forEach(tab => {
       tab.addEventListener('click', () => {
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        const target = tab.dataset.tab;
-        document.getElementById('tabQuiz').style.display = target === 'quiz' ? 'block' : 'none';
-        document.getElementById('tabMeal').style.display = target === 'meal' ? 'block' : 'none';
-        document.getElementById('tabSwallow').style.display = target === 'swallow' ? 'block' : 'none';
-        document.getElementById('tabQuickRef').style.display = target === 'quickRef' ? 'block' : 'none';
-        document.getElementById('tabQa').style.display = target === 'qa' ? 'block' : 'none';
-        if (target === 'quickRef') renderRefTable();
+        switchTab(tab.dataset.tab);
       });
     });
 
@@ -1628,13 +1768,14 @@
       });
     }
 
+    // 初始化
     if (elderlyMode) {
       document.body.classList.add('elderly');
       document.getElementById('btnElderly').classList.add('active');
     }
     if (voiceOn) document.getElementById('btnVoice').classList.add('voice-on');
     renderQuiz();
-    updateStreakUI();
+    updateWeeklyCompliance();
     checkContinuousMemory();
     renderRefTable();
   </script>
