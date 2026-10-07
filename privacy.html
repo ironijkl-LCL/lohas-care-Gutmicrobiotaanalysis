@@ -2,170 +2,2061 @@
 <html lang="zh-HK">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>隱私政策 · Lohascare GutSafe 樂活食得安</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0d9488">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="樂活食得安">
+  <meta name="description" content="Lohascare GutSafe 樂活食得安 - 腸道微生態、情緒安康與 IDDSI 動態吞嚥安全系統。家庭照顧者初篩參考，非醫療診斷。">
+  <link rel="manifest" href="./manifest.json">
+  <title>Lohascare GutSafe 樂活食得安 | 腸道微生態 · 情緒安康 · 吞嚥安全</title>
   <style>
-    :root { --teal: #0d9488; --text: #1c1c1e; --text2: #555; --bg: #f8fafc; }
+    :root {
+      --bg: #f4f4f7; --card: #ffffff; --card-glass: rgba(255,255,255,0.94);
+      --text: #1c1c1e; --text2: #636366; --teal: #0d9488; --teal-dark: #0f766e;
+      --green: #16a34a; --wa: #25D366; --wa-bubble: #dcf8c6; --blue: #007aff;
+      --orange: #f59e0b; --red: #dc2626;
+      --shadow: 0 8px 30px -6px rgba(0,0,0,0.08); --radius: 20px; --radius-sm: 14px;
+      --font-base: 16px; --font-title: 22px;
+      --app-max-w: 480px;
+
+      /* IDDSI 國際官方標準色碼 */
+      --iddsi-7: #000000; --iddsi-6: #2c5697; --iddsi-5: #ea7125; --iddsi-4: #65a143;
+      --iddsi-3: #fed430; --iddsi-2: #ee629c; --iddsi-1: #626366; --iddsi-0: #f8fafc;
+    }
+
+    @media (min-width: 768px) {
+      :root {
+        --app-max-w: 720px;
+        --font-base: 18px;
+        --font-title: 25px;
+      }
+      .traffic-card { padding: 20px !important; }
+      .traffic-icon { font-size: 42px !important; }
+      .swallow-exercise-card { padding: 20px !important; }
+      .exercise-img { max-height: 280px !important; }
+    }
+
+    @media (max-width: 374px) {
+      :root {
+        --font-base: 15px;
+        --font-title: 20px;
+      }
+      .tabs .tab { min-width: 52px; font-size: 11.5px; padding: 7px 1px; }
+      .header-actions .chip { font-size: 11.5px; padding: 4px 7px; }
+    }
+
     @media (prefers-color-scheme: dark) {
-      :root { --text: #f5f5f7; --text2: #aaa; --bg: #111; }
-      body { background: #000; }
-      .card { background: #1c1c1e; }
+      :root {
+        --bg: #000; --card: #1c1c1e; --card-glass: rgba(28,28,30,0.94);
+        --text: #f5f5f7; --text2: #a1a1a6; --wa-bubble: #0b3d2e;
+        --shadow: 0 8px 30px -6px rgba(0,0,0,0.45);
+      }
+      .danger-banner { background: #3b0a0a !important; border-color: #ef4444 !important; }
+      .danger-banner strong { color: #fca5a5 !important; }
+      .danger-banner p { color: #fecaca !important; }
+      .warning-banner-amber { background: #381a02 !important; border-color: #f59e0b !important; }
+      .warning-banner-amber strong { color: #fcd34d !important; }
+      .warning-banner-amber p { color: #fef3c7 !important; }
+      .memory-alert { background: #0c1e3d !important; border-color: #3b82f6 !important; color: #93c5fd !important; }
+      .iddsi-badge.level-0 { background: #1e293b !important; color: #f1f5f9 !important; border-color: #475569 !important; }
+      .traffic-card { background: #1f2937 !important; }
+      .mind-card { background: #2e1065 !important; border-color: #7c3aed !important; color: #ddd6fe !important; }
+      #userPrescription { background: #1c1c1e !important; color: #f5f5f7 !important; border-color: #3a3a3c !important; }
+      .safety-tip { background: #0c1e3d !important; border-color: #3b82f6 !important; color: #93c5fd !important; }
+      .med-metric-box { background: #2c2c2e !important; }
+      .med-metric-val { color: #ffffff !important; }
+      .med-metric-lbl { color: #a1a1a6 !important; }
+      .med-group-title { color: #d1d5db !important; }
+      .step-item { background: rgba(255,255,255,0.06) !important; color: #e5e7eb !important; }
+      .exercise-img-wrap { background: #111827 !important; }
+      .today-task-box { background: #1c1c1e !important; border-color: #374151 !important; }
+      .checklist-card { background: #241408 !important; border-color: #9a3412 !important; }
+      .onboard-card { background: #1c1c1e !important; }
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body.elderly { --font-base: 20px; --font-title: 26px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "PingFang HK", "Helvetica Neue", sans-serif;
-      background: var(--bg); color: var(--text); line-height: 1.65; padding: 24px 16px 60px;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang HK", "Noto Sans HK", "Helvetica Neue", sans-serif;
+      background: var(--bg); color: var(--text); min-height: 100vh; min-height: 100dvh;
+      display: flex; justify-content: center;
+      padding-top: calc(8px + env(safe-area-inset-top));
+      padding-bottom: calc(90px + env(safe-area-inset-bottom));
+      padding-left: calc(14px + env(safe-area-inset-left));
+      padding-right: calc(14px + env(safe-area-inset-right));
+      line-height: 1.55; font-size: var(--font-base); overflow-x: hidden;
     }
-    .wrap { max-width: 640px; margin: 0 auto; }
-    h1 { font-size: 22px; color: var(--teal); margin-bottom: 4px; }
-    .meta { font-size: 13px; color: var(--text2); margin-bottom: 24px; }
+    .app { width: 100%; max-width: var(--app-max-w); display: flex; flex-direction: column; gap: 12px; position: relative; transition: max-width .2s ease; }
+
+    .disclaimer-banner {
+      font-size: 11px; color: var(--text2); background: rgba(0,0,0,0.04);
+      padding: 6px 10px; border-radius: 8px; text-align: center; line-height: 1.35;
+    }
+    .header {
+      position: sticky; top: calc(4px + env(safe-area-inset-top)); z-index: 50; background: var(--card-glass);
+      backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border-radius: var(--radius); padding: 12px 14px; box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .brand { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+    .logo { font-size: 14.5px; font-weight: 800; letter-spacing: .3px; color: var(--teal); }
+    .header-actions { display: flex; align-items: center; gap: 6px; }
+    .chip {
+      font-size: 12.5px; font-weight: 700; padding: 6px 10px; border-radius: 18px;
+      border: 1.5px solid rgba(0,0,0,.12); background: var(--bg); color: var(--text); cursor: pointer;
+      min-height: 34px; display: inline-flex; align-items: center; justify-content: center;
+    }
+    .chip.active { background: var(--teal); color: #fff; border-color: var(--teal); }
+    .chip.voice-on { background: var(--wa); color: #fff; border-color: var(--wa); }
+    .chip.danger { background: #fee2e2; color: #dc2626; border-color: #ef4444; }
+
+    h1 { font-size: var(--font-title); font-weight: 800; letter-spacing: -.3px; margin-bottom: 2px; }
+    .sub { font-size: 13px; color: var(--text2); }
+
+    /* 今日護理看板 */
+    .today-task-box {
+      background: var(--card); border: 2px solid var(--teal); border-radius: 18px;
+      padding: 14px 16px; box-shadow: var(--shadow);
+    }
+    .task-bar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 14px; font-weight: 800; color: var(--teal); }
+    .task-progress-bar-wrap { height: 8px; background: rgba(0,0,0,0.06); border-radius: 6px; overflow: hidden; margin-bottom: 10px; }
+    .task-progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--teal), var(--green)); transition: width 0.4s ease; }
+    .task-chips-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; text-align: center; }
+    .task-chip-btn {
+      background: var(--bg); border: 1.5px solid transparent; border-radius: 10px; padding: 10px 4px;
+      font-size: 12.5px; font-weight: 800; cursor: pointer; transition: all .2s; color: var(--text);
+    }
+    .task-chip-btn.done { background: rgba(34,197,94,0.15); border-color: var(--green); color: var(--green); }
+    
+    .tabs { display: flex; gap: 4px; margin-bottom: 2px; }
+    .tab {
+      flex: 1; text-align: center; padding: 9px 2px; border-radius: 11px; font-size: 12.5px; font-weight: 700;
+      background: var(--card); color: var(--text2); cursor: pointer; border: 1.5px solid transparent; min-height: 42px;
+    }
+    .tab.active { background: var(--teal); color: #fff; }
     .card {
-      background: #fff; border-radius: 16px; padding: 20px; margin-bottom: 16px;
-      box-shadow: 0 4px 20px rgba(0,0,0,.05);
+      background: var(--card); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow);
+      animation: cardIn .25s ease both;
     }
-    h2 { font-size: 16px; margin-bottom: 8px; color: var(--teal); }
-    p, li { font-size: 14px; color: var(--text2); margin-bottom: 8px; }
-    ul { padding-left: 20px; margin-bottom: 8px; }
-    .lang-switch { margin-bottom: 20px; }
-    .lang-switch button {
-      padding: 6px 14px; border-radius: 20px; border: 1.5px solid #ddd; background: #fff;
-      font-size: 13px; font-weight: 600; cursor: pointer; margin-right: 6px;
+    @keyframes cardIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; } }
+
+    .traffic-card {
+      border-radius: 16px; padding: 16px; color: #fff; margin-bottom: 12px;
+      display: flex; align-items: flex-start; gap: 12px; box-shadow: 0 4px 14px rgba(0,0,0,0.12);
     }
-    .lang-switch button.active { background: var(--teal); color: #fff; border-color: var(--teal); }
-    .en { display: none; }
-    body.show-en .zh { display: none; }
-    body.show-en .en { display: block; }
-    .warning { background: #fff7ed; border-left: 4px solid #f97316; padding: 10px 12px; border-radius: 8px; margin: 8px 0; font-size: 13px; color: #9a3412; }
+    .traffic-green { background: linear-gradient(135deg, #15803d, #16a34a); }
+    .traffic-yellow { background: linear-gradient(135deg, #b45309, #d97706); }
+    .traffic-red { background: linear-gradient(135deg, #b91c1c, #dc2626); }
+    .traffic-icon { font-size: 34px; flex-shrink: 0; line-height: 1; }
+    .traffic-text h3 { font-size: 17.5px; font-weight: 800; margin-bottom: 3px; }
+    .traffic-text p { font-size: 13.5px; opacity: 0.95; line-height: 1.35; }
+    .traffic-text .helper-line { font-size: 12.5px; opacity: 0.92; margin-top: 6px; font-style: italic; border-top: 1px solid rgba(255,255,255,0.25); padding-top: 5px; }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 12px 16px; border-radius: 14px; font-size: 15.5px; font-weight: 700;
+      border: none; cursor: pointer; min-height: 48px; width: 100%; transition: all 0.2s;
+    }
+    .btn:active { transform: scale(.98); }
+    .btn-primary { background: var(--teal); color: #fff; }
+    .btn-wa { background: var(--wa); color: #fff; }
+    .btn-voice { background: #7c3aed; color: #fff; }
+    .btn-outline { background: transparent; border: 1.5px solid rgba(0,0,0,.18); color: var(--text); }
+    .btn-ghost { background: var(--bg); color: var(--text); }
+    .btn-danger { background: #dc2626; color: #fff; }
+
+    /* 影相掃描與雷達波 */
+    #previewWrap {
+      position: relative; margin-top: 10px; border-radius: 14px; overflow: hidden; background: #000;
+      width: 100%; max-height: clamp(260px, 45vh, 460px);
+      display: none; justify-content: center; align-items: center;
+    }
+    #imagePreview {
+      width: 100%; height: 100%; max-height: clamp(260px, 45vh, 460px); object-fit: contain; display: block;
+    }
+    .scan-line {
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, transparent, #22c55e, transparent);
+      box-shadow: 0 0 14px #22c55e; display: none; z-index: 15;
+      animation: scanAnim 1.8s infinite ease-in-out;
+    }
+    @keyframes scanAnim {
+      0% { top: 5%; }
+      50% { top: 92%; }
+      100% { top: 5%; }
+    }
+
+    #rulerBox {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      border: 2.5px dashed #22c55e; background: rgba(34, 197, 94, 0.22);
+      border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      cursor: move; touch-action: none; box-shadow: 0 0 12px rgba(34, 197, 94, 0.45);
+      user-select: none; z-index: 10;
+    }
+    .ruler-tag {
+      background: rgba(0, 0, 0, 0.85); color: #4ade80; font-size: 11px; font-weight: 800;
+      padding: 2px 6px; border-radius: 4px; pointer-events: none; white-space: nowrap;
+    }
+    .ruler-control-panel {
+      display: flex; flex-direction: column; gap: 8px; background: var(--bg);
+      padding: 10px 14px; border-radius: 12px; margin-top: 8px;
+    }
+    .ruler-btn-group { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
+    .ruler-chip {
+      padding: 6px 14px; font-size: 12px; font-weight: 800; border-radius: 20px;
+      border: 1.5px solid var(--teal); background: var(--card); color: var(--teal); cursor: pointer;
+    }
+    .ruler-chip.active { background: var(--teal); color: #fff; }
+
+    /* 醒目警示橫幅 */
+    .danger-banner {
+      background: #fef2f2; border: 2px solid #ef4444; border-radius: 14px;
+      padding: 12px 14px; margin: 10px 0;
+    }
+    .warning-banner-amber {
+      background: #fffbeb; border: 2px solid #f59e0b; border-radius: 14px;
+      padding: 12px 14px; margin: 10px 0;
+    }
+
+    /* 核心照護動作大卡片 */
+    .primary-action-card {
+      background: #fff7ed; border: 2px solid #ea580c; border-radius: 14px;
+      padding: 12px 14px; margin: 10px 0; display: flex; flex-direction: column; gap: 5px;
+      box-shadow: 0 2px 8px rgba(234,88,12,0.12);
+    }
+    .primary-action-zh { font-size: 15.5px; font-weight: 900; color: #c2410c; line-height: 1.35; }
+    .primary-action-helper {
+      font-size: 13px; font-weight: 700; color: #9a3412; background: rgba(234,88,12,0.12);
+      padding: 4px 8px; border-radius: 6px; display: inline-block; width: fit-content;
+    }
+
+    /* 可勾選照護動作清單 (Checklist) */
+    .checklist-card {
+      background: var(--bg); border: 1.5px solid rgba(0,0,0,0.1); border-radius: 14px;
+      padding: 12px 14px; margin: 10px 0;
+    }
+    .checklist-title { font-size: 13.5px; font-weight: 800; color: var(--text); margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; }
+    .checklist-item {
+      display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; cursor: pointer; font-size: 13.5px; line-height: 1.4;
+    }
+    .checklist-item input[type="checkbox"] { width: 19px; height: 19px; margin-top: 2px; accent-color: var(--teal); flex-shrink: 0; }
+    .checklist-text { flex: 1; }
+    .checklist-helper { font-size: 12px; color: var(--text2); font-style: italic; display: block; margin-top: 2px; }
+
+    .iddsi-badge {
+      display: inline-block; padding: 6px 12px; border-radius: 10px; font-weight: 900;
+      font-size: 14px; margin-bottom: 6px; color: #ffffff; letter-spacing: 0.3px;
+    }
+    .iddsi-badge.level-7 { background-color: var(--iddsi-7); color: #fff; }
+    .iddsi-badge.level-6 { background-color: var(--iddsi-6); color: #fff; }
+    .iddsi-badge.level-5 { background-color: var(--iddsi-5); color: #fff; }
+    .iddsi-badge.level-4 { background-color: var(--iddsi-4); color: #fff; }
+    .iddsi-badge.level-3 { background-color: var(--iddsi-3); color: #1c1c1e; }
+    .iddsi-badge.level-2 { background-color: var(--iddsi-2); color: #fff; }
+    .iddsi-badge.level-1 { background-color: var(--iddsi-1); color: #fff; }
+    .iddsi-badge.level-0 { background-color: var(--iddsi-0); color: #0f172a; border: 1.5px solid #cbd5e1; }
+
+    .allergen-badge {
+      display: inline-block; padding: 4px 8px; border-radius: 6px; font-size: 11.5px;
+      font-weight: 800; background: #fee2e2; color: #b91c1c; border: 1px solid #f87171; margin-right: 4px; margin-bottom: 4px;
+    }
+
+    /* 完整營養素醫療儀表板 */
+    .med-dashboard-wrap {
+      background: var(--card); border-radius: 14px; padding: 14px; margin: 12px 0;
+      border: 1px solid rgba(0,0,0,0.06); box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    }
+    .med-dashboard-title {
+      font-size: 14.5px; font-weight: 900; color: var(--teal); margin-bottom: 4px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .med-disclaimer-note { font-size: 11px; color: var(--text2); margin-bottom: 10px; font-weight: 600; }
+    .med-group-title { font-size: 12.5px; font-weight: 800; color: #4b5563; margin: 10px 0 5px; }
+    .med-metric-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 6px; }
+    .med-metric-box {
+      background: #f3f4f6; border-radius: 10px; padding: 8px 4px; text-align: center;
+      display: flex; flex-direction: column; justify-content: center; min-height: 54px;
+    }
+    .med-metric-lbl { font-size: 11px; color: #6b7280; font-weight: 600; margin-bottom: 2px; }
+    .med-metric-val { font-size: 14px; font-weight: 800; color: #111827; }
+
+    /* 吞嚥肌運動動作解析 */
+    .swallow-exercise-card {
+      background: var(--bg); border-left: 4.5px solid var(--teal); padding: 14px 15px;
+      border-radius: 12px; margin-bottom: 14px;
+    }
+    .exercise-img-wrap {
+      width: 100%; border-radius: 12px; overflow: hidden; margin: 8px 0 10px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08); background: #1f2937; position: relative;
+    }
+    .exercise-img { width: 100%; max-height: 220px; object-fit: cover; display: block; }
+    .fallback-svg-illu {
+      width: 100%; height: 160px; display: none; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #0f766e, #0d9488); color: #fff; text-align: center; padding: 16px;
+    }
+    .exercise-mistake-box {
+      background: #fef2f2; border: 1.5px solid #fecaca; border-radius: 10px; padding: 8px 12px;
+      font-size: 12px; color: #991b1b; line-height: 1.45; margin-top: 8px;
+    }
+    .exercise-steps { display: flex; flex-direction: column; gap: 8px; margin: 8px 0; }
+    .step-item {
+      display: flex; gap: 8px; align-items: flex-start; font-size: 13px; line-height: 1.45;
+      background: rgba(0,0,0,0.02); padding: 8px 10px; border-radius: 8px;
+    }
+    .step-pill {
+      background: var(--teal); color: #fff; font-size: 11px; font-weight: 800;
+      padding: 2px 6px; border-radius: 6px; white-space: nowrap; flex-shrink: 0; margin-top: 1px;
+    }
+
+    /* 倒數計時視覺環 Modal */
+    .timer-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000;
+      display: none; align-items: center; justify-content: center; flex-direction: column; padding: 20px;
+    }
+    .timer-card {
+      background: var(--card); border-radius: 24px; padding: 24px 20px; max-width: 360px; width: 100%;
+      text-align: center; box-shadow: var(--shadow); position: relative;
+    }
+    .timer-circle-wrap {
+      position: relative; width: 150px; height: 150px; margin: 12px auto; display: flex; align-items: center; justify-content: center;
+    }
+    .timer-ring-svg { transform: rotate(-90deg); width: 100%; height: 100%; }
+    .timer-ring-bg { fill: none; stroke: rgba(0,0,0,0.08); stroke-width: 10; }
+    .timer-ring-bar {
+      fill: none; stroke: var(--teal); stroke-width: 10; stroke-linecap: round;
+      stroke-dasharray: 408; stroke-dashoffset: 0; transition: stroke-dashoffset 1s linear;
+    }
+    .timer-number { position: absolute; font-size: 54px; font-weight: 900; color: var(--teal); }
+    .timer-action-hint { font-size: 17px; font-weight: 800; color: var(--text); margin-top: 4px; }
+
+    /* 首次啟動導覽 Onboarding */
+    .onboard-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.82); z-index: 2000;
+      display: none; align-items: center; justify-content: center; padding: 20px;
+    }
+    .onboard-card {
+      background: var(--card); border-radius: 24px; padding: 28px 22px; max-width: 400px; width: 100%;
+      text-align: center; box-shadow: var(--shadow);
+    }
+    .onboard-step { display: none; }
+    .onboard-step.active { display: block; animation: cardIn .3s ease; }
+    .onboard-icon { font-size: 48px; margin-bottom: 12px; }
+    .onboard-title { font-size: 22px; font-weight: 900; margin-bottom: 10px; color: var(--teal); }
+    .onboard-desc { font-size: 15.5px; line-height: 1.5; color: var(--text); margin-bottom: 20px; }
+    .onboard-dots { display: flex; justify-content: center; gap: 8px; margin: 16px 0; }
+    .onboard-dot { width: 10px; height: 10px; border-radius: 50%; background: #d1d5db; }
+    .onboard-dot.active { background: var(--teal); }
+
+    .q-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .q-num {
+      width: 34px; height: 34px; background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 14.5px; font-weight: 800; flex-shrink: 0;
+    }
+    .q-title { font-size: 16.5px; font-weight: 700; flex: 1; line-height: 1.4; }
+    .speak-btn {
+      width: 42px; height: 42px; border-radius: 50%; border: none; background: var(--bg);
+      font-size: 20px; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    }
+    .options { display: flex; flex-direction: column; gap: 8px; }
+    .opt {
+      display: flex; align-items: center; background: var(--bg); padding: 14px 16px; border-radius: var(--radius-sm);
+      cursor: pointer; border: 2px solid transparent; transition: .2s; min-height: 54px;
+    }
+    .opt.selected { background: var(--wa-bubble); border-color: var(--wa); }
+    .radio {
+      width: 22px; height: 22px; border: 2px solid var(--text2); border-radius: 50%; margin-right: 12px;
+      flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    }
+    .radio::after { content: ''; width: 11px; height: 11px; border-radius: 50%; background: #fff; transform: scale(0); transition: .15s; }
+    .opt.selected .radio { background: var(--wa); border-color: var(--wa); }
+    .opt.selected .radio::after { transform: scale(1); }
+    .opt-label { flex: 1; font-weight: 600; font-size: 15.5px; }
+
+    .progress-wrap { margin-top: 10px; height: 7px; background: rgba(0,0,0,.08); border-radius: 4px; overflow: hidden; }
+    .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--teal), var(--blue)); border-radius: 4px; transition: width .35s; }
+    .progress-text { font-size: 13px; color: var(--text2); margin-top: 5px; text-align: right; font-weight: 600; }
+
+    .ex-item {
+      background: var(--bg); border-left: 4.5px solid var(--teal); padding: 12px 14px;
+      border-radius: 8px; margin-bottom: 8px; font-size: 14px; line-height: 1.5;
+    }
+    .ex-time { font-size: 12.5px; color: var(--teal); font-weight: 800; }
+
+    .mind-card {
+      background: #f5f3ff; border: 1.5px solid #c4b5fd; border-radius: 12px; padding: 12px 14px;
+      margin-top: 10px; font-size: 13.5px; line-height: 1.5; color: #5b21b6;
+    }
+
+    .streak-badge {
+      display: inline-flex; align-items: center; gap: 4px; background: #fef3c7; color: #b45309;
+      font-weight: 800; font-size: 12px; padding: 4px 8px; border-radius: 8px; margin-bottom: 8px;
+    }
+
+    .followup-bar { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+    .followup-btn {
+      background: var(--bg); border: 1px solid var(--teal); color: var(--teal);
+      font-size: 12.5px; font-weight: 700; padding: 7px 11px; border-radius: 16px; cursor: pointer;
+    }
+
+    #btnEmergencyFloat {
+      position: fixed;
+      bottom: calc(20px + env(safe-area-inset-bottom));
+      right: calc(20px + env(safe-area-inset-right));
+      width: 62px; height: 62px; border-radius: 50%;
+      background: #dc2626; color: #fff; font-size: 27px; border: none;
+      box-shadow: 0 4px 18px rgba(220,38,38,.5); z-index: 99; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform .15s ease;
+    }
+    #btnEmergencyFloat:active { transform: scale(0.92); }
+
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 999;
+      display: none; align-items: center; justify-content: center;
+      padding: calc(16px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom));
+    }
+    .modal-box {
+      background: var(--card); border-radius: 20px; padding: 22px; max-width: min(480px, 92vw); width: 100%;
+      max-height: 85vh; overflow-y: auto; box-shadow: var(--shadow);
+    }
+
+    .toast {
+      position: fixed; bottom: calc(25px + env(safe-area-inset-bottom)); left: 50%;
+      transform: translateX(-50%) translateY(80px); background: #1c1c1e; color: #fff;
+      padding: 12px 20px; border-radius: 14px; font-size: 14px; font-weight: 600;
+      z-index: 100; opacity: 0; transition: .3s; pointer-events: none; max-width: 90%; text-align: center;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    .footer {
+      text-align: center; font-size: 12px; color: var(--text2); padding: 16px 0 28px; line-height: 1.6;
+    }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="lang-switch">
-      <button class="active" id="btnZh">中文</button>
-      <button id="btnEn">English</button>
+  <div class="app">
+    <div class="disclaimer-banner">
+      ⚕️ 本系統供家庭照顧者吞嚥質地初篩參考，非醫療診斷。有持續不適請遵醫囑。
     </div>
 
-    <div class="zh">
-      <h1>隱私政策</h1>
-      <p class="meta">Lohascare GutSafe 樂活食得安<br>最後更新：2026 年 10 月</p>
+    <!-- 浮動急救按鈕 -->
+    <button id="btnEmergencyFloat" aria-label="緊急哽親急救">🆘</button>
 
-      <div class="card">
-        <h2>1. 概述</h2>
-        <p>本 App（「樂活食得安」）由 Lohascare 提供，定位為家庭照顧者飲食安全與腸道健康<strong>初篩參考工具</strong>，並非醫療診斷或醫療器械。</p>
-      </div>
-
-      <div class="card">
-        <h2>2. 我們如何處理資料</h2>
-        <p><strong>問卷答案、運動打卡、緊急聯絡電話、語言與大字設定：</strong><br>
-        只儲存在你裝置的本地儲存（localStorage），不會上傳到我們的伺服器。</p>
-        <p><strong>餐膳相片（你主動使用「影相驗餐」時）：</strong></p>
-        <div class="warning">
-          當你選擇分析餐膳相片，相片會被傳送至我們的分析服務（目前託管於 Cloudflare Workers），僅用於產生該次質地與吞嚥安全參考建議。我們不會用這些相片建立個人檔案、不會出售，亦不會用於廣告。
+    <header class="header">
+      <div class="brand">
+        <span class="logo">🌿 Lohascare GutSafe 樂活食得安</span>
+        <div class="header-actions">
+          <button class="chip danger" id="btnEmergency">🚨 哽親急救</button>
+          <button class="chip" id="btnLangToggle">🇮🇩 Bahasa</button>
+          <button class="chip" id="btnOpenMoreMenu">⚙️ 更多</button>
         </div>
-        <p>分析完成後，我們不會長期保存可識別你身分的相片內容。若服務暫時無法連線，App 會改用離線參考模式，相片不會被傳送。</p>
       </div>
+      <h1 id="headerTitle">腸道微生態 · 情緒安康 · 吞嚥安全</h1>
+      <p class="sub">食得安樂 · 肚仔順暢 · 喉嚨舒爽</p>
+    </header>
 
-      <div class="card">
-        <h2>3. 權限說明</h2>
-        <ul>
-          <li><strong>相機</strong>：僅在你主動拍攝餐膳時使用。</li>
-          <li><strong>相簿</strong>：僅在你選擇已有相片進行分析時使用。</li>
-          <li><strong>麥克風</strong>：僅在你主動使用語音輸入或語音提問時使用；音訊不會被儲存或上傳。</li>
-        </ul>
+    <!-- 🏆 今日護理三部曲 -->
+    <div class="today-task-box">
+      <div class="task-bar-header">
+        <span>📅 今日護理進度</span>
+        <span id="weeklyComplianceText">本週打卡率: 0%</span>
       </div>
-
-      <div class="card">
-        <h2>4. 資料分享與第三方</h2>
-        <p>我們不會將你的資料出售或用於廣告追蹤。餐膳分析服務僅用於完成你當次要求的質地參考分析。家庭分享功能由你主動產生文字報告並透過 WhatsApp 等自行發送，資料控制權在你手上。</p>
+      <div class="task-progress-bar-wrap">
+        <div class="task-progress-fill" id="taskProgressBar"></div>
       </div>
-
-      <div class="card">
-        <h2>5. 資料刪除</h2>
-        <p>你可隨時在 App 內清除本地歷史與日誌。卸載 App 或清除 App 資料即可刪除裝置上的所有本地記錄。如需查詢分析服務端的資料處理，可透過下方聯絡方式與我們聯繫。</p>
-      </div>
-
-      <div class="card">
-        <h2>6. 兒童私隱</h2>
-        <p>本 App 不針對 13 歲以下兒童設計，亦不會故意收集兒童資料。</p>
-      </div>
-
-      <div class="card">
-        <h2>7. 香港法例與醫療免責</h2>
-        <p>我們遵守香港《個人資料（私隱）條例》。本 App 提供的評估與建議僅供健康生活方式自我參考，不能取代專業醫療診斷或言語治療師的指導。有持續不適請諮詢醫生或言語治療師。</p>
-      </div>
-
-      <div class="card">
-        <h2>8. 聯絡我們</h2>
-        <p>私隱相關查詢，請電郵：<strong>privacy@lohascare.example</strong>（請改成你真實會收信的地址）</p>
+      <div class="task-chips-grid">
+        <button class="task-chip-btn" id="taskBtnMeal" onclick="switchTab('meal')">📸 1. 驗餐</button>
+        <button class="task-chip-btn" id="taskBtnSwallow" onclick="switchTab('swallow')">👅 2. 吞嚥操</button>
+        <button class="task-chip-btn" id="taskBtnQuiz" onclick="switchTab('quiz')">🦠 3. 查腸道</button>
       </div>
     </div>
 
-    <div class="en">
-      <h1>Privacy Policy</h1>
-      <p class="meta">Lohascare GutSafe<br>Last updated: October 2026</p>
+    <div class="memory-alert" id="memoryAlertBox" style="display:none;padding:12px;border-radius:12px;font-size:13.5px;line-height:1.45;background:#eff6ff;border:1.5px solid #3b82f6;color:#1e40af;">
+      💡 <strong>老友溫馨提示：</strong><span id="memoryAlertMsg"></span>
+    </div>
 
-      <div class="card">
-        <h2>1. Overview</h2>
-        <p>This App (“Lohascare GutSafe”) is provided by Lohascare as a <strong>lifestyle screening and caregiver reference tool</strong>. It is not a medical device and does not provide medical diagnosis.</p>
-      </div>
+    <div class="tabs">
+      <button class="tab active" data-tab="meal">📸 驗飯餸</button>
+      <button class="tab" data-tab="swallow">👅 練吞嚥</button>
+      <button class="tab" data-tab="quiz">🦠 查腸道</button>
+      <button class="tab" data-tab="quickRef">📖 港食表</button>
+      <button class="tab" data-tab="qa">💬 街坊傾</button>
+    </div>
 
+    <!-- 分頁 1: 影相驗餐 -->
+    <div id="tabMeal">
       <div class="card">
-        <h2>2. How we handle data</h2>
-        <p><strong>Quiz answers, exercise logs, emergency contact, language and large-text settings:</strong><br>
-        Stored only in local storage on your device and not uploaded to our servers.</p>
-        <p><strong>Meal photos (when you actively use photo analysis):</strong></p>
-        <div class="warning">
-          When you choose to analyse a meal photo, the image is sent to our analysis service (currently hosted on Cloudflare Workers) solely to generate texture and swallowing-safety reference suggestions for that request. We do not build personal profiles from these photos, do not sell them, and do not use them for advertising.
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <label style="font-size:14.5px;font-weight:800" id="labelTargetLevel">老友目標餐質要求：</label>
+          <button class="chip" id="btnShowForkGuide" style="border-color:var(--teal);color:var(--teal)">🍴 官方測試法</button>
         </div>
-        <p>We do not retain identifiable photo content long-term. If the service is unavailable, the App falls back to offline reference mode and the photo is not transmitted.</p>
-      </div>
+        <select id="userPrescription" style="width:100%;padding:10px;border-radius:12px;font-weight:800;margin-bottom:12px;font-size:14px">
+          <option value="Level 7">⬛ Level 7 - 原質食物 (平時正常食法)</option>
+          <option value="Level 6">🟦 Level 6 - 軟質一口量 (切細至 15mm)</option>
+          <option value="Level 5" selected>🟧 Level 5 - 細碎及濕潤 (剁碎至 4mm 爛飯)</option>
+          <option value="Level 4">🟩 Level 4 - 純糊狀 (幼滑完全無粒)</option>
+          <option value="Level 3">🟨 Level 3 - 稠流質 (流質但有稠度)</option>
+        </select>
 
-      <div class="card">
-        <h2>3. Permissions</h2>
-        <ul>
-          <li><strong>Camera</strong>: used only when you take a meal photo.</li>
-          <li><strong>Photo Library</strong>: used only when you select an existing photo for analysis.</li>
-          <li><strong>Microphone</strong>: used only for voice input features you initiate; audio is not stored or uploaded.</li>
-        </ul>
-      </div>
+        <div style="border:2px dashed var(--teal);padding:20px;border-radius:14px;text-align:center;background:rgba(13,148,136,.04);cursor:pointer" onclick="document.getElementById('mealInput').click()">
+          <div style="font-size:32px">📷</div>
+          <div style="font-weight:800;font-size:15.5px" id="labelUploadPrompt">撳呢度影低碟餸</div>
+          <div style="font-size:12.5px;color:var(--text2)" id="labelUploadSub">即時睇下夠唔夠軟熟、有無碎骨同嗆咳風險</div>
+          <input type="file" id="mealInput" accept="image/*" capture="environment" style="display:none">
+        </div>
 
-      <div class="card">
-        <h2>4. Sharing and third parties</h2>
-        <p>We do not sell your data or use it for ad tracking. The analysis service is used only to fulfil your request. Family sharing is activated only when you generate and send a report yourself.</p>
-      </div>
+        <div id="previewWrap">
+          <div class="scan-line" id="scanLaserLine"></div>
+          <img id="imagePreview" alt="餐食預覽">
+          <div id="rulerBox" style="width:100px;height:100px;">
+            <span class="ruler-tag" id="rulerTagText">📏 15mm 一口量</span>
+            <span style="font-size:10px;color:#fff;opacity:0.85;margin-top:2px;pointer-events:none">👈 按住可拖去舊餸度量下 👉</span>
+          </div>
+        </div>
 
-      <div class="card">
-        <h2>5. Deleting data</h2>
-        <p>You can clear local history and logs inside the App at any time. Uninstalling the App removes all local data. For questions about the analysis service, contact us below.</p>
-      </div>
+        <div class="ruler-control-panel" id="rulerControlPanel" style="display:none">
+          <div class="ruler-btn-group">
+            <button class="ruler-chip active" id="btnMode15">📏 15mm 軟餐 (叉背寬)</button>
+            <button class="ruler-chip" id="btnMode4">📐 4mm 碎餐 (叉齒間隙)</button>
+            <button class="ruler-chip" id="btnToggleRuler">👁️ 隱藏標尺</button>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2)">
+            <span>🔍 實物校準：</span>
+            <input type="range" id="rulerScaleSlider" min="30" max="220" value="100" style="flex:1">
+            <span id="sliderValueText" style="font-weight:800;color:var(--teal)">100px</span>
+          </div>
+          <div style="font-size:11.5px;color:var(--teal);text-align:center">
+            💡 醒你一招：影相嗰陣放把真餐叉喺舊肉隔離，拉滑桿對齊叉背闊度，就知有無超標！
+          </div>
+        </div>
 
-      <div class="card">
-        <h2>6. Children’s privacy</h2>
-        <p>This App is not directed at children under 13.</p>
-      </div>
+        <button class="btn btn-primary" id="btnAnalyzeMeal" style="display:none;margin-top:12px">開始睇下食唔食得</button>
 
-      <div class="card">
-        <h2>7. Hong Kong law & medical disclaimer</h2>
-        <p>We comply with the Personal Data (Privacy) Ordinance. Assessments and suggestions are for lifestyle reference only and do not replace professional medical or speech-therapy advice.</p>
-      </div>
+        <!-- 辨識結果報告 -->
+        <div id="mealReportCard" style="display:none;margin-top:14px">
+          <!-- 交通燈大卡片 -->
+          <div class="traffic-card traffic-green" id="trafficBanner">
+            <div class="traffic-icon" id="trafficIcon">🟢</div>
+            <div class="traffic-text">
+              <h3 id="trafficTitle">過關！食得！放心開餐</h3>
+              <p id="trafficSummary">質地啱啱好，軟腍腍，老友慢慢食，無有怕！</p>
+              <div class="helper-line" id="trafficHelper">Aman: Tekstur makanan sesuai dan aman dikonsumsi.</div>
+            </div>
+          </div>
 
-      <div class="card">
-        <h2>8. Contact</h2>
-        <p>Privacy enquiries: <strong>privacy@lohascare.example</strong> (replace with your real address)</p>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+            <span class="iddsi-badge level-5" id="resIddsiLevel">Level 5</span>
+            <span style="font-size:12px;color:var(--text2)" id="resConfidence">睇得好清楚 (90%)</span>
+          </div>
+          
+          <div style="margin:6px 0 10px">
+            <h2 style="font-size:20px;font-weight:900;margin:0" id="resFoodName">食物名稱</h2>
+            <div style="font-size:13.5px;color:var(--teal);font-weight:700" id="resFoodNameHelper">Nama Makanan</div>
+          </div>
+
+          <div id="resAllergenBox" style="margin:6px 0"></div>
+
+          <!-- 🚨 警示橫幅 1: 雙重質地嗆咳警示 (Dual-texture) -->
+          <div class="danger-banner" id="resDualTextureBanner" style="display:none">
+            <strong style="color:#b91c1c;display:block;font-size:15px">⚠️ 停手！又湯又渣！極易濁到咳！</strong>
+            <p id="resSafetyWarning" style="font-size:13.5px;color:#7f1d1d;line-height:1.45;margin-top:4px"></p>
+            <div id="resSafetyWarningHelper" style="font-size:12.5px;color:#991b1b;margin-top:4px;font-weight:700;border-top:1px dashed #ef4444;padding-top:4px"></div>
+          </div>
+
+          <!-- 🚨 警示橫幅 2: 質地偏硬超標警示 (Hardness Exceeded) -->
+          <div class="warning-banner-amber" id="resHardnessWarningBanner" style="display:none">
+            <strong style="color:#b45309;display:block;font-size:15px">⚠️ 喂等等！呢碟太硬太韌！千祈咪成啖吞</strong>
+            <p id="resHardnessWarningText" style="font-size:13.5px;color:#78350f;line-height:1.45;margin-top:4px"></p>
+            <div id="resHardnessWarningHelper" style="font-size:12.5px;color:#92400e;margin-top:4px;font-weight:700;border-top:1px dashed #f59e0b;padding-top:4px"></div>
+          </div>
+
+          <!-- 💥 核心照護動作警示大卡片 -->
+          <div class="primary-action-card" id="resPrimaryActionCard">
+            <div class="primary-action-zh" id="resPrimaryActionZh">✂️ 幫緊你諗緊點搞最安全...</div>
+            <div class="primary-action-helper" id="resPrimaryActionHelper">👉 Memproses tindakan perawat...</div>
+          </div>
+
+          <!-- 📋 開餐前安全核對清單 (Checklist) -->
+          <div class="checklist-card" id="resChecklistCard">
+            <div class="checklist-title">
+              <span>📋 開餐前搞掂呢幾步（逐樣打勾）：</span>
+              <span id="checklistProgress" style="font-size:12px;color:var(--teal)">未搞掂</span>
+            </div>
+            <div id="checklistItemsContainer"></div>
+          </div>
+
+          <!-- 📊 完整營養素醫療儀表板 (摺疊收納，避免眼花) -->
+          <details style="margin:10px 0;background:var(--bg);padding:10px 12px;border-radius:12px;font-size:13px">
+            <summary style="font-weight:800;cursor:pointer;color:var(--teal)">📊 查看完整營養素醫療儀表板 (每份估算)</summary>
+            <div class="med-dashboard-wrap" style="box-shadow:none;border:none;padding:6px 0 0;margin:0">
+              <div class="med-disclaimer-note">⚠️ 數值為視覺估算參考，唔好當成精密化驗報告。</div>
+              <div class="med-group-title">熱量與基礎指標</div>
+              <div class="med-metric-grid">
+                <div class="med-metric-box"><span class="med-metric-lbl">總重量</span><span class="med-metric-val" id="valGrams">-- g</span></div>
+                <div class="med-metric-box"><span class="med-metric-lbl">熱量</span><span class="med-metric-val" id="valCalories">-- kcal</span></div>
+                <div class="med-metric-box"><span class="med-metric-lbl">水份含量</span><span class="med-metric-val" id="valWater">-- ml</span></div>
+                <div class="med-metric-box"><span class="med-metric-lbl">蛋白質</span><span class="med-metric-val" id="valProtein">-- g</span></div>
+                <div class="med-metric-box"><span class="med-metric-lbl">碳水化合物</span><span class="med-metric-val" id="valCarbs">-- g</span></div>
+                <div class="med-metric-box"><span class="med-metric-lbl">總脂肪</span><span class="med-metric-val" id="valFat">-- g</span></div>
+              </div>
+
+              <div class="med-group-title">心血管與腸道防護 (脂肪/糖/纖維)</div>
+              <div class="med-metric-grid">
+                <div class="med-metric-box"><span class="med-metric-lbl">膳食纖維</span><span class="med-metric-val" id="valFiber">-- g</span></div>
+                <div class="med-metric-box"><span class="med-metric-lbl">糖份</span><span class="med-metric-val" id="valSugar">-- g</span></div>
+                <div class="med-metric-box"><span class="med-metric-lbl">膽固醇</span><span class="med-metric-val" id="valCholesterol">-- mg</span></div>
+                <div class="med-metric-box"><span class="med-metric-lbl">飽和脂肪</span><span class="med-metric-val" id="valSatFat">-- g</span></div>
+                <div class="med-metric-box"><span class="med-metric-lbl">反式脂肪</span><span class="med-metric-val" id="valTransFat">-- g</span></div>
+                <div class="med-metric-box"><span class="med-metric-lbl">鈉 (鹽份)</span><span class="med-metric-val" id="valSodium">-- mg</span></div>
+              </div>
+
+              <div class="med-group-title">骨骼與電解質微量元素</div>
+              <div class="med-metric-grid">
+                <div class="med-metric-box"><span class="med-metric-lbl">鈣 (骨骼)</span><span class="med-metric-val" id="valCalcium">-- mg</span></div>
+                <div class="med-metric-box"><span class="med-metric-lbl">鐵 (補血)</span><span class="med-metric-val" id="valIron">-- mg</span></div>
+                <div class="med-metric-box"><span class="med-metric-lbl">鎂 (舒緩)</span><span class="med-metric-val" id="valMagnesium">-- mg</span></div>
+                <div class="med-metric-box"><span class="med-metric-lbl">鉀 (血壓)</span><span class="med-metric-val" id="valPotassium">-- mg</span></div>
+                <div class="med-metric-box"><span class="med-metric-lbl">鋅 (免疫)</span><span class="med-metric-val" id="valZinc">-- mg</span></div>
+                <div class="med-metric-box"><span class="med-metric-lbl">維他命 C</span><span class="med-metric-val" id="valVitC">-- mg</span></div>
+              </div>
+            </div>
+          </details>
+
+          <details style="margin:10px 0;background:var(--bg);padding:10px 12px;border-radius:12px;font-size:13px">
+            <summary style="font-weight:700;cursor:pointer;color:var(--teal)">🔍 點解咁判斷？官方餐叉測試建議</summary>
+            <div style="margin-top:8px;line-height:1.5">
+              <div>🔍 <strong>判斷理由：</strong><span id="resVisualReason">正在分析質地細節...</span></div>
+              <div style="font-size:12px;color:var(--text2);margin-top:4px;font-style:italic" id="resVisualReasonHelper"></div>
+              <div style="margin-top:8px">🍴 官方推薦測試：<span id="resOfficialTest">餐叉指壓測試</span>
+                <button class="chip" onclick="document.getElementById('forkModal').style.display='flex'" style="padding:2px 8px;min-height:26px;font-size:11.5px;margin-left:6px">點做？</button>
+              </div>
+            </div>
+          </details>
+
+          <div style="margin-top:14px;border-top:1px dashed rgba(0,0,0,0.12);padding-top:12px">
+            <div style="font-size:13.5px;font-weight:800;color:var(--teal);margin-bottom:6px">💬 仲有嘢唔明？即管問：</div>
+            <div class="followup-bar">
+              <button class="followup-btn" onclick="askFollowUp('點樣將呢餐改成 Level 4 純糊餐？')">🥣 點整成 Level 4 糊餐？</button>
+              <button class="followup-btn" onclick="askFollowUp('呢餐會唔會好易引起胃脹氣？')">💨 食完會唔會脹氣？</button>
+              <button class="followup-btn" onclick="askFollowUp('點樣挑骨剪碎先最安全？')">✂️ 點剪碎挑骨最安全？</button>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
+
+    <!-- 分頁 2: 吞嚥肌操 -->
+    <div id="tabSwallow" style="display:none">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <h3>👅 吞嚥肌每日練功房</h3>
+          <span class="streak-badge" id="exerciseStreakBadge">🔥 連續打卡 0 日</span>
+        </div>
+        <p style="font-size:13px;color:var(--text2);margin-bottom:14px">
+          每日兩分鐘練下條舌同喉嚨，吞嘢有氣有力，就唔怕濁到咳出眼淚。坐直個人、放鬆膊頭就做得！
+        </p>
+
+        <!-- 訓練 1 -->
+        <div class="swallow-exercise-card">
+          <div style="font-weight:900;font-size:16px;color:var(--teal);margin-bottom:4px">
+            1. 📖 假聲抬喉用力吞嚥法（Mendelsohn）
+          </div>
+          <p style="font-size:12.5px;color:var(--text2);line-height:1.45;margin-bottom:8px">
+            練強喉嚨上提肌肉，等食道入口開大啲，飯餸順暢滑落去，唔會留喺喉嚨卡住。
+          </p>
+          <div class="exercise-img-wrap">
+            <img src="https://firebasestorage.googleapis.com/v0/b/lohascaregutmicrobiomefoodsafe.firebasestorage.app/o/images%2FGemini_Generated_Image_dhvhgkdhvhgkdhvh.jpeg?alt=media" alt="假聲抬喉用力吞嚥法示範圖" class="exercise-img" onerror="showFallbackIllu(this, '抬喉用力吞嚥法', '喉核上提鎖定 3 秒')">
+            <div class="fallback-svg-illu"><div><strong>【假聲抬喉用力吞嚥】</strong><br>喉核向上提至最高 · 夾緊頂住 3 秒</div></div>
+          </div>
+          <div class="exercise-mistake-box">
+            ⚠️ <strong>千祈咪做錯：</strong>頭部千祈唔好向後仰，亦唔好借聳肩發力！下巴微收，單靠喉嚨自己向上抽上去。
+          </div>
+          <div class="exercise-steps" style="margin-top:10px">
+            <div class="step-item"><span class="step-pill">第一步</span><div>手指輕輕摸住頸兩邊「喉核」，感受吞口水嗰陣上下郁動。</div></div>
+            <div class="step-item"><span class="step-pill">第二步</span><div>吞口水時用喉嚨力將喉核推到最高（好似扮女人嗌高音咁）。</div></div>
+            <div class="step-item"><span class="step-pill">第三步</span><div>升到最高嗰下，喉嚨肌肉用力夾實「鎖死」，默數三秒！</div></div>
+            <div class="step-item"><span class="step-pill">第四步</span><div>三秒後慢慢放鬆，喉核降返落嚟。重複做五次。</div></div>
+          </div>
+          <button class="chip" onclick="startExerciseWithTimer('假聲抬喉用力吞嚥法', 3, 5, '喉核提上去，頂住咪放！')" style="margin-top:10px;width:100%">⏱️ 帶我一齊做（頂實3秒 × 做5次）</button>
+        </div>
+
+        <!-- 訓練 2 -->
+        <div class="swallow-exercise-card">
+          <div style="font-weight:900;font-size:16px;color:var(--teal);margin-bottom:4px">
+            2. 📖 舌肌抗阻訓練（頂上顎練舌力）
+          </div>
+          <p style="font-size:12.5px;color:var(--text2);line-height:1.45;margin-bottom:8px">
+            條舌夠力，先可以一啖將啲飯餸推入咽喉，唔會含住成口碎屑吞唔落。
+          </p>
+          <div class="exercise-img-wrap">
+            <img src="https://firebasestorage.googleapis.com/v0/b/lohascaregutmicrobiomefoodsafe.firebasestorage.app/o/images%2FGemini_Generated_Image_19r79g19r79g19r7.jpeg?alt=media" alt="舌肌抗阻訓練示範圖" class="exercise-img" onerror="showFallbackIllu(this, '舌肌抗阻訓練', '舌尖頂實硬顎向上發力')">
+            <div class="fallback-svg-illu"><div><strong>【舌肌抗阻訓練】</strong><br>舌尖貼緊上門牙後方硬顎 · 全力向上頂 5 秒</div></div>
+          </div>
+          <div class="exercise-mistake-box">
+            ⚠️ <strong>千祈咪做錯：</strong>唔好用條舌死推前排門牙（會推歪牙）！要頂門牙後面硬硬地嘅肉區，成條舌向上貼實天花板用力推。
+          </div>
+          <div class="exercise-steps" style="margin-top:10px">
+            <div class="step-item"><span class="step-pill">第一步</span><div>微擘大口，條舌尖準確放喺門牙後方硬顎凹凸位。</div></div>
+            <div class="step-item"><span class="step-pill">第二步</span><div>成條舌全力向上頂實個天花板，心入面數 5 秒，要感受到舌根谷起！</div></div>
+            <div class="step-item"><span class="step-pill">第三步</span><div>5 秒後慢慢放鬆落返口腔底歇兩秒。重複做五次。</div></div>
+          </div>
+          <button class="chip" onclick="startExerciseWithTimer('舌肌抗阻訓練', 5, 5, '用條舌頂實天花板，用力推！')" style="margin-top:10px;width:100%">⏱️ 帶我一齊做（頂實5秒 × 做5次）</button>
+        </div>
+
+        <!-- 訓練 3 -->
+        <div class="swallow-exercise-card">
+          <div style="font-weight:900;font-size:16px;color:var(--teal);margin-bottom:4px">
+            3. 📖 咳嗽發聲練軟顎（大聲嗌「格」）
+          </div>
+          <p style="font-size:12.5px;color:var(--text2);line-height:1.45;margin-bottom:8px">
+            刺激軟顎向上封死鼻腔，防止飲湯水嗰陣從鼻孔噴返出嚟，兼且喚醒喉嚨防嗆反射！
+          </p>
+          <div class="exercise-img-wrap">
+            <img src="https://firebasestorage.googleapis.com/v0/b/lohascaregutmicrobiomefoodsafe.firebasestorage.app/o/images%2FGemini_Generated_Image_2hn8hw2hn8hw2hn8.jpeg?alt=media" alt="咳嗽發聲練軟顎示範圖" class="exercise-img" onerror="showFallbackIllu(this, '咳嗽發聲練軟顎', '舌根爆破發格音')">
+            <div class="fallback-svg-illu"><div><strong>【發格音練軟顎】</strong><br>舌根短促清脆爆破發『格！』音 · 強化聲門閉合</div></div>
+          </div>
+          <div class="exercise-mistake-box">
+            ⚠️ <strong>千祈咪做錯：</strong>唔係叫你乾咳傷喉嚨！係用舌根頂住喉嚨，短促清脆大聲爆破發出「格（Ka）」嘅聲音。
+          </div>
+          <div class="exercise-steps" style="margin-top:10px">
+            <div class="step-item"><span class="step-pill">第一步</span><div>挺直個人，用鼻吸飽啖氣落丹田。</div></div>
+            <div class="step-item"><span class="step-pill">第二步</span><div>舌根頂住喉嚨，大聲、清脆嗌出「格！格！格！」嘅聲音。</div></div>
+            <div class="step-item"><span class="step-pill">第三步</span><div>嗌完順手短促咳一下，喚醒聲帶強力鎖死保護功能。連續做十次。</div></div>
+          </div>
+          <button class="chip" onclick="startExerciseWithTimer('咳嗽發聲練軟顎', 1, 10, '用丹田大聲嗌『格！』')" style="margin-top:10px;width:100%">⏱️ 帶我一齊做（大聲連嗌10次）</button>
+        </div>
+
+        <button class="btn btn-wa" style="margin-top:12px" id="btnCheckInExercise">✅ 今日搞掂晒吞嚥操（手動打卡）</button>
+      </div>
+    </div>
+
+    <!-- 分頁 3: 查腸道 -->
+    <div id="tabQuiz" style="display:none">
+      <div class="card" style="margin-bottom:10px">
+        <h3 style="margin-bottom:4px">🦠 腸道微生態與情緒安康自查 (10 題)</h3>
+        <p style="font-size:13px;color:var(--text2)">睇下肚仔好菌夠唔夠、去廁所順唔順，兼且幫你解下心事壓力。</p>
+        <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+        <div class="progress-text" id="progressText">答咗 0 / 10 題</div>
+      </div>
+      <form id="quizForm"></form>
+      <div class="card" id="resultCard" style="display:none;margin-top:14px">
+        <div style="font-size:12.5px;font-weight:800;color:var(--text2);letter-spacing:0.5px">腸道微生態健康得分</div>
+        <div style="font-size:52px;font-weight:900;letter-spacing:-1.5px;margin:4px 0;line-height:1" id="scoreBadge">0</div>
+        <div style="font-size:18px;font-weight:800;margin-bottom:8px" id="statusTitle"></div>
+        <div style="font-size:14.5px;color:var(--text);background:var(--bg);padding:14px;border-radius:var(--radius-sm);line-height:1.6" id="statusDesc"></div>
+        <div class="mind-card" id="mindBox">
+          🧠 <strong>腸腦軸好心情秘訣：</strong><br>
+          <span id="mindDesc">腸道係人體第二個腦，九成開心荷爾蒙由腸道製造。個人放鬆啲、瞓得冧，肚仔啲好菌自然生猛！</span>
+        </div>
+        <div id="exerciseBox" style="margin-top:14px"></div>
+        <button class="btn btn-voice" style="margin-top:14px" id="btnSpeakResult">🔊 讀出評估結果與運動指引</button>
+        <button class="btn btn-ghost" style="margin-top:8px" id="btnResetQuiz">由頭再做過</button>
+      </div>
+    </div>
+
+    <!-- 分頁 4: 港食表 -->
+    <div id="tabQuickRef" style="display:none">
+      <div class="card">
+        <h3 style="margin-bottom:6px">📖 港式常見食物 IDDSI 離線速查表</h3>
+        <p style="font-size:13px;color:var(--text2);margin-bottom:12px">就算茶餐廳無 Wi-Fi，打開照樣知食唔食得。</p>
+        <div style="display:flex;gap:6px;margin-bottom:12px">
+          <input type="text" id="refSearchInput" placeholder="搜尋：通粉、牛扒、粥、煎蛋、菜心..." style="flex:1;padding:10px;border-radius:10px;border:1px solid rgba(0,0,0,0.15)">
+        </div>
+        <div id="refTableList" style="display:flex;flex-direction:column;gap:8px"></div>
+      </div>
+    </div>
+
+    <!-- 分頁 5: 街坊傾 -->
+    <div id="tabQa" style="display:none">
+      <div class="card">
+        <h3 style="margin-bottom:6px">💬 街坊語音對話解惑</h3>
+        <p style="font-size:13px;color:var(--text2);margin-bottom:12px">直接用廣東話講出嚟問，便秘、肚脹、失眠、嗆咳即管開口傾。</p>
+        <div style="display:flex;gap:8px;margin-bottom:10px">
+          <input id="qaInput" type="text" placeholder="講或者打：點解心情緊張個胃會抽痛？" style="flex:1;padding:12px;border-radius:12px;border:1.5px solid rgba(0,0,0,.15);font-size:14px">
+          <button class="btn btn-primary" id="btnVoiceInput" style="width:auto;padding:0 14px">🎙️ 講嘢</button>
+          <button class="btn btn-primary" id="btnAsk" style="width:auto;padding:0 16px">問</button>
+        </div>
+        <div id="qaAnswer" style="background:var(--bg);padding:14px;border-radius:12px;font-size:14.5px;line-height:1.6;color:var(--text);display:none"></div>
+      </div>
+    </div>
+
+    <!-- 視覺倒數計時 Modal -->
+    <div class="timer-overlay" id="timerModal">
+      <div class="timer-card">
+        <div style="font-size:13.5px;font-weight:800;color:var(--teal)" id="timerExerciseTitle">吞嚥肌鍛鍊</div>
+        <div class="timer-action-hint" id="timerActionHint">預備中...</div>
+        <div class="timer-circle-wrap">
+          <svg class="timer-ring-svg" viewBox="0 0 150 150">
+            <circle class="timer-ring-bg" cx="75" cy="75" r="65" />
+            <circle class="timer-ring-bar" id="timerRingCircle" cx="75" cy="75" r="65" />
+          </svg>
+          <div class="timer-number" id="timerSeconds">3</div>
+        </div>
+        <div style="font-size:14px;font-weight:800;color:var(--text2)" id="timerRepsIndicator">第 1 / 5 次</div>
+        <button class="btn btn-ghost" style="margin-top:16px" onclick="cancelExerciseTimer()">停低</button>
+      </div>
+    </div>
+
+    <!-- 首次啟動導覽 -->
+    <div class="onboard-overlay" id="onboardOverlay">
+      <div class="onboard-card">
+        <div class="onboard-step active" data-step="0">
+          <div class="onboard-icon">🌿</div>
+          <div class="onboard-title">歡迎老友使用樂活食得安</div>
+          <div class="onboard-desc">專為香港家庭設計，等大家食得安落、喉嚨唔濁親、肚仔順暢無煩惱。</div>
+        </div>
+        <div class="onboard-step" data-step="1">
+          <div class="onboard-icon">📸</div>
+          <div class="onboard-title">第一步：影相驗餐</div>
+          <div class="onboard-desc">影低碟餸，即刻話你知要剪碎定瀝乾湯，仲有印尼文英文對照畀外傭睇。</div>
+        </div>
+        <div class="onboard-step" data-step="2">
+          <div class="onboard-icon">👅</div>
+          <div class="onboard-title">第二步：練吞嚥操</div>
+          <div class="onboard-desc">言語治療師精選動作，大字倒數跟住做，每日兩分鐘練強喉嚨防濁親。</div>
+        </div>
+        <div class="onboard-step" data-step="3">
+          <div class="onboard-icon">🦠</div>
+          <div class="onboard-title">第三步：查下腸道</div>
+          <div class="onboard-desc">十題搞掂，睇下好菌夠唔夠、便秘肚脹點舒緩，送埋專屬運動處方。</div>
+        </div>
+        <div class="onboard-dots">
+          <div class="onboard-dot active" data-dot="0"></div>
+          <div class="onboard-dot" data-dot="1"></div>
+          <div class="onboard-dot" data-dot="2"></div>
+          <div class="onboard-dot" data-dot="3"></div>
+        </div>
+        <button class="btn btn-primary" id="btnOnboardNext">下一步</button>
+        <button class="btn btn-ghost" style="margin-top:8px" id="btnOnboardSkip">跳過介紹</button>
+      </div>
+    </div>
+
+    <!-- 更多設定選單 -->
+    <div class="modal-backdrop" id="moreMenuModal">
+      <div class="modal-box">
+        <h3 style="margin-bottom:12px">⚙️ 快捷設定與報告</h3>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <button class="btn btn-outline" id="btnMenuElderly">🔤 切換大字模式</button>
+          <button class="chip" id="btnMenuVoice" style="width:100%;height:46px;border-radius:14px">🔊 廣東話朗讀播報</button>
+          <button class="btn btn-outline" id="btnMenuContact">📞 設定緊急家人電話</button>
+          <button class="btn btn-outline" id="btnMenuDoctor">📋 匯出言語治療師/醫生週報</button>
+        </div>
+        <button class="btn btn-ghost" style="margin-top:12px" onclick="document.getElementById('moreMenuModal').style.display='none'">閂埋</button>
+      </div>
+    </div>
+
+    <!-- 醫生/家屬專業報告 Modal -->
+    <div class="modal-backdrop" id="doctorReportModal">
+      <div class="modal-box">
+        <h3 style="margin-bottom:8px">📋 老友吞嚥與照護週報</h3>
+        <p style="font-size:13px;color:var(--text2);margin-bottom:10px">一鍵複製或者經 WhatsApp 傳畀言語治療師／仔女覆診參考。</p>
+        <textarea id="doctorReportText" style="width:100%;height:190px;border-radius:12px;border:1.5px solid rgba(0,0,0,0.12);padding:10px;font-size:13px;line-height:1.45;background:var(--bg);color:var(--text)" readonly></textarea>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <button class="btn btn-primary" onclick="copyDoctorReport()">📋 複製報告</button>
+          <a id="btnSendWaReport" href="#" class="btn btn-wa" style="text-decoration:none">💬 WhatsApp 傳送</a>
+        </div>
+        <button class="btn btn-ghost" style="margin-top:8px" onclick="document.getElementById('doctorReportModal').style.display='none'">閂埋</button>
+      </div>
+    </div>
+
+    <!-- 緊急聯絡人 Modal -->
+    <div class="modal-backdrop" id="contactModal">
+      <div class="modal-box">
+        <h3 style="margin-bottom:8px">📞 緊急家人電話</h3>
+        <p style="font-size:13px;color:var(--text2);margin-bottom:10px">入定電話，緊急嗰時撳個掣就即刻打畀屋企人。</p>
+        <input type="tel" id="contactPhone" placeholder="輸入電話號碼 (例如 91234567)" style="width:100%;padding:12px;border-radius:10px;border:1.5px solid rgba(0,0,0,0.15);margin:10px 0;font-size:16px;background:var(--bg);color:var(--text)">
+        <button class="btn btn-primary" onclick="saveContact()">儲存</button>
+        <button class="btn btn-ghost" style="margin-top:8px" onclick="document.getElementById('contactModal').style.display='none'">閂埋</button>
+        <a id="callContactBtn" href="#" style="display:none;margin-top:10px" class="btn btn-wa">📞 立即致電</a>
+      </div>
+    </div>
+
+    <!-- 官方餐叉測試法 -->
+    <div class="modal-backdrop" id="forkModal">
+      <div class="modal-box">
+        <h3 style="color:var(--teal);margin-bottom:8px">🍴 IDDSI 官方餐叉測試法</h3>
+        <div style="font-size:13.5px;line-height:1.5;margin-bottom:12px">
+          <p><strong>1. 叉背下壓測試：</strong><br>
+          用叉背用力向下壓件餸，壓到手指甲明顯變白。如果完全壓唔扁兼且好煙韌，即係 Level 7 原質，老友食好易哽親喉嚨！<br>
+          <em style="color:var(--teal)">Tekan makanan dengan punggung garpu sampai kuku jempol memutih.</em></p>
+          <br>
+          <p><strong>2. 15mm 一口量標準：</strong><br>
+          Level 6 軟餐要求肉類菜蔬切成細過成人叉背闊度（約 15mm）嘅細小塊。<br>
+          <em style="color:var(--teal)">Potong makanan maksimal ukuran 15mm.</em></p>
+        </div>
+        <button class="btn btn-primary" onclick="document.getElementById('forkModal').style.display='none'">明白晒 (Mengerti)</button>
+      </div>
+    </div>
+
+    <!-- 哽親急救 -->
+    <div class="modal-backdrop" id="emergencyModal">
+      <div class="modal-box">
+        <h2 style="color:#dc2626;margin-bottom:8px">🚨 哽親急救黃金三分鐘</h2>
+        <div style="background:#fef2f2;border-left:4px solid #ef4444;padding:10px;border-radius:8px;margin-bottom:8px;font-size:13.5px">
+          <strong>第一步：大力拍背 5 次 (Tepuk Punggung 5 Kali)</strong><br>
+          叫老友身體向前傾，用掌跟大力拍擊兩塊肩胛骨中間 5 次！<br>
+          <em style="color:#991b1b">Condongkan tubuh korban ke depan, pukul punggung di antara tulang belikat 5 kali dengan kuat!</em>
+        </div>
+        <div style="background:#fff7ed;border-left:4px solid #f97316;padding:10px;border-radius:8px;margin-bottom:10px;font-size:13.5px">
+          <strong>第二步：環抱壓腹 5 次 (謙烈治法)</strong><br>
+          雙手從後環抱其腰，一隻手握拳擺喺肚臍上方，快速向內向上連推 5 次！<br>
+          <em style="color:#9a3412">Rangkul pinggang dari belakang, kepal tangan di atas pusar, dorong ke dalam dan ke atas dengan cepat 5 kali!</em>
+        </div>
+        <p style="font-size:12.5px;color:#dc2626;font-weight:700;margin-bottom:10px">⚠ 若失去知覺，請立即打 999 並做心肺復甦 CPR！</p>
+        <button class="btn btn-danger" onclick="speakCantonese('老友哽親急救！前傾拍背五次，再向內向上壓腹五次！如果失去知覺，即刻打九九九！')">🔊 大聲讀出步驟</button>
+        <a id="emergencyCallBtn" href="tel:999" class="btn btn-wa" style="margin-top:8px;text-decoration:none">📞 打 999 報警</a>
+        <button class="btn btn-ghost" style="margin-top:6px" onclick="document.getElementById('emergencyModal').style.display='none'">關閉 (Tutup)</button>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <div class="footer">
+      © Lohascare GutSafe 樂活食得安 · 香港樂齡生活關懷團隊<br>
+      🔒 本機私隱保護 · 非醫療診斷證明 · 有持續不適請遵醫囑
     </div>
   </div>
+
   <script>
-    document.getElementById('btnZh').onclick = () => {
-      document.body.classList.remove('show-en');
-      document.getElementById('btnZh').classList.add('active');
-      document.getElementById('btnEn').classList.remove('active');
+    const TOTAL_QUESTIONS = 10;
+    const SCORES = [0, 2, 4];
+    let elderlyMode = localStorage.getItem('lohas_elderly') === '1';
+    let voiceOn = localStorage.getItem('lohas_voice') !== '0';
+    let helperLang = localStorage.getItem('lohas_helper_lang') || 'ID';
+    let selectedImageBase64 = null;
+    let lastResultData = null;
+    let timerTimeout = null;
+    let waitInterval = null;
+    let onboardStep = 0;
+    const BACKEND_API = "https://blue-mountain-bd34.ironijkl.workers.dev";
+
+    let currentRulerMode = 15;
+    let baseScale = 100;
+    let isDragging = false;
+    let startX, startY, origLeft, origTop;
+
+    // 香港人地道生鬼輪播提示句 (完全去 AI 化、唔 show 時間)
+const WAITING_MESSAGES = [
+  // 🥩 質地與軟硬篇 (咬唔咬得爛、防假牙脫落)
+  "睇緊舊嘢有幾難咬，陣間咪亂咁吞落肚呀...",
+  "𥄫緊舊肉夠唔夠軟熟，牙骹唔好同佢死頂呀...",
+  "望緊呢件嘢係皮脆肉嫩，定係硬過舊石頭...",
+  "睇緊塊扒咬唔咬得開，咪陣間同自己棚假牙過唔去...",
+  "測緊呢嚿肉幾有韌勁，牙力弱千祈咪搏命試...",
+  "望緊呢碟餸係咪豆腐咁腍，定係要練鐵齒銅牙...",
+  "睇緊舊西蘭花夠唔夠腍，個菜莖咪硬過鐵通呀...",
+  "𥄫緊塊肉片係咪薄切，太厚一陣嚼到腮骨痛...",
+  "睇緊呢嚿係咪軟餐標準，咪當自己仲係十八廿二成塊吞...",
+  "幫你捏下舊嘢軟唔軟，咬唔爛千祈唔好格硬哽...",
+  "望緊碟咕嚕肉舊脆皮，咪一啖過刮傷食道啊...",
+  "睇緊舊叉燒係半肥瘦，定係鞋過擦膠...",
+  "𥄫緊舊冬菇滑唔滑，成隻𡁻唔爛隨時卡住喉嚨底...",
+  "睇緊塊年糕定糯米糍，煙韌嘢最易黐實咽喉...",
+  "幫你搯緊舊肉，睇下使唔使出動牙籤同假牙膠...",
+
+  // 🥣 雙重質地與流速篇 (又湯又渣、防嗆咳噴鼻)
+  "𥄫緊啲湯水係咪太稀，一啖衝落去好易濁到咳出眼淚...",
+  "睇緊碗通粉又湯又渣，條食道分唔分得切邊樣落先...",
+  "擘大眼睇緊啲粉麵，米線咁滑溜咪哧一聲跣落氣管...",
+  "睇緊個湯底有無勾芡，水質太薄真係咳到肺都甩...",
+  "望緊碗雲吞麵，粒雲吞皮滑潺潺，咪一啖啜入喉嚨...",
+  "𥄫緊杯珍珠奶茶，啲黑糖珍珠簡直係氣管刺客...",
+  "睇緊碗老火湯有無湯渣，咪一邊吞肉一邊大啖灌...",
+  "望緊碟乾炒牛河，條河粉咁長，咪當自己玩雜技原條吞...",
+  "睇緊啲麥皮會唔會太稀，稀水直衝最易冷不防嗆咳...",
+  "𥄫緊碗生滾魚片粥，啲米花滾得夠唔夠綿、有無積水...",
+  "睇緊碗水餃湯，湯一啖肉一啖，喉嚨開關好易 hang 機...",
+  "望緊杯凍檸茶有無檸檬核，啜得太興奮吞咗粒核就大劑...",
+  "睇緊啲滑豆腐有無跟埋清湯，滑過頭最怕直衝落肺部...",
+  "𥄫緊碗滾水蛋，啲蛋花會唔會絲絲咁卡喺咽喉位...",
+  "睇緊碗肉絲米粉，碎米粉最易黐喉嚨搞到係咁咳...",
+
+  // 🍗 骨頭硬刺篇 (防穿刺、防卡骨)
+  "擘大眼睇緊有無碎骨，咪拮親食道入急症室啊...",
+  "照妖鏡咁照緊塊魚肉，有無暗藏奪命暗刺先...",
+  "𥄫緊白切雞件有無碎骨碴，老友千祈咪一啖𡁻落去...",
+  "睇緊舊排骨有無骨碎黐住，骨肉分離先至食得放心...",
+  "幫你掃描緊有無蝦殼蟹鉗碎片，咪拿拿臨塞入口...",
+  "睇緊蒸鯇魚有無細刺，鯇魚腩肉滑但暗箭難防呀...",
+  "𥄫緊碗鴨腿湯飯有無碎鴨骨，硬嘢入口一定要吐出嚟...",
+  "望緊舊蒸肉餅有無硬肉筋同碎骨，咪咬崩自己隻門牙...",
+  "檢查緊舊乳鴿有無細碎胸骨，食落肚唔講得笑㗎...",
+  "幫你照下有無雞翼尖細骨，咪貪香口成啖咬落去...",
+
+  // ✂️ 剪碎加工與餐叉篇 (一口量、備餐提示)
+  "𥄫緊使唔使出動私家神剪，幫你將舊嘢剪成一口量...",
+  "幫你度緊係咪 15 毫米，大過叉背就一定要叫姐姐落剪...",
+  "睇緊要剁成肉碎定切塊，咪懶得剪就成舊塞落肚...",
+  "拿把叉幫你壓緊，睇下粒指甲有無變白先至合格...",
+  "睇緊舊餸要切到幾細粒，安全第一咪嫌剪碎似BB餐...",
+  "望緊碗飯夠唔夠濕潤軟腍，乾爭爭咪話老友，後生都噎死...",
+  "睇緊個叉齒滴唔滴得過，幫你驗下個糊餐純唔純...",
+  "𥄫緊舊豬扒使唔使拍鬆佢，切細一圈食得開心好多...",
+  "睇緊要唔要加兩滴麻油或稠汁，太乾涸喉嚨好難推落去...",
+  "幫你量度緊飯粒濕度，太黐牙定太鬆散都要執執佢...",
+
+  // 🦠 腸胃消化與吃相篇 (防胃氣肚脹、益生菌安康)
+  "睇緊呢碟嘢油唔油膩，陣間肚谷谷成晚放唔到屁就辛苦...",
+  "望緊啲纖維會唔會太粗，益生菌都消化唔切成個胃頂住...",
+  "𥄫緊你食得有幾急，慢慢嗒，無人同你搶食㗎...",
+  "睇緊呢餐有無青菜益生元，肚仔無好菌聽朝又唔通便...",
+  "幫你睇下有無重口味煎炸嘢，食得太惹味個胃又抽筋...",
+  "睇緊你有無留啖口水咬爛佢，狼吞虎嚥最傷胃壁...",
+  "𥄫緊係咪多豆類易產氣，一陣胃氣頂住胸口又呻痛...",
+  "望緊呢碟係咪甜到漏，腸道壞菌最鍾意糖分開狂歡派對...",
+  "睇緊食完要行幾多個圈消滯，坐定定唔郁包你肚脹脹...",
+  "計緊呢餐啱唔啱你腸胃，放鬆心情開餐，好菌自然聽話..."
+];
+
+    const HELPER_TRANSLATIONS = {
+      ID: {
+        toggleBtn: "🇮🇩 Bahasa",
+        langSwitched: "Sudah ganti ke Bahasa Indonesia",
+        targetLevel: "Level Tekstur Target Pasien:",
+        uploadPrompt: "Tekan di sini untuk ambil foto makanan",
+        uploadSub: "Analisis tekstur, risiko tersedak kuah & tulang",
+        safeTitle: "Aman Dimakan",
+        safeDesc: "Tekstur lembut dan aman sesuai kebutuhan lansia.",
+        warnTitle: "Perlu Dipotong / Digunting",
+        warnDesc: "Makanan agak keras atau potongan besar, harus diproses!",
+        dangerTitle: "BAHAYA TERSEDAK (Kuah Campur Isi)!",
+        dangerDesc: "Kuah encer sangat cepat masuk tenggorokan dan bikin tersedak!",
+        dualWarning: "PERINGATAN: Makanan ini ada kuah dan isi! Tiriskan kuah sup sepenuhnya sebelum disajikan!",
+        actions: {
+          'DRAIN_SOUP': "Tiriskan kuah sup sepenuhnya sebelum disajikan!",
+          'DEBONE': "Buang semua tulang kecil dan duri sebelum makan!",
+          'SERVE_AS_IS': "Tekstur lembut, aman disajikan langsung."
+        }
+      },
+      EN: {
+        toggleBtn: "🇵🇭 English",
+        langSwitched: "Switched to English Helper Mode",
+        targetLevel: "Care Target IDDSI Level:",
+        uploadPrompt: "Tap here to take photo of food",
+        uploadSub: "Analyze softness, choking risks & bones",
+        safeTitle: "Safe to Serve",
+        safeDesc: "Texture complies with prescription and is safe.",
+        warnTitle: "Needs Cutting / Mincing",
+        warnDesc: "Food is tough or large, must be processed!",
+        dangerTitle: "DANGEROUS CHOKING RISK (Mixed Texture)!",
+        dangerDesc: "Thin liquid slips fast into airway! Must drain all soup!",
+        dualWarning: "WARNING: Mixed texture! Drain all soup completely before serving!",
+        actions: {
+          'DRAIN_SOUP': "Drain all soup completely before serving!",
+          'DEBONE': "Remove all bones and fishbones completely!",
+          'SERVE_AS_IS': "Soft texture, safe to serve directly."
+        }
+      }
     };
-    document.getElementById('btnEn').onclick = () => {
-      document.body.classList.add('show-en');
-      document.getElementById('btnEn').classList.add('active');
-      document.getElementById('btnZh').classList.remove('active');
+
+    const QUESTIONS = [
+      { t: '平時去大便順唔順暢？質地係點？', o: ['日日都順順利利','兩三日先去到一次','三日以上先有 / 粒粒乾硬好辛苦'] },
+      { t: '平時會唔會成日肚谷谷、多腸氣？', o: ['好少脹氣','一星期脹過一兩次','幾乎日日都脹住脹住'] },
+      { t: '平時個人容易唔容易傷風感冒？', o: ['好少感冒','一年病兩三次啦','好易傷風、喉嚨成日唔妥'] },
+      { t: '有無鼻敏感或者皮膚成日痕？', o: ['無乜敏感問題','間唔中轉天氣先發作','成日鼻敏感、皮膚痕到忍唔住'] },
+      { t: '個胃會唔會好易敏感或者隱隱作痛？', o: ['個胃無特別嘢','間中有少少胃氣或翳住','好容易肚瀉、或者痛得好緊要'] },
+      { t: '呢半年內有無食過消炎抗生素？', o: ['完全無食過','最近半年內食過一次半次','最近呢一個月內有食過'] },
+      { t: '夜晚瞓得好唔好？', o: ['晚晚一覺瞓到天光好精神','間中瞓得唔好或者早醒','成日失眠、半夜醒幾次就瞓唔返'] },
+      { t: '平時食嘢係咪好重口味、好甜好油？', o: ['平時食得好清淡、多菜多魚','一個星期都會食幾餐茶餐廳煎炸嘢','餐餐都好油好甜，又成日食加工罐頭'] },
+      { t: '自覺平時個人緊唔緊張、多唔多心事？', o: ['個人好放鬆、無乜掛心嘢','都有啲心事，間中會焦慮','個人好緊張、長期都好大壓力'] },
+      { t: '一星期有無抽時間行下公園散下步？', o: ['一星期散步做運動三次以上','間唔中行下路仔','幾乎坐定定完全唔行'] }
+    ];
+
+    const EXERCISE_KB = {
+      q1: { title: '暖手順時針摩腹法（推便便）', time: '每日 10 分鐘', how: '雙手手掌搓熱，輕輕貼喺肚臍周圍，順時針方向慢慢打圈抹 50 次，幫大腸郁動排便。' },
+      q2: { title: '坐椅扭腰消氣法（清肚脹）', time: '每日 8 分鐘', how: '坐穩喺張實淨嘅有背椅上，腰骨挺直，成個人慢慢轉向左邊深呼一口氣，停 5 秒再轉向右邊，做 6 次。' },
+      q7: { title: '床頭抬腿深呼吸（幫安眠與腸腦軸）', time: '每晚 5 分鐘', how: '平躺喺床上，搵個枕頭墊高小腿，雙手放喺肚腩仔，慢慢深吸氣 4 秒、慢呼氣 6 秒，平靜副交感神經，個人自然定落嚟。' },
+      q9: { title: '雙手托天理脾胃（八段錦）', time: '每日 6 分鐘', how: '企直放鬆，一隻手慢慢向上推托天，另一隻手向下按，兩邊輪流做，動作放鬆自然呼吸，暢通中焦脾胃氣血。' }
     };
+
+    const HK_FOOD_KB = [
+      { name: "牛排配醬汁", level: "Level 7 (原質正常)", warn: "肉質完整厚實，必須切小於 15mm 或剪碎", tag: "原質" },
+      { name: "火腿通粉 (含湯)", level: "Level 7 (雙重質地)", warn: "清湯易嗆咳，必須徹底瀝乾湯汁", tag: "高危" },
+      { name: "茶餐廳蛋包飯", level: "Level 6 (軟質一口量)", warn: "飯粒需濕潤，切細於 15mm", tag: "合格" },
+      { name: "煎荷包蛋 / 煎蛋", level: "Level 6 (軟質一口量)", warn: "蛋邊煎香偏韌，須切細塊壓碎", tag: "合格" },
+      { name: "清炒菜心", level: "Level 7 (纖維偏長)", warn: "菜莖纖維韌，必須去硬莖剁碎", tag: "高危" },
+      { name: "鮮蝦雲吞麵 (含湯)", level: "Level 7 (雙重質地)", warn: "雲吞皮滑湯流速快，必須撈起乾食並剪碎", tag: "高危" },
+      { name: "蒸水蛋 / 肉碎蒸蛋", level: "Level 5 (細碎濕潤)", warn: "極佳長者餐，肉碎需細於 4mm", tag: "推薦" },
+      { name: "珍珠奶茶", level: "Level 0 (液體帶顆粒)", warn: "極高窒息風險！必須用隔篩濾走所有珍珠", tag: "極度高危" },
+      { name: "免治牛肉粥", level: "Level 5 (細碎濕潤)", warn: "粥底濃稠無多餘米水，牛肉碎易吞", tag: "推薦" }
+    ];
+
+    let hkVoice = null;
+    function loadHkVoices() {
+      if (!window.speechSynthesis) return;
+      const voices = window.speechSynthesis.getVoices();
+      hkVoice = voices.find(v => v.lang === 'zh-HK' || v.lang === 'yue-Hant-HK' || v.lang === 'zh_HK') ||
+                voices.find(v => v.name.includes('Hong Kong') || v.name.includes('Cantonese') || v.name.includes('Sin-Ji')) || null;
+    }
+    if (window.speechSynthesis) {
+      window.speechSynthesis.onvoiceschanged = loadHkVoices;
+      loadHkVoices();
+    }
+
+    function speakCantonese(text) {
+      if (!window.speechSynthesis || !text) return;
+      window.speechSynthesis.cancel();
+      // 完全去機械人化、去除阿公阿婆稱呼
+      const cleanText = text.replace(/老友記/g, "老友").replace(/阿公|阿婆/g, "老友").replace(/請注意/g, "記得要留意呀");
+      const utterance = new SpeechSynthesisUtterance(cleanText);
+      utterance.lang = 'zh-HK';
+      if (!hkVoice) loadHkVoices();
+      if (hkVoice) utterance.voice = hkVoice;
+      utterance.rate = elderlyMode ? 0.82 : 0.88;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function showToast(msg) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 2600);
+    }
+
+    function switchTab(target) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      const activeBtn = document.querySelector(`.tab[data-tab="${target}"]`);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      document.getElementById('tabMeal').style.display = target === 'meal' ? 'block' : 'none';
+      document.getElementById('tabSwallow').style.display = target === 'swallow' ? 'block' : 'none';
+      document.getElementById('tabQuiz').style.display = target === 'quiz' ? 'block' : 'none';
+      document.getElementById('tabQuickRef').style.display = target === 'quickRef' ? 'block' : 'none';
+      document.getElementById('tabQa').style.display = target === 'qa' ? 'block' : 'none';
+      if (target === 'quickRef') renderRefTable();
+    }
+
+    function showFallbackIllu(imgEl, title, desc) {
+      imgEl.style.display = 'none';
+      const fallback = imgEl.nextElementSibling;
+      if (fallback) fallback.style.display = 'flex';
+    }
+
+    // ========== 1. 首次啟動導覽 ==========
+    function showOnboarding() {
+      if (localStorage.getItem('lohas_onboarded') === '1') return;
+      document.getElementById('onboardOverlay').style.display = 'flex';
+      onboardStep = 0;
+      updateOnboardUI();
+      speakCantonese('歡迎老友使用樂活食得安！專門幫你同屋企人把關，食得安心又舒服。');
+    }
+
+    function updateOnboardUI() {
+      document.querySelectorAll('.onboard-step').forEach((el, i) => {
+        el.classList.toggle('active', i === onboardStep);
+      });
+      document.querySelectorAll('.onboard-dot').forEach((el, i) => {
+        el.classList.toggle('active', i === onboardStep);
+      });
+      const nextBtn = document.getElementById('btnOnboardNext');
+      nextBtn.textContent = onboardStep === 3 ? '開始開餐' : '下一步';
+    }
+
+    document.getElementById('btnOnboardNext').onclick = () => {
+      if (onboardStep < 3) {
+        onboardStep++;
+        updateOnboardUI();
+        const hints = [
+          '',
+          '第一步，影相驗餐。即刻知道質地合唔合，帶有外傭雙語核對清單。',
+          '第二步，練吞嚥肌。跟住大字動態倒數環，每日兩分鐘強化咽喉肌群。',
+          '第三步，查下腸道。十題搞掂，睇下好菌夠唔夠、便秘肚脹點舒緩。'
+        ];
+        if (hints[onboardStep]) speakCantonese(hints[onboardStep]);
+      } else {
+        localStorage.setItem('lohas_onboarded', '1');
+        document.getElementById('onboardOverlay').style.display = 'none';
+        speakCantonese('好！而家可以開始用喇，右下角隨時有緊急急救支援。');
+      }
+    };
+
+    document.getElementById('btnOnboardSkip').onclick = () => {
+      localStorage.setItem('lohas_onboarded', '1');
+      document.getElementById('onboardOverlay').style.display = 'none';
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
+    };
+
+    // ========== 2. 視覺倒數計時環與運動閉環 ==========
+    const RING_CIRCUMFERENCE = 2 * Math.PI * 65;
+
+    function startExerciseWithTimer(name, holdSec, reps, hint) {
+      const modal = document.getElementById('timerModal');
+      const titleEl = document.getElementById('timerExerciseTitle');
+      const hintEl = document.getElementById('timerActionHint');
+      const numEl = document.getElementById('timerSeconds');
+      const repEl = document.getElementById('timerRepsIndicator');
+      const ringBar = document.getElementById('timerRingCircle');
+
+      titleEl.textContent = name;
+      hintEl.textContent = hint;
+      modal.style.display = 'flex';
+
+      let currentRep = 1;
+      let currentSec = holdSec;
+
+      speakCantonese(`開始鍛鍊${name}。第 1 次，預備！`);
+
+      function runTimer() {
+        repEl.textContent = `第 ${currentRep} / ${reps} 次`;
+        numEl.textContent = currentSec;
+
+        const progress = (holdSec - currentSec) / holdSec;
+        ringBar.style.strokeDashoffset = RING_CIRCUMFERENCE * (1 - progress);
+
+        if (navigator.vibrate) navigator.vibrate(80);
+
+        if (currentSec > 0) {
+          timerTimeout = setTimeout(() => {
+            currentSec--;
+            runTimer();
+          }, 1000);
+        } else {
+          ringBar.style.strokeDashoffset = 0;
+          if (currentRep < reps) {
+            currentRep++;
+            currentSec = holdSec;
+            speakCantonese(`放鬆兩秒。第 ${currentRep} 次，開始！`);
+            timerTimeout = setTimeout(runTimer, 2000);
+          } else {
+            modal.style.display = 'none';
+            speakCantonese(`做得好！${name}順利完成 ${reps} 次！喉嚨肌肉更有力量！`);
+            recordExerciseDone(name);
+          }
+        }
+      }
+      timerTimeout = setTimeout(runTimer, 1200);
+    }
+
+    function cancelExerciseTimer() {
+      clearTimeout(timerTimeout);
+      document.getElementById('timerModal').style.display = 'none';
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
+    }
+
+    function recordExerciseDone(name) {
+      let records = JSON.parse(localStorage.getItem('lohas_exercise_history') || '[]');
+      const today = new Date().toISOString().split('T')[0];
+      records.unshift({ name, date: today, timestamp: Date.now() });
+      localStorage.setItem('lohas_exercise_history', JSON.stringify(records.slice(0, 30)));
+
+      updateTaskStatus('swallow', true);
+      updateWeeklyCompliance();
+      showToast('🎉 吞嚥鍛鍊已完成並儲存');
+      checkAllTasksCelebration();
+    }
+
+    // ========== 3. 今日護理三部曲進度計算 ==========
+    function updateTaskStatus(taskType, isDone) {
+      let tasks = JSON.parse(localStorage.getItem('lohas_today_tasks') || '{}');
+      const today = new Date().toISOString().split('T')[0];
+      if (tasks.date !== today) {
+        tasks = { date: today, meal: false, swallow: false, quiz: false };
+      }
+      tasks[taskType] = isDone;
+      localStorage.setItem('lohas_today_tasks', JSON.stringify(tasks));
+      renderTodayTasksUI();
+    }
+
+    function renderTodayTasksUI() {
+      const today = new Date().toISOString().split('T')[0];
+      let tasks = JSON.parse(localStorage.getItem('lohas_today_tasks') || '{}');
+      if (tasks.date !== today) {
+        tasks = { date: today, meal: false, swallow: false, quiz: false };
+      }
+
+      const btnMeal = document.getElementById('taskBtnMeal');
+      const btnSwallow = document.getElementById('taskBtnSwallow');
+      const btnQuiz = document.getElementById('taskBtnQuiz');
+      const progressBar = document.getElementById('taskProgressBar');
+
+      btnMeal.classList.toggle('done', !!tasks.meal);
+      btnMeal.textContent = tasks.meal ? '📸 1. 驗餐 ✅' : '📸 1. 驗餐';
+
+      btnSwallow.classList.toggle('done', !!tasks.swallow);
+      btnSwallow.textContent = tasks.swallow ? '👅 2. 吞嚥操 ✅' : '👅 2. 吞嚥操';
+
+      btnQuiz.classList.toggle('done', !!tasks.quiz);
+      btnQuiz.textContent = tasks.quiz ? '🦠 3. 查腸道 ✅' : '🦠 3. 查腸道';
+
+      let count = (tasks.meal ? 1 : 0) + (tasks.swallow ? 1 : 0) + (tasks.quiz ? 1 : 0);
+      progressBar.style.width = `${(count / 3) * 100}%`;
+    }
+
+    function checkAllTasksCelebration() {
+      const today = new Date().toISOString().split('T')[0];
+      let tasks = JSON.parse(localStorage.getItem('lohas_today_tasks') || '{}');
+      if (tasks.date === today && tasks.meal && tasks.swallow && tasks.quiz) {
+        if (!tasks.celebrated) {
+          tasks.celebrated = true;
+          localStorage.setItem('lohas_today_tasks', JSON.stringify(tasks));
+          showToast('🎊 太犀利喇！今日護理三部曲全部順利搞掂！');
+          speakCantonese('好嘢！老友，今日護理三部曲全部順利搞掂！食得安心、腸胃順暢，繼續保持呀！');
+        }
+      }
+    }
+
+    function updateWeeklyCompliance() {
+      const records = JSON.parse(localStorage.getItem('lohas_exercise_history') || '[]');
+      const now = new Date();
+      let activeDays = new Set();
+      for (let i = 0; i < 7; i++) {
+        const d = new Date(now - i * 86400000).toISOString().split('T')[0];
+        if (records.some(r => r.date === d)) activeDays.add(d);
+      }
+      const rate = Math.round((activeDays.size / 7) * 100);
+      document.getElementById('weeklyComplianceText').textContent = `本週打卡率: ${rate}% (${activeDays.size}/7 日)`;
+      return { rate, days: activeDays.size };
+    }
+
+    // ========== 4. 醫生 / 家屬專業報告匯出 ==========
+    document.getElementById('btnMenuDoctor').onclick = () => {
+      document.getElementById('moreMenuModal').style.display = 'none';
+      const p = document.getElementById('userPrescription').value;
+      const gutScore = localStorage.getItem('last_gut_score') || '未評估';
+      const history = JSON.parse(localStorage.getItem('lohas_meal_logs') || '[]');
+      const compliance = updateWeeklyCompliance();
+      const lastMeal = history[0] ? `${history[0].name} (${history[0].isDual ? '雙重質地高危' : '質地吻合'})` : '無近期紀錄';
+
+      const report = 
+`【Lohascare GutSafe 樂活食得安 · 照護與吞嚥週報】
+=============================
+老友目標處方：${p}
+最新餐食檢驗紀錄：${lastMeal}
+本週吞嚥肌操打卡率：${compliance.rate}% (近7日達成 ${compliance.days} 天)
+腸道微生態健康分數：${gutScore} 分
+緊急聯絡電話：${localStorage.getItem('emergency_contact') || '未登記'}
+生成日期：${new Date().toLocaleDateString('zh-HK')}
+註：此報告由家庭照顧者於日常場景輔助產出，供言語治療師／醫生覆診質地參考，非醫療診斷。`;
+
+      document.getElementById('doctorReportText').value = report;
+      document.getElementById('btnSendWaReport').href = `https://wa.me/?text=${encodeURIComponent(report)}`;
+      document.getElementById('doctorReportModal').style.display = 'flex';
+    };
+
+    function copyDoctorReport() {
+      const txt = document.getElementById('doctorReportText');
+      txt.select();
+      navigator.clipboard.writeText(txt.value).then(() => {
+        showToast('已複製報告，可直接貼上分享');
+      });
+    }
+
+    // 更多設定選單
+    document.getElementById('btnOpenMoreMenu').onclick = () => {
+      document.getElementById('moreMenuModal').style.display = 'flex';
+    };
+    document.getElementById('btnMenuElderly').onclick = () => {
+      elderlyMode = !elderlyMode;
+      document.body.classList.toggle('elderly', elderlyMode);
+      localStorage.setItem('lohas_elderly', elderlyMode ? '1' : '0');
+      showToast(elderlyMode ? '已放大字體' : '已恢復預設字體');
+    };
+    document.getElementById('btnMenuVoice').onclick = () => {
+      voiceOn = !voiceOn;
+      localStorage.setItem('lohas_voice', voiceOn ? '1' : '0');
+      document.getElementById('btnMenuVoice').classList.toggle('voice-on', voiceOn);
+      showToast(voiceOn ? '語音播報已開啟' : '語音已關閉');
+    };
+    document.getElementById('btnMenuContact').onclick = () => {
+      document.getElementById('moreMenuModal').style.display = 'none';
+      document.getElementById('contactModal').style.display = 'flex';
+    };
+
+    function saveContact() {
+      const phone = document.getElementById('contactPhone').value.trim();
+      if (!phone) {
+        showToast('請輸入電話號碼');
+        return;
+      }
+      localStorage.setItem('emergency_contact', phone);
+      showToast('已儲存家人電話');
+      const callBtn = document.getElementById('callContactBtn');
+      callBtn.href = `tel:${phone}`;
+      callBtn.style.display = 'block';
+      callBtn.textContent = `📞 立即致電 ${phone}`;
+    }
+
+    // ========== 5. 核心：Dify 智能解包器 ==========
+    function unwrapDifyResponse(raw) {
+      if (!raw) return null;
+      let d = raw;
+      if (d.data && d.data.outputs) {
+        d = d.data.outputs;
+      } else if (d.outputs) {
+        d = d.outputs;
+      }
+      if (typeof d.result === 'string') {
+        try { d = JSON.parse(d.result); } catch(e) {}
+      } else if (d.result && typeof d.result === 'object') {
+        d = d.result;
+      }
+      if (typeof d.json_output === 'string') {
+        try { d = JSON.parse(d.json_output); } catch(e) {}
+      } else if (d.json_output && typeof d.json_output === 'object') {
+        d = d.json_output;
+      }
+      if (typeof d.text === 'string' && d.text.trim().startsWith('{')) {
+        try { d = JSON.parse(d.text); } catch(e) {}
+      }
+      if (typeof d.nutrients === 'string') {
+        try { d = JSON.parse(d.nutrients); } catch(e) {}
+      }
+      return d;
+    }
+
+    // ========== 6. 驗餐業務與輪播提示（唔 show 秒數） ==========
+    const mealInput = document.getElementById('mealInput');
+    const imagePreview = document.getElementById('imagePreview');
+    const btnAnalyzeMeal = document.getElementById('btnAnalyzeMeal');
+    const scanLaserLine = document.getElementById('scanLaserLine');
+
+    mealInput.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      try {
+        showToast('正在幫你預備相片...');
+        selectedImageBase64 = await compressImage(file);
+        imagePreview.src = selectedImageBase64;
+        previewWrap.style.display = 'flex';
+        rulerControlPanel.style.display = 'flex';
+        btnAnalyzeMeal.style.display = 'block';
+        document.getElementById('mealReportCard').style.display = 'none';
+        rulerBox.style.left = '50%';
+        rulerBox.style.top = '50%';
+        updateRulerDimensions();
+      } catch (err) {
+        showToast('相片讀取失敗，請重新拍攝');
+      }
+    });
+
+    btnAnalyzeMeal.addEventListener('click', async () => {
+      if (!selectedImageBase64) return;
+      btnAnalyzeMeal.disabled = true;
+      scanLaserLine.style.display = 'block';
+
+      // 搞鬼輪播提示，絕不顯示機械化秒數
+      let msgIdx = 0;
+      btnAnalyzeMeal.textContent = WAITING_MESSAGES[0];
+      waitInterval = setInterval(() => {
+        msgIdx = (msgIdx + 1) % WAITING_MESSAGES.length;
+        btnAnalyzeMeal.textContent = WAITING_MESSAGES[msgIdx];
+      }, 1900);
+
+      try {
+        const rawP = document.getElementById('userPrescription').value;
+        const cleanP = rawP.match(/Level\s*\d/i) ? rawP.match(/Level\s*\d/i)[0] : "Level 5";
+
+        // 45 秒長時安全等待
+        const resp = await fetchWithRetry(BACKEND_API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            meal_photo: selectedImageBase64,
+            iddsi_prescription: cleanP,
+            user_id: 'Allen',
+            meal_type: '午餐'
+          })
+        }, 1, 45000);
+
+        const rawJson = await resp.json();
+        const data = unwrapDifyResponse(rawJson);
+        if (!data || !data.food) {
+          throw new Error("無法解析 Dify 返回的餐膳格式，內容為：" + JSON.stringify(rawJson).slice(0, 100));
+        }
+
+        lastResultData = data;
+        renderMealResult(data);
+        updateTaskStatus('meal', true);
+        checkAllTasksCelebration();
+        showToast('✅ 搞掂！睇睇食唔食得！');
+      } catch (err) {
+        console.error("驗餐錯誤:", err);
+        if (err.name === 'AbortError') {
+          alert("【連線等得太耐】：AI 視覺模型運算較慢，請確認網絡後再試。");
+        } else {
+          alert(`【辨識失敗】：${err.message}\n請檢查網絡或 Cloudflare Worker 狀態。`);
+        }
+      } finally {
+        clearInterval(waitInterval);
+        scanLaserLine.style.display = 'none';
+        btnAnalyzeMeal.disabled = false;
+        btnAnalyzeMeal.textContent = '開始睇下食唔食得';
+      }
+    });
+
+    function renderMealResult(data) {
+      if (!data) return;
+      const card = document.getElementById('mealReportCard');
+      card.style.display = 'block';
+
+      const langPack = HELPER_TRANSLATIONS[helperLang];
+      const foodName = data.food || "餐膳";
+      let num = data.iddsi_number ?? 7;
+      const isDual = !!data.is_dual_texture;
+      const prescriptionVal = document.getElementById('userPrescription').value;
+      const targetNum = parseInt((prescriptionVal.match(/\d/) || [5])[0], 10);
+      const isID = (helperLang === 'ID');
+      const confPercent = Math.round((data.confidence || 0.9) * 100);
+
+      document.getElementById('resFoodName').textContent = foodName;
+      let helperFoodName = foodName.match(/\((.*?)\)/) ? foodName.match(/\((.*?)\)/)[1] : (isID ? "Makanan Pilihan" : "Selected Food");
+      document.getElementById('resFoodNameHelper').textContent = `👉 ${helperFoodName}`;
+
+      const tBanner = document.getElementById('trafficBanner');
+      const tIcon = document.getElementById('trafficIcon');
+      const tTitle = document.getElementById('trafficTitle');
+      const tSummary = document.getElementById('trafficSummary');
+      const tHelper = document.getElementById('trafficHelper');
+
+      // 1. 交通燈狀態 (香港生鬼口吻)
+      if (isDual) {
+        tBanner.className = "traffic-card traffic-red";
+        tIcon.textContent = "🔴";
+        tTitle.textContent = "停手！又湯又渣！極易濁到咳！";
+        tSummary.textContent = "啲清湯流得快過啲固體，喉嚨反應唔切就會濁到七彩！快手倒走啲湯！";
+        tHelper.textContent = `🚨 ${langPack.dangerTitle}: ${langPack.dangerDesc}`;
+      } else if (num > targetNum) {
+        tBanner.className = "traffic-card traffic-yellow";
+        tIcon.textContent = "🟡";
+        tTitle.textContent = `喂等等！呢碟太硬太韌！要剪碎先好食`;
+        tSummary.textContent = `舊嘢大過老友食開個標準（Level ${targetNum}），千祈咪成塊吞！必須剪細！`;
+        tHelper.textContent = `⚠️ ${langPack.warnTitle}: ${langPack.warnDesc}`;
+      } else {
+        tBanner.className = "traffic-card traffic-green";
+        tIcon.textContent = "🟢";
+        tTitle.textContent = "過關！食得！放心開餐";
+        tSummary.textContent = "質地啱啱好，軟腍腍，老友慢慢嗒，無有怕！";
+        tHelper.textContent = `✅ ${langPack.safeTitle}: ${langPack.safeDesc}`;
+      }
+
+      document.getElementById('resIddsiLevel').textContent = `IDDSI Level ${num}`;
+      document.getElementById('resIddsiLevel').className = `iddsi-badge level-${num}`;
+      document.getElementById('resConfidence').textContent = `睇得好清楚 (${confPercent}%)`;
+
+      // 2. 致敏原標籤
+      const allergenBox = document.getElementById('resAllergenBox');
+      allergenBox.innerHTML = '';
+      if (Array.isArray(data.allergen_tags) && data.allergen_tags.length > 0) {
+        const allergenDict = { 'GLUTEN': '麩質 (Gluten)', 'DAIRY': '奶類 (Dairy/Susu)', 'SOY': '大豆 (Soy)', 'EGG': '雞蛋 (Egg/Telur)', 'PEANUT': '花生 (Peanut/Kacang)', 'SEAFOOD': '海鮮 (Seafood)' };
+        data.allergen_tags.forEach(tag => {
+          allergenBox.innerHTML += `<span class="allergen-badge">⚠️ 留意有：${allergenDict[tag] || tag}</span>`;
+        });
+      }
+
+      // 3. 兩大警示橫幅判定
+      const dualBanner = document.getElementById('resDualTextureBanner');
+      const hardnessBanner = document.getElementById('resHardnessWarningBanner');
+
+      if (isDual) {
+        dualBanner.style.display = 'block';
+        document.getElementById('resSafetyWarning').textContent = data.safety_warning || "稀薄湯汁極易標入氣管濁親！必須徹底倒乾湯汁！";
+        document.getElementById('resSafetyWarningHelper').textContent = `🇮🇩/🇵🇭 ${langPack.dualWarning}`;
+      } else {
+        dualBanner.style.display = 'none';
+      }
+
+      if (num > targetNum || (!isDual && data.safety_warning)) {
+        hardnessBanner.style.display = 'block';
+        const warnText = data.safety_warning || `食物顆粒（Level ${num}）大過老友食開嘅標準（Level ${targetNum}），成舊吞落去隨時哽親！必須剪碎加工。`;
+        document.getElementById('resHardnessWarningText').textContent = warnText;
+        document.getElementById('resHardnessWarningHelper').textContent = isID
+          ? `👉 BAHAYA: Tekstur makanan (Level ${num}) lebih keras dari target (Level ${targetNum}). Wajib potong/cincang sebelum disuapkan!`
+          : `👉 HAZARD: Food texture (Level ${num}) exceeds care target (Level ${targetNum}). Must cut/mince before feeding!`;
+      } else {
+        hardnessBanner.style.display = 'none';
+      }
+
+      // 4. 醒目核心照護大卡片
+      const primaryGuidance = getDynamicMatrixGuidance(foodName, num, targetNum, isDual, data.is_drink, helperLang);
+      document.getElementById('resPrimaryActionZh').textContent = primaryGuidance.zh;
+      document.getElementById('resPrimaryActionHelper').textContent = `👉 ${primaryGuidance.helper}`;
+
+      // 5. 可勾選照護清單 (Checklist)
+      const checklistContainer = document.getElementById('checklistItemsContainer');
+      checklistContainer.innerHTML = '';
+      let checkItems = [
+        { zh: primaryGuidance.zh, helper: primaryGuidance.helper }
+      ];
+      if (/(骨|魚|翼|排|肉|牛|豬|雞|海鮮)/.test(foodName)) {
+        checkItems.push({ zh: "用筷子徹底撥開檢查，挑乾淨碎骨硬刺", helper: langPack.actions.DEBONE });
+      }
+      if (data.is_drink && isDual) {
+        checkItems.push({ zh: "用隔篩濾走所有珍珠／椰果，防止倒吸入氣管", helper: "Saring semua boba agar tidak tersedak!" });
+      }
+      checkItems.forEach((item) => {
+        checklistContainer.innerHTML += `
+          <label class="checklist-item">
+            <input type="checkbox" onchange="updateChecklistProgress()">
+            <div class="checklist-text">
+              <strong>${item.zh}</strong>
+              <span class="checklist-helper">👉 ${item.helper}</span>
+            </div>
+          </label>
+        `;
+      });
+      updateChecklistProgress();
+
+      // 6. 完整 18 項營養素儀表板
+      const n = data.nutrients || {};
+      document.getElementById('valGrams').textContent = `${n.grams ?? '--'} g`;
+      document.getElementById('valCalories').textContent = `${n.calories ?? '--'} kcal`;
+      document.getElementById('valWater').textContent = `${n.water_ml ?? '--'} ml`;
+      document.getElementById('valProtein').textContent = `${n.protein_g ?? '--'} g`;
+      document.getElementById('valCarbs').textContent = `${n.carbs_g ?? '--'} g`;
+      document.getElementById('valFat').textContent = `${n.fat_g ?? '--'} g`;
+      document.getElementById('valFiber').textContent = `${n.fiber_g ?? '--'} g`;
+      document.getElementById('valSugar').textContent = `${n.sugar_g ?? '--'} g`;
+      document.getElementById('valCholesterol').textContent = `${n.cholesterol_mg ?? '--'} mg`;
+      document.getElementById('valSatFat').textContent = `${n.saturated_fat_g ?? '--'} g`;
+      document.getElementById('valTransFat').textContent = `${n.trans_fat_g ?? '--'} g`;
+      document.getElementById('valSodium').textContent = `${n.sodium_mg ?? '--'} mg`;
+      document.getElementById('valCalcium').textContent = `${n.calcium_mg ?? '--'} mg`;
+      document.getElementById('valIron').textContent = `${n.iron_mg ?? '--'} mg`;
+      document.getElementById('valMagnesium').textContent = `${n.magnesium_mg ?? '--'} mg`;
+      document.getElementById('valPotassium').textContent = `${n.potassium_mg ?? '--'} mg`;
+      document.getElementById('valZinc').textContent = `${n.zinc_mg ?? '--'} mg`;
+      document.getElementById('valVitC').textContent = `${n.vitamin_c_mg ?? '--'} mg`;
+
+      document.getElementById('resVisualReason').textContent = data.visual_reason || "質地結構分析完成。";
+      document.getElementById('resOfficialTest').textContent = data.recommended_official_test || "餐叉指壓測試";
+
+      // 7. 口語語音叮囑 (地道香港老友口氣)
+      let rawAdvice = data.spoken_advice || "老友，食飯千祈唔好急，慢慢嗒，咬爛先吞呀！";
+      rawAdvice = rawAdvice.replace(/老友記/g, "老友").replace(/阿公|阿婆/g, "老友");
+      if (num > targetNum) {
+        rawAdvice += ` 留意呀，呢餐偏硬大嚿，一定要剪碎至一口量先好吞呀！`;
+      }
+      if (voiceOn) speakCantonese(rawAdvice);
+
+      saveMealLog(foodName, isDual);
+      card.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function updateChecklistProgress() {
+      const total = document.querySelectorAll('#checklistItemsContainer input[type="checkbox"]').length;
+      const checked = document.querySelectorAll('#checklistItemsContainer input[type="checkbox"]:checked').length;
+      const progEl = document.getElementById('checklistProgress');
+      progEl.textContent = `${checked}/${total} 搞掂`;
+      if (total > 0 && checked === total) {
+        progEl.textContent = `✅ 全部過關，放心開餐！`;
+        showToast('✅ 照護動作全部搞掂晒！');
+      }
+    }
+
+    // ========== 7. 標尺與矩陣判斷引擎 ==========
+    const rulerBox = document.getElementById('rulerBox');
+    const previewWrap = document.getElementById('previewWrap');
+    const rulerControlPanel = document.getElementById('rulerControlPanel');
+    const rulerTagText = document.getElementById('rulerTagText');
+    const rulerScaleSlider = document.getElementById('rulerScaleSlider');
+    const sliderValueText = document.getElementById('sliderValueText');
+
+    function onRulerDragStart(e) {
+      isDragging = true;
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      startX = clientX; startY = clientY;
+      const rect = rulerBox.getBoundingClientRect();
+      const parentRect = previewWrap.getBoundingClientRect();
+      origLeft = rect.left - parentRect.left + (rect.width / 2);
+      origTop = rect.top - parentRect.top + (rect.height / 2);
+      e.preventDefault();
+    }
+    function onRulerDragMove(e) {
+      if (!isDragging) return;
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      const dx = clientX - startX; const dy = clientY - startY;
+      rulerBox.style.left = `${origLeft + dx}px`;
+      rulerBox.style.top = `${origTop + dy}px`;
+    }
+    function onRulerDragEnd() { isDragging = false; }
+
+    rulerBox.addEventListener('mousedown', onRulerDragStart);
+    window.addEventListener('mousemove', onRulerDragMove);
+    window.addEventListener('mouseup', onRulerDragEnd);
+    rulerBox.addEventListener('touchstart', onRulerDragStart, { passive: false });
+    window.addEventListener('touchmove', onRulerDragMove, { passive: false });
+    window.addEventListener('touchend', onRulerDragEnd);
+
+    function updateRulerDimensions() {
+      let size = baseScale;
+      if (currentRulerMode === 4) {
+        size = Math.round(baseScale * (4 / 15));
+        rulerTagText.textContent = '📐 4mm 細碎 (叉齒隙)';
+      } else {
+        rulerTagText.textContent = '📏 15mm 一口量 (叉背寬)';
+      }
+      rulerBox.style.width = `${size}px`;
+      rulerBox.style.height = `${size}px`;
+      sliderValueText.textContent = `${size}px`;
+    }
+
+    document.getElementById('btnMode15').onclick = () => {
+      currentRulerMode = 15;
+      document.getElementById('btnMode15').classList.add('active');
+      document.getElementById('btnMode4').classList.remove('active');
+      updateRulerDimensions();
+    };
+    document.getElementById('btnMode4').onclick = () => {
+      currentRulerMode = 4;
+      document.getElementById('btnMode4').classList.add('active');
+      document.getElementById('btnMode15').classList.remove('active');
+      updateRulerDimensions();
+    };
+    document.getElementById('btnToggleRuler').onclick = () => {
+      const isHidden = rulerBox.style.display === 'none';
+      rulerBox.style.display = isHidden ? 'flex' : 'none';
+      document.getElementById('btnToggleRuler').textContent = isHidden ? '👁️ 隱藏標尺' : '👁️ 顯示標尺';
+    };
+    rulerScaleSlider.oninput = (e) => {
+      baseScale = parseInt(e.target.value, 10);
+      updateRulerDimensions();
+    };
+
+    function detectFoodCategory(name, isDrink) {
+      if (isDrink || /(湯|茶|水|奶|汁|飲品|咖啡)/.test(name)) return 'liquid';
+      if (/(蛋|豆腐|豆花|腐竹)/.test(name)) return 'egg_tofu';
+      if (/(菜|瓜|菇|茄|筍|蔬|西蘭花|果|蘿蔔)/.test(name)) return 'veg';
+      if (/(肉|扒|排|牛|豬|雞|鴨|鵝|魚|海鮮|蝦|蟹|骨|翼|腸|腩)/.test(name)) return 'meat';
+      if (/(麵|通粉|河粉|米線|飯|粥|包|餅|糕|餃|粉)/.test(name)) return 'carb';
+      return 'general';
+    }
+
+    function getDynamicMatrixGuidance(foodName, detectedNum, targetNum, isDual, isDrink, helperLang) {
+      const category = detectFoodCategory(foodName, isDrink);
+      const isID = (helperLang === 'ID');
+      const shortFood = (foodName || '食物').split(' ')[0].replace(/[\(\)]/g, '');
+
+      if (isDual) {
+        return {
+          zh: `徹底倒乾【${shortFood}】嘅湯汁，防止稀湯倒流入氣管`,
+          helper: isID ? `Tiriskan semua kuah dari ${shortFood} sepenuhnya!` : `Drain all clear soup from ${shortFood} completely!`
+        };
+      }
+
+      if (detectedNum > targetNum) {
+        if (targetNum === 6) {
+          if (category === 'meat') return { zh: `將【${shortFood}】切成細過 15mm 薄片，加少少稠汁保濕`, helper: isID ? `Potong ${shortFood} tipis di bawah 15mm!` : `Cut ${shortFood} into thin slices under 15mm!` };
+          return { zh: `將【${shortFood}】剪碎至 15mm 一口量以下`, helper: isID ? `Potong ${shortFood} di bawah 15mm!` : `Cut ${shortFood} into bite-sized pieces under 15mm!` };
+        }
+        if (targetNum === 5) {
+          return { zh: `將【${shortFood}】壓碎或剪碎至 4mm 細粒狀（碎餐爛飯標準）`, helper: isID ? `Cincang/hancurkan ${shortFood} hingga 4mm!` : `Mince/chop ${shortFood} under 4mm!` };
+        }
+        if (targetNum <= 4) {
+          return { zh: `將【${shortFood}】放入攪拌機打成完全無顆粒純糊餐`, helper: isID ? `Blender ${shortFood} menjadi puree halus!` : `Blend ${shortFood} completely smooth into puree!` };
+        }
+      }
+      return {
+        zh: `質地符合長者處方，坐直身體細嚼慢嚥`,
+        helper: isID ? `Tekstur ${shortFood} aman dan sesuai standar.` : `Texture complies with prescription.`
+      };
+    }
+
+    // ========== 8. 查腸道問卷 ==========
+    function renderQuiz() {
+      const form = document.getElementById('quizForm');
+      form.innerHTML = '';
+      QUESTIONS.forEach((q, idx) => {
+        const n = idx + 1;
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.style.marginTop = '10px';
+        card.innerHTML = `
+          <div class="q-header">
+            <div class="q-num">${n}</div>
+            <div class="q-title">${q.t}</div>
+            <button type="button" class="speak-btn" onclick="speakCantonese('第${n}題。${q.t}。選項有：${q.o.join('；或者，')}')">🔊</button>
+          </div>
+          <div class="options">
+            ${q.o.map((opt, i) => `
+              <label class="opt" onclick="handleOptionSelect(${n},${SCORES[i]}, this)">
+                <input type="radio" name="q${n}" value="${SCORES[i]}" style="display:none">
+                <span class="radio"></span>
+                <span class="opt-label">${opt}</span>
+              </label>
+            `).join('')}
+          </div>
+        `;
+        form.appendChild(card);
+      });
+    }
+
+    function handleOptionSelect(qNum, val, labelEl) {
+      const parent = labelEl.parentElement;
+      parent.querySelectorAll('.opt').forEach(el => el.classList.remove('selected'));
+      labelEl.classList.add('selected');
+      const radio = labelEl.querySelector('input');
+      radio.checked = true;
+      checkProgress();
+    }
+
+    function checkProgress() {
+      let answered = 0;
+      let total = 0;
+      for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+        const sel = document.querySelector(`input[name="q${i}"]:checked`);
+        if (sel) {
+          answered++;
+          total += parseInt(sel.value, 10);
+        }
+      }
+      document.getElementById('progressBar').style.width = (answered / TOTAL_QUESTIONS * 100) + '%';
+      document.getElementById('progressText').textContent = `答咗 ${answered} / ${TOTAL_QUESTIONS} 題`;
+      if (answered === TOTAL_QUESTIONS) showQuizResult(total);
+    }
+
+    function showQuizResult(score) {
+      const card = document.getElementById('resultCard');
+      card.style.display = 'block';
+      document.getElementById('scoreBadge').textContent = `${score} 分`;
+      let title = '', desc = '', spokenMsg = '', color = '';
+      if (score <= 8) {
+        color = '#16a34a';
+        title = '🟢 腸胃好精神、好菌好足！';
+        desc = '好嘢嚟㗎！你個腸胃微生態好健康，好菌充足。記得繼續飲夠水、餐餐食多啲深綠色蔬菜、得閒落街行多兩步。';
+        spokenMsg = `老友，總分係${score}分，腸胃好健康。繼續食多啲菜、飲多啲水呀！`;
+      } else if (score <= 20) {
+        color = '#d97706';
+        title = '🟡 腸胃有啲失調、開始翳住！';
+        desc = '腸道菌群開始有啲鬧情緒喎，平時係咪成日易攰又或者消化不良？建議每餐食多半碗白灼菜心，跟住下面教你嘅動作扭下腰。';
+        spokenMsg = `老友，總分係${score}分。腸胃有少少失衡喇，平時食嘢唔好太油太甜，跟住做下扭腰摩腹啦。`;
+      } else {
+        color = '#dc2626';
+        title = '🔴 腸道明顯失調、好唔順暢！';
+        desc = '微生態明顯失衡喇，排便同消化都幾辛苦。千祈唔好再成日食炸嘢同甜嘢，一定要做足運動處方，最好搵家庭醫生傾傾。';
+        spokenMsg = `老友，總分係${score}分，個腸胃好唔順暢呀。少食啲煎炸嘢，跟住下面動作慢慢做。`;
+      }
+      document.getElementById('scoreBadge').style.color = color;
+      document.getElementById('statusTitle').textContent = title;
+      document.getElementById('statusDesc').textContent = desc;
+
+      const q7Val = parseInt(document.querySelector('input[name="q7"]:checked')?.value || 0, 10);
+      const q9Val = parseInt(document.querySelector('input[name="q9"]:checked')?.value || 0, 10);
+      const mindDesc = document.getElementById('mindDesc');
+      if (q7Val >= 2 || q9Val >= 2) {
+        mindDesc.textContent = "觀察到最近心事比較多或睡眠質素欠佳。緊張壓力會透過「腸腦軸」直接刺激腸道蠕動失常甚至胃脹。建議每日睡前做 5 分鐘慢呼氣放鬆練習，安撫大腦，腸胃自然聽話！";
+      } else {
+        mindDesc.textContent = "心情放鬆、睡得安穩，大腦與腸道副交感神經運作順暢，有利益生菌在腸壁健康定植！";
+      }
+
+      let exHtml = '<h4 style="color:var(--teal);margin-bottom:8px">🏃 老友專屬腸胃運動處方</h4>';
+      const q1Val = parseInt(document.querySelector('input[name="q1"]:checked')?.value || 0, 10);
+      const q2Val = parseInt(document.querySelector('input[name="q2"]:checked')?.value || 0, 10);
+      if (q1Val >= 2) exHtml += createExItem(EXERCISE_KB.q1);
+      if (q2Val >= 2) exHtml += createExItem(EXERCISE_KB.q2);
+      if (q7Val >= 2) exHtml += createExItem(EXERCISE_KB.q7);
+      if (q1Val < 2 && q2Val < 2 && q7Val < 2) exHtml += createExItem(EXERCISE_KB.q9);
+      document.getElementById('exerciseBox').innerHTML = exHtml;
+      localStorage.setItem('last_gut_score', score);
+      
+      updateTaskStatus('quiz', true);
+      checkAllTasksCelebration();
+
+      card.scrollIntoView({ behavior: 'smooth' });
+      if (voiceOn) speakCantonese(spokenMsg);
+    }
+
+    function createExItem(ex) {
+      return `<div class="ex-item"><strong>${ex.title}</strong> <span class="ex-time">${ex.time}</span><br>${ex.how}</div>`;
+    }
+
+    document.getElementById('btnResetQuiz').addEventListener('click', () => {
+      document.getElementById('quizForm').reset();
+      document.querySelectorAll('.opt').forEach(el => el.classList.remove('selected'));
+      document.getElementById('resultCard').style.display = 'none';
+      document.getElementById('progressBar').style.width = '0%';
+      document.getElementById('progressText').textContent = '答咗 0 / 10 題';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      showToast('問卷已經重設好');
+    });
+
+    document.getElementById('btnSpeakResult').addEventListener('click', () => {
+      const score = document.getElementById('scoreBadge').textContent;
+      const desc = document.getElementById('statusDesc').textContent;
+      speakCantonese(`評估做完喇！你嘅腸道微生態得分係${score}。${desc}`);
+    });
+
+    // ========== 9. 工具函數 (壓縮、連線、記憶) ==========
+    function compressImage(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement("canvas");
+            let w = img.width, h = img.height;
+            const max = 640;
+            if (w > h && w > max) { h = Math.round((h * max) / w); w = max; }
+            else if (h > max) { w = Math.round((w * max) / h); h = max; }
+            canvas.width = w; canvas.height = h;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, w, h);
+            resolve(canvas.toDataURL("image/jpeg", 0.6));
+          };
+          img.onerror = reject;
+          img.src = e.target.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function fetchWithRetry(url, options, retries = 1, timeout = 45000) {
+      for (let i = 0; i <= retries; i++) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), timeout);
+        try {
+          const resp = await fetch(url, { ...options, signal: controller.signal });
+          clearTimeout(timer);
+          if (!resp.ok) {
+            const errTxt = await resp.text().catch(() => '');
+            throw new Error(`伺服器回應錯誤 (${resp.status}): ${errTxt.slice(0, 100)}`);
+          }
+          return resp;
+        } catch (err) {
+          clearTimeout(timer);
+          if (i === retries) throw err;
+          await new Promise(r => setTimeout(r, 1500));
+        }
+      }
+    }
+
+    function saveMealLog(name, isDual) {
+      const logs = JSON.parse(localStorage.getItem('lohas_meal_logs') || '[]');
+      logs.unshift({ name, isDual, date: new Date().toISOString() });
+      localStorage.setItem('lohas_meal_logs', JSON.stringify(logs.slice(0, 20)));
+      checkContinuousMemory();
+    }
+
+    function checkContinuousMemory() {
+      const logs = JSON.parse(localStorage.getItem('lohas_meal_logs') || '[]');
+      const dualCount = logs.filter(l => l.isDual).length;
+      const lastGutScore = localStorage.getItem('last_gut_score');
+      const alertBox = document.getElementById('memoryAlertBox');
+      const alertMsg = document.getElementById('memoryAlertMsg');
+      if (dualCount >= 2) {
+        alertMsg.textContent = `老友，你最近已經有 ${dualCount} 餐係高危雙重質地餐！食之前記得提照顧者倒乾啲湯；如果腸道容易脹氣，食飽飯後記得做埋摩腹伸展呀。`;
+        alertBox.style.display = 'block';
+      } else if (lastGutScore && parseInt(lastGutScore, 10) > 15) {
+        alertMsg.textContent = `老友，上次微生態評估顯示腸道菌群有啲失調，記得每日食多半碗蔬菜，配合坐姿扭腰消氣操呀！`;
+        alertBox.style.display = 'block';
+      } else {
+        alertBox.style.display = 'none';
+      }
+    }
+
+    function askFollowUp(query) {
+      switchTab('qa');
+      document.getElementById('qaInput').value = query;
+      document.getElementById('btnAsk').click();
+    }
+
+    function renderRefTable(filter = '') {
+      const container = document.getElementById('refTableList');
+      const list = HK_FOOD_KB.filter(f => f.name.includes(filter) || f.warn.includes(filter) || f.level.includes(filter));
+      container.innerHTML = list.map(item => `
+        <div style="background:var(--bg);padding:10px 12px;border-radius:10px;display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-weight:800;font-size:14.5px">${item.name}</div>
+            <div style="font-size:12px;color:var(--text2)">${item.level} · ${item.warn}</div>
+          </div>
+          <span style="font-size:12px;font-weight:800;padding:3px 8px;border-radius:6px;background:${item.tag==='推薦'?'#dcfce7':(item.tag==='合格'?'#e0f2fe':'#fee2e2')};color:${item.tag==='推薦'?'#166534':(item.tag==='合格'?'#075985':'#991b1b')}">${item.tag}</span>
+        </div>
+      `).join('') || '<p style="color:var(--text2);padding:8px 0">搵唔到相關食物，試下其他關鍵字。</p>';
+    }
+    document.getElementById('refSearchInput').oninput = (e) => renderRefTable(e.target.value.trim());
+
+    document.getElementById('btnAsk').onclick = () => {
+      const q = document.getElementById('qaInput').value.trim();
+      if (!q) return;
+      let reply = "老友，平時食嘢記得細嚼慢嚥。如果想保護腸道，記得補充足夠膳食纖維同水份；遇到堅韌肉類或長纖維蔬菜，記得徹底剪細！";
+      if (q.includes('心情') || q.includes('緊張') || q.includes('抽痛') || q.includes('情緒')) {
+        reply = "心情緊張容易胃痛係典型嘅「腸腦軸」反應！大腦壓力荷爾蒙會直接刺激腸道血管收縮及肌肉痙攣。建議坐低閉目，做 5 次深長腹式呼吸，放鬆神經，胃部抽痛自然會舒緩。";
+      } else if (q.includes('Level 4') || q.includes('糊餐')) {
+        reply = "整 Level 4 純糊餐好簡單：將煮熟嘅肉菜放入攪拌機，加少少溫水或上湯打到完全無顆粒，再按需要加言語治療師建議嘅凝固粉調稠就得！";
+      } else if (q.includes('脹氣') || q.includes('肚脹') || q.includes('胃氣')) {
+        reply = "肚脹通常同進食太急吞入空氣、腸道好菌不足有關。食飽飯後唔好即刻瞓低，企起身慢行 10 分鐘，並用暖手順時針打圈摩腹 50 次幫大腸排氣。";
+      } else if (q.includes('便秘') || q.includes('唔通')) {
+        reply = "便秘老友記得每日分次飲夠 6 至 8 杯溫水。每餐叫屋企人幫手將深綠色菜心剪碎，增加水溶性纖維，腸道菌食飽先有力量推便便出嚟。";
+      } else if (q.includes('剪碎') || q.includes('挑骨')) {
+        reply = "挑骨同剪碎最穩陣做法：用小剪刀將肉類剪成細粒，魚類一定要反覆檢查有無細骨。剪完再用叉背輕輕壓一壓，確認無硬粒先好餵。";
+      }
+      const ansEl = document.getElementById('qaAnswer');
+      ansEl.textContent = reply;
+      ansEl.style.display = 'block';
+      speakCantonese(reply);
+    };
+
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+    });
+
+    document.getElementById('btnShowForkGuide').onclick = () => document.getElementById('forkModal').style.display = 'flex';
+    document.getElementById('btnEmergency').onclick = () => document.getElementById('emergencyModal').style.display = 'flex';
+    document.getElementById('btnEmergencyFloat').onclick = () => document.getElementById('emergencyModal').style.display = 'flex';
+
+    document.getElementById('btnLangToggle').onclick = () => {
+      helperLang = (helperLang === 'ID') ? 'EN' : 'ID';
+      localStorage.setItem('lohas_helper_lang', helperLang);
+      const lp = HELPER_TRANSLATIONS[helperLang];
+      document.getElementById('btnLangToggle').textContent = lp.toggleBtn;
+      document.getElementById('labelTargetLevel').textContent = (helperLang === 'ID') ? '照護對象目標餐質 (Target Level):' : 'Care Target IDDSI Level:';
+      document.getElementById('labelUploadPrompt').textContent = lp.uploadPrompt;
+      document.getElementById('labelUploadSub').textContent = lp.uploadSub;
+      showToast(lp.langSwitched);
+      if (lastResultData) renderMealResult(lastResultData);
+    };
+
+    // 語音輸入 STT
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'zh-HK';
+      recognition.continuous = false;
+      document.getElementById('btnVoiceInput').onclick = () => {
+        showToast('請講廣東話...');
+        document.getElementById('btnVoiceInput').textContent = '聆聽中...';
+        recognition.start();
+      };
+      recognition.onresult = (e) => {
+        const transcript = e.results[0][0].transcript;
+        document.getElementById('qaInput').value = transcript;
+        document.getElementById('btnVoiceInput').textContent = '🎙️ 講嘢';
+        document.getElementById('btnAsk').click();
+      };
+      recognition.onerror = () => {
+        document.getElementById('btnVoiceInput').textContent = '🎙️ 講嘢';
+        showToast('聽唔清，請試多次或打字');
+      };
+    } else {
+      document.getElementById('btnVoiceInput').style.display = 'none';
+    }
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+      });
+    }
+
+    // ========== 10. 初始化啟動 ==========
+    if (elderlyMode) {
+      document.body.classList.add('elderly');
+    }
+    renderQuiz();
+    renderTodayTasksUI();
+    updateWeeklyCompliance();
+    checkContinuousMemory();
+    renderRefTable();
+
+    const lastDate = localStorage.getItem('swallow_last_date');
+    const streak = localStorage.getItem('swallow_streak') || '0';
+    document.getElementById('exerciseStreakBadge').textContent = `🔥 連續打卡 ${streak} 日`;
+
+    setTimeout(showOnboarding, 500);
   </script>
 </body>
 </html>
